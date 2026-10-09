@@ -1,0 +1,161 @@
+---
+// Proposta E: Il percorso. Scorrendo si disegna la strada e Stefano la percorre tappa dopo tappa.
+import { TAPPE } from '../../data/curriculum';
+import { RECENSIONI, CITAZIONE } from '../../data/recensioni';
+import Testata from '../../components/Testata.astro';
+import Recensione from '../../components/Recensione.astro';
+import BottoniContatto from '../../components/BottoniContatto.astro';
+import T from '../../components/T.astro';
+const tappe = [...TAPPE].reverse(); // dalla laurea a oggi
+---
+<div class="p-per">
+  <Testata />
+  <main id="contenuto">
+    <section class="per-hero wrap">
+      <T as="p" class="per-kicker" k="tag.role" />
+      <h1>Stefano In Italy</h1>
+      <T as="p" class="per-sub" k="hero.sub" />
+      <div class="per-giu hand"><T k="path.p" /></div>
+    </section>
+
+    <section class="per-scena" id="percorso" aria-labelledby="perTitolo">
+      <T as="h2" class="sr" k="path.h" id="perTitolo" />
+      <svg class="per-svg" aria-hidden="true"><path class="per-traccia" /><path class="per-linea" /></svg>
+      <div class="per-omino" aria-hidden="true"><img src="/img/stefano.webp" width="458" height="640" alt="" /></div>
+      <ol class="per-tappe">
+        <li class="per-tappa per-inizio"><span class="per-punto"></span><div class="per-card"><T class="per-anni" k="path.start" /><T as="h3" k="intro.h" /><T as="p" k="intro.lead" /></div></li>
+        {tappe.map((tp) => (
+          <li class="per-tappa">
+            <span class="per-punto"></span>
+            <div class="per-card">
+              <span class="per-anni">{tp.anni}{tp.incorso && <> <T k="cv.now" /></>}</span>
+              <T as="h3" k={`cv.${tp.n}.h`} />
+              <T as="p" k={`cv.${tp.n}.d`} />
+            </div>
+          </li>
+        ))}
+        <li class="per-tappa per-fine" id="contatti">
+          <span class="per-punto"></span>
+          <div class="per-card">
+            <T as="h3" k="path.end" />
+            <T as="p" k="col.p" />
+            <BottoniContatto email={false} />
+          </div>
+        </li>
+      </ol>
+    </section>
+
+    <section class="per-rec" id="recensioni">
+      <div class="wrap per-rec-in">
+        <div>
+          <T as="h2" k="rev.h" />
+          <p class="per-cit">“{CITAZIONE.testo}”</p>
+          <T as="p" class="per-fonte" k="rev.quote.src" />
+          <BottoniContatto class="per-rec-btn" />
+        </div>
+        <Recensione r={RECENSIONI[0]} i={0} />
+      </div>
+    </section>
+  </main>
+  <footer class="per-piede wrap"><span>SII!</span><T as="p" k="foot" /></footer>
+</div>
+
+<style is:global>
+.per-hero{padding-top:clamp(56px,10vw,120px);padding-bottom:clamp(24px,4vw,48px);text-align:center;display:grid;justify-items:center}
+.per-kicker{margin:0 0 12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:14px;color:var(--terracotta)}
+.p-per h1{font-size:clamp(52px,9vw,120px)}
+.per-sub{max-width:40ch;font-size:clamp(18px,2vw,21px);color:var(--muted);margin:18px 0 8px}
+.per-giu{font-size:clamp(24px,3vw,30px);color:var(--terracotta);max-width:30ch}
+.per-scena{position:relative;padding:40px 0 80px}
+.per-svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}
+.per-traccia{fill:none;stroke:rgba(0,59,31,.16);stroke-width:4;stroke-dasharray:2 12;stroke-linecap:round}
+.per-linea{fill:none;stroke:var(--verde);stroke-width:5;stroke-linecap:round}
+.per-omino{position:absolute;left:0;top:0;z-index:3;width:76px;height:76px;margin:-38px 0 0 -38px;border-radius:50%;background:var(--verde);border:3px solid var(--crema);box-shadow:0 6px 18px rgba(0,40,20,.3);overflow:hidden;display:grid;place-items:end center;will-change:transform}
+.per-omino img{width:78%;height:auto;transition:transform .35s}
+.per-omino.destra img{transform:scaleX(-1)}
+.per-tappe{list-style:none;margin:0 auto;padding:0 var(--pad);max-width:1080px;position:relative;z-index:2}
+.per-tappa{position:relative;display:flex;padding:clamp(36px,6vw,64px) 0}
+.per-tappa:nth-child(odd){justify-content:flex-start}
+.per-tappa:nth-child(even){justify-content:flex-end}
+.per-punto{position:absolute;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px;border-radius:50%;background:var(--crema);border:4px solid rgba(0,59,31,.3);transition:background-color .3s,border-color .3s,transform .3s}
+.per-tappa.passata .per-punto{background:var(--ocra);border-color:var(--verde);transform:scale(1.15)}
+.per-card{width:min(40%,420px);background:#fff;border:1px solid rgba(0,59,31,.12);border-radius:18px;padding:22px 24px;box-shadow:0 10px 30px rgba(0,40,20,.06);opacity:.35;transform:translateY(20px) scale(.98);transition:opacity .5s,transform .5s cubic-bezier(.2,.8,.2,1)}
+.per-tappa.passata .per-card{opacity:1;transform:none}
+.per-anni{font:600 24px/1 var(--f-hand);color:var(--terracotta)}
+.per-card h3{font-size:24px;line-height:1.15;margin:6px 0 8px}
+.per-card p{margin:0;color:var(--muted)}
+.per-fine .per-card{background:var(--verde);color:var(--crema);border:0}
+.per-fine .per-card p{color:#DDE6D5;margin-bottom:18px}
+.per-fine .btn-linea{color:var(--crema)}
+.per-rec{background:var(--carta);padding:clamp(64px,10vw,120px) 0}
+.per-rec-in{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(28px,6vw,80px);align-items:center}
+.per-rec h2{font-size:clamp(34px,5vw,56px)}
+.per-cit{font:italic 400 clamp(26px,3.4vw,40px)/1.2 var(--f-display);margin:20px 0 10px}
+.per-fonte{color:var(--muted);font-weight:600;margin:0 0 28px}
+.per-rec .rec{max-width:340px;justify-self:center}
+.per-piede{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;padding-top:28px;padding-bottom:110px;color:var(--muted)}
+.per-piede span{font:400 32px/1 var(--f-display);color:var(--verde)}
+.per-piede p{margin:0}
+@media (max-width:760px){
+  .per-tappa,.per-tappa:nth-child(even){justify-content:flex-end}
+  .per-card{width:calc(100% - 56px)}
+  .per-omino{width:56px;height:56px;margin:-28px 0 0 -28px}
+  .per-rec-in{grid-template-columns:1fr}
+}
+</style>
+
+<script>
+  const scena = document.querySelector<HTMLElement>('.p-per .per-scena');
+  if (scena) {
+    const svg = scena.querySelector('svg')!, traccia = scena.querySelector<SVGPathElement>('.per-traccia')!, linea = scena.querySelector<SVGPathElement>('.per-linea')!;
+    const omino = scena.querySelector<HTMLElement>('.per-omino')!;
+    const tappe = [...scena.querySelectorAll<HTMLElement>('.per-tappa')];
+    const ridotto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let L = 1, ys: number[] = [], pS = 0, ultimoX = 0;
+
+    function disegna() {
+      const r = scena!.getBoundingClientRect(), W = r.width, mobile = innerWidth <= 760;
+      const pts = tappe.map((t, i) => {
+        const tr = t.getBoundingClientRect(), y = tr.top - r.top + tr.height / 2;
+        const x = mobile ? 30 + (i % 2 ? 6 : -6) : W / 2 + (i % 2 ? 44 : -44);
+        const p = t.querySelector<HTMLElement>('.per-punto')!; p.style.left = x - (tr.left - r.left) + 'px';
+        return [x, y];
+      });
+      ys = pts.map((p) => p[1]);
+      let d = `M ${pts[0][0]} ${Math.max(0, pts[0][1] - 120)} L ${pts[0][0]} ${pts[0][1]}`;
+      for (let i = 1; i < pts.length; i++) {
+        const [x0, y0] = pts[i - 1], [x1, y1] = pts[i], m = (y1 - y0) / 2;
+        d += ` C ${x0} ${y0 + m}, ${x1} ${y1 - m}, ${x1} ${y1}`;
+      }
+      svg.setAttribute('viewBox', `0 0 ${W} ${r.height}`);
+      traccia.setAttribute('d', d); linea.setAttribute('d', d);
+      L = linea.getTotalLength();
+      linea.style.strokeDasharray = `${L}`;
+    }
+    function fraz(y: number) {
+      // frazione di percorso corrispondente all'altezza y (ricerca binaria sulla lunghezza)
+      let a = 0, b = L;
+      for (let k = 0; k < 22; k++) { const m = (a + b) / 2; if (linea.getPointAtLength(m).y < y) a = m; else b = m; }
+      return a;
+    }
+    function tick() {
+      const r = scena!.getBoundingClientRect();
+      const target = Math.min(Math.max(innerHeight * 0.55 - r.top, 0), r.height);
+      pS = ridotto ? target : pS + (target - pS) * 0.12;
+      const len = fraz(pS);
+      linea.style.strokeDashoffset = `${L - len}`;
+      const pt = linea.getPointAtLength(len);
+      omino.style.transform = `translate(${pt.x}px,${pt.y}px)`;
+      omino.classList.toggle('destra', pt.x - ultimoX > 0.2 ? true : pt.x - ultimoX < -0.2 ? false : omino.classList.contains('destra'));
+      ultimoX = pt.x;
+      tappe.forEach((t, i) => t.classList.toggle('passata', pS >= ys[i] - 40));
+      requestAnimationFrame(tick);
+    }
+    disegna();
+    addEventListener('resize', disegna);
+    document.fonts?.ready.then(disegna);
+    document.addEventListener('sii:lingua', () => requestAnimationFrame(disegna));
+    new ResizeObserver(() => disegna()).observe(scena);
+    requestAnimationFrame(tick);
+  }
+</script>

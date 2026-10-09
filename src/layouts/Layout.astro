@@ -1,0 +1,48 @@
+---
+import '../styles/font.css';
+import '../styles/base.css';
+import { SITO } from '../config';
+import { TESTI, t } from '../data/testi';
+import type { Tema } from '../temi';
+import Curriculum from '../components/Curriculum.astro';
+import Icona from '../components/Icona.astro';
+
+interface Props { tema?: Tema; titolo?: string; descrizione?: string; contatti?: boolean }
+const { tema, titolo = t('meta.title'), descrizione = t('meta.desc'), contatti = true } = Astro.props;
+const og = new URL('/og.jpg', Astro.site).href;
+---
+<!doctype html>
+<html lang="en" data-tema={tema?.id}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>{titolo}</title>
+  <meta name="description" content={descrizione} />
+  <meta name="theme-color" content="#003B1F" />
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content={titolo} />
+  <meta property="og:description" content={descrizione} />
+  <meta property="og:image" content={og} />
+  <meta name="twitter:card" content="summary_large_image" />
+</head>
+<body>
+  <a class="salta" href="#contenuto">Skip to content</a>
+  <slot />
+  {contatti && <Curriculum />}
+  {contatti && (
+    <a class="wa-fisso js-wa" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener" aria-label="Message Stefano on WhatsApp" data-i18n-aria="wa.aria"><Icona nome="wa" /></a>
+  )}
+  {tema && (
+    <div class="pillola" lang="it"><span><b>Proposta {tema.lettera}</b><span class="pillola-nome">: {tema.nome}</span></span><a href="/">Cambia</a></div>
+  )}
+  <script type="application/json" id="testi" set:html={JSON.stringify(TESTI)} />
+  <script>
+    import { avviaLingue } from '../scripts/lingue';
+    import { avviaCurriculum, avviaEntrate } from '../scripts/comuni';
+    avviaLingue();
+    avviaCurriculum();
+    avviaEntrate();
+  </script>
+</body>
+</html>

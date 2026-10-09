@@ -1,0 +1,160 @@
+---
+// Proposta H: Mappa dell'Italia. I punti dove Stefano ha lavorato, da toccare.
+import { TAPPE, SERVIZI } from '../../data/curriculum';
+import { RECENSIONI, CITAZIONE } from '../../data/recensioni';
+import { ITALIA_PATH, ITALIA_W, ITALIA_H, PUNTI } from '../../data/italia';
+import Testata from '../../components/Testata.astro';
+import Recensione from '../../components/Recensione.astro';
+import BottoniContatto from '../../components/BottoniContatto.astro';
+import T from '../../components/T.astro';
+const luoghi = [
+  { id: 'firenze', k: 'pl.firenze', p: PUNTI.firenze },
+  { id: 'toscana', k: 'pl.toscana', p: PUNTI.siena },
+  { id: 'ferrara', k: 'pl.ferrara', p: PUNTI.ferrara },
+  { id: 'parma', k: 'pl.parma', p: PUNTI.parma },
+  { id: 'sora', k: 'pl.sora', p: PUNTI.sora },
+];
+const xy = (p: [number, number]) => [(p[0] / 100) * ITALIA_W, (p[1] / 100) * ITALIA_H];
+const [pa, fe, fi, si, so] = [PUNTI.parma, PUNTI.ferrara, PUNTI.firenze, PUNTI.siena, PUNTI.sora].map(xy);
+const strada = `M${pa[0]} ${pa[1]} Q${(pa[0] + fe[0]) / 2} ${pa[1] - 30} ${fe[0]} ${fe[1]} Q${fe[0] + 20} ${(fe[1] + fi[1]) / 2} ${fi[0]} ${fi[1]} Q${fi[0] - 20} ${(fi[1] + si[1]) / 2} ${si[0]} ${si[1]} Q${si[0] + 60} ${si[1] + 40} ${so[0]} ${so[1]}`;
+const perLuogo = (id: string) => TAPPE.filter((t) => t.luoghi.includes(id));
+---
+<div class="p-map">
+  <Testata />
+  <main id="contenuto">
+    <section class="map-hero wrap">
+      <div class="map-testo">
+        <T as="p" class="map-kicker" k="tag.role" />
+        <h1>Stefano In Italy</h1>
+        <T as="p" class="map-sub" k="hero.sub" />
+        <T as="h2" k="map.h" />
+        <T as="p" class="map-hint hand" k="map.hint" />
+        <div class="map-pannello" aria-live="polite">
+          {luoghi.map((l, i) => (
+            <div class="map-scheda" data-luogo={l.id} hidden={i !== 0}>
+              <T as="h3" k={l.k} />
+              {l.id === 'sora' && <T as="p" class="map-desc" k="pl.sora.d" />}
+              <ul>
+                {perLuogo(l.id).map((tp) => (
+                  <li><span class="map-anni">{tp.anni}{tp.incorso && <> <T k="cv.now" /></>}</span><T as="strong" k={`cv.${tp.n}.h`} /><T as="span" class="map-d" k={`cv.${tp.n}.d`} /></li>
+                ))}
+              </ul>
+            </div>
+          ))}
+          <div class="map-scheda" data-luogo="italia" hidden>
+            <T as="h3" k="map.all" />
+            <ul>
+              {perLuogo('italia').map((tp) => (
+                <li><span class="map-anni">{tp.anni}{tp.incorso && <> <T k="cv.now" /></>}</span><T as="strong" k={`cv.${tp.n}.h`} /><T as="span" class="map-d" k={`cv.${tp.n}.d`} /></li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="map-carta">
+        <svg viewBox={`0 0 ${ITALIA_W} ${ITALIA_H}`} aria-hidden="true">
+          <path class="map-italia" d={ITALIA_PATH} />
+          <path class="map-strada" d={strada} />
+        </svg>
+        {luoghi.map((l, i) => (
+          <button type="button" class="map-pin" style={`left:${l.p[0]}%;top:${l.p[1]}%`} data-luogo={l.id} aria-pressed={i === 0 ? 'true' : 'false'}>
+            <span class="map-pin-punto"></span><T class="map-pin-nome" k={l.k} />
+          </button>
+        ))}
+        <button type="button" class="map-tutta" data-luogo="italia" aria-pressed="false"><T k="map.all" /></button>
+      </div>
+    </section>
+
+    <section class="map-rec" id="recensioni">
+      <div class="wrap map-rec-in">
+        <div>
+          <T as="h2" k="rev.h" />
+          <p class="map-cit">“{CITAZIONE.testo}”</p>
+          <T as="p" class="map-fonte" k="rev.quote.src" />
+        </div>
+        <div class="map-recs">{RECENSIONI.slice(0, 2).map((r, i) => <Recensione r={r} i={i} />)}</div>
+      </div>
+    </section>
+
+    <section class="map-contatti wrap" id="contatti">
+      <div>
+        <T as="h2" k="col.h" />
+        <T as="p" k="col.p" />
+        <ul class="chips">{SERVIZI.map((k) => <T as="li" k={k} />)}</ul>
+      </div>
+      <BottoniContatto class="map-btn" />
+    </section>
+  </main>
+  <footer class="map-piede wrap"><span>SII!</span><T as="p" k="foot" /></footer>
+</div>
+
+<style is:global>
+.map-hero{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,64px);align-items:start;padding-top:clamp(32px,6vw,72px);padding-bottom:clamp(48px,8vw,96px)}
+.map-kicker{margin:0 0 10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:14px;color:var(--terracotta)}
+.p-map h1{font-size:clamp(48px,7vw,96px)}
+.map-sub{font-size:clamp(17px,1.8vw,20px);color:var(--muted);max-width:40ch;margin:16px 0 36px}
+.p-map h2{font-size:clamp(32px,4vw,48px)}
+.map-hint{font-size:26px;color:var(--terracotta);margin:4px 0 14px}
+.map-pannello{background:#fff;border:1px solid rgba(0,59,31,.14);border-radius:18px;padding:20px 22px;box-shadow:0 12px 30px rgba(0,40,20,.07);min-height:220px}
+.map-scheda h3{font-size:28px;margin-bottom:10px}
+.map-scheda:not([hidden]){animation:scheda .4s cubic-bezier(.2,.8,.2,1)}
+@keyframes scheda{from{opacity:0;transform:translateY(10px)}}
+.map-desc{margin:0 0 12px;color:var(--muted)}
+.map-scheda ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
+.map-scheda li{display:grid;gap:2px;padding-left:14px;border-left:3px solid var(--ocra)}
+.map-anni{font:600 20px/1 var(--f-hand);color:var(--terracotta)}
+.map-scheda strong{font:400 19px/1.2 var(--f-display);font-weight:400}
+.map-d{font-size:15px;color:var(--muted)}
+.map-carta{position:sticky;top:80px;aspect-ratio:600/720;width:100%;max-width:560px;justify-self:center}
+.map-carta svg{width:100%;height:100%;display:block}
+.map-italia{fill:var(--verde);stroke:var(--verde);stroke-width:1.5;stroke-linejoin:round}
+.map-strada{fill:none;stroke:#E3B458;stroke-width:3;stroke-dasharray:3 9;stroke-linecap:round;animation:strada 2.4s ease-out both}
+@keyframes strada{from{stroke-dashoffset:300;opacity:0}}
+.map-pin{all:unset;position:absolute;transform:translate(-50%,-50%);cursor:pointer;display:flex;align-items:center;gap:6px}
+.map-pin-punto{width:20px;height:20px;border-radius:50%;background:var(--crema);border:4px solid #E3B458;box-shadow:0 0 0 0 rgba(227,180,88,.6);animation:pulsa 2.2s infinite;flex:none}
+.map-pin[aria-pressed="true"] .map-pin-punto{background:var(--terracotta);border-color:var(--crema);transform:scale(1.25)}
+@keyframes pulsa{70%{box-shadow:0 0 0 14px rgba(227,180,88,0)}100%{box-shadow:0 0 0 0 rgba(227,180,88,0)}}
+.map-pin-nome{background:var(--crema);color:var(--verde);font-weight:700;font-size:13px;padding:3px 9px;border-radius:999px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+.map-pin[data-luogo="parma"],.map-pin[data-luogo="toscana"]{flex-direction:row-reverse}
+.map-pin[data-luogo="parma"]{transform:translate(calc(-100% + 10px),-50%)}
+.map-pin[data-luogo="toscana"]{transform:translate(calc(-100% + 10px),-50%)}
+.map-pin:not([data-luogo="parma"]):not([data-luogo="toscana"]){transform:translate(-10px,-50%)}
+.map-pin:focus-visible .map-pin-nome{outline:3px solid var(--ocra)}
+.map-tutta{all:unset;position:absolute;right:0;bottom:12%;background:var(--crema);border:2px solid var(--verde);color:var(--verde);font-weight:700;font-size:14px;padding:8px 14px;border-radius:999px;cursor:pointer}
+.map-tutta[aria-pressed="true"]{background:var(--terracotta);border-color:var(--terracotta);color:var(--crema)}
+.map-rec{background:var(--verde);color:var(--crema);padding:clamp(56px,8vw,96px) 0}
+.map-rec-in{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center}
+.map-cit{font:italic 400 clamp(24px,3vw,36px)/1.2 var(--f-display);margin:18px 0 8px}
+.map-fonte{color:#C9D6C6;font-weight:600}
+.map-recs{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+.map-contatti{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(24px,5vw,64px);align-items:center;padding-top:clamp(56px,8vw,96px);padding-bottom:clamp(56px,8vw,96px)}
+.map-contatti p{max-width:50ch;color:var(--muted)}
+.map-btn{flex-direction:column}
+.map-piede{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;padding-top:24px;padding-bottom:110px;color:var(--muted);border-top:1px solid rgba(0,59,31,.15)}
+.map-piede span{font:400 32px/1 var(--f-display);color:var(--verde)}
+.map-piede p{margin:0}
+@media (max-width:860px){
+  .map-hero{grid-template-columns:1fr}
+  .map-hero{gap:0}
+  .map-carta{position:relative;top:0;order:1;max-width:420px;margin:8px auto 16px}
+  .map-testo{display:contents}
+  .map-pannello{order:2}
+  .map-rec-in,.map-contatti{grid-template-columns:1fr}
+  .map-pin.map-pin[data-luogo="sora"]{flex-direction:row-reverse;transform:translate(calc(-100% + 10px),-50%)}
+  .map-recs{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+</style>
+<script>
+  const radice = document.querySelector('.p-map');
+  if (radice) {
+    const bottoni = [...radice.querySelectorAll<HTMLButtonElement>('[data-luogo].map-pin, .map-tutta')];
+    const schede = [...radice.querySelectorAll<HTMLElement>('.map-scheda')];
+    bottoni.forEach((b) => b.addEventListener('click', () => {
+      const id = b.dataset.luogo;
+      bottoni.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+      schede.forEach((s) => (s.hidden = s.dataset.luogo !== id));
+      if (innerWidth <= 860) radice.querySelector('.map-pannello')!.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }));
+  }
+</script>

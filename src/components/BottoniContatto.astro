@@ -1,0 +1,13 @@
+---
+// I tre pulsanti di contatto: WhatsApp, email, curriculum.
+import { SITO } from '../config';
+import Icona from './Icona.astro';
+import T from './T.astro';
+interface Props { cv?: boolean; email?: boolean; class?: string }
+const { cv = true, email = true, class: cls } = Astro.props;
+---
+<div class:list={['contatti', cls]}>
+  <a class="btn btn-wa js-wa" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener"><Icona nome="wa" /><T k="wa.btn" /></a>
+  {email && <a class="btn btn-linea" href={`mailto:${SITO.email}`}><Icona nome="mail" /><T k="ct.email" /></a>}
+  {cv && <a class="btn btn-linea" href="#curriculum" data-cv-open><Icona nome="cv" /><T k="cv.open" /></a>}
+</div>

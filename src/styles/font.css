@@ -1,0 +1,5 @@
+/* Font del brand ospitati sul sito (niente Google Fonts: più veloce e nessun dato inviato a terzi). */
+@import '@fontsource/dm-serif-display/latin-400.css';
+@import '@fontsource/dm-serif-display/latin-400-italic.css';
+@import '@fontsource/caveat/latin-600.css';
+@import '@fontsource-variable/dm-sans/opsz.css';

@@ -1,0 +1,17 @@
+---
+import type { Recensione } from '../data/recensioni';
+import Icona from './Icona.astro';
+import T from './T.astro';
+interface Props { r: Recensione; i: number; class?: string }
+const { r, i, class: cls } = Astro.props;
+---
+<figure class:list={['rec', cls]}>
+  {r.img ? (
+    <a class="rec-shot" href={r.img} target="_blank" rel="noopener">
+      <img src={r.img} width={r.w} height={r.h} loading="lazy" decoding="async" alt={`Verified review on ${r.fonte}`} />
+    </a>
+  ) : (
+    <div class="rec-shot rec-vuota"><span><T k="rev.ph" /> {i + 1}</span></div>
+  )}
+  <figcaption><span class="rec-badge"><Icona nome="spunta" /><T k="rev.badge" /></span><span class="rec-fonte">{r.fonte}</span></figcaption>
+</figure>

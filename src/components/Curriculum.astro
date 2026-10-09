@@ -1,0 +1,32 @@
+---
+// Curriculum in una finestra: si apre da qualsiasi link con data-cv-open.
+import { TAPPE, LINGUE_PARLATE, SPECIALITA, ZONE } from '../data/curriculum';
+import Icona from './Icona.astro';
+import T from './T.astro';
+---
+<dialog class="cvd" id="curriculum" aria-labelledby="cvTitle">
+  <button type="button" class="cvd-chiudi" data-cv-close aria-label="Close" data-i18n-aria="cv.close"><Icona nome="chiudi" /></button>
+  <div class="cvd-griglia">
+    <div>
+      <T as="h2" k="cv.h" id="cvTitle" />
+      <ol class="cvd-linea">
+        {TAPPE.map((tp) => (
+          <li>
+            <span class="cvd-anni">{tp.anni}{tp.incorso && <> <T k="cv.now" /></>}</span>
+            <T as="h3" k={`cv.${tp.n}.h`} />
+            <T as="p" k={`cv.${tp.n}.d`} />
+          </li>
+        ))}
+      </ol>
+    </div>
+    <div class="cvd-fatti">
+      <T as="h3" k="f.lang" />
+      <ul class="chips">{LINGUE_PARLATE.map((k) => <T as="li" k={k} />)}</ul>
+      <T as="h3" k="f.spec" />
+      <ul class="chips">{SPECIALITA.map((k) => <T as="li" k={k} />)}</ul>
+      <T as="h3" k="f.where" />
+      <ul class="chips">{ZONE.map((k) => <T as="li" k={k} />)}</ul>
+      <a class="cvd-wa js-wa" href="#" target="_blank" rel="noopener" data-i18n="f.dl">Ask for my full CV on WhatsApp</a>
+    </div>
+  </div>
+</dialog>

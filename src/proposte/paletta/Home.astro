@@ -1,0 +1,186 @@
+---
+// Proposta G: Segui la paletta. Stefano alza la paletta e indica la tappa; la pagina lo segue.
+import { TAPPE, SPECIALITA, LINGUE_PARLATE, SERVIZI } from '../../data/curriculum';
+import { RECENSIONI, CITAZIONE } from '../../data/recensioni';
+import Lingue from '../../components/Lingue.astro';
+import Recensione from '../../components/Recensione.astro';
+import BottoniContatto from '../../components/BottoniContatto.astro';
+import Icona from '../../components/Icona.astro';
+import T from '../../components/T.astro';
+const fermate = ['pal.hello', 'f.spec', 'nav.reviews', 'nav.cv', 'nav.collab'];
+---
+<div class="p-pal">
+  <aside class="pal-guida" aria-hidden="true">
+    <div class="pal-scena">
+      <svg class="pal-paletta" viewBox="0 0 200 420">
+        <rect x="94" y="150" width="12" height="270" rx="6" fill="#C98E2B" />
+        <circle cx="100" cy="92" r="88" fill="#FEF6EB" stroke="#B04A2A" stroke-width="10" />
+      </svg>
+      <div class="pal-cartello">
+        <span class="pal-num"><T k="pal.stop" /> <b>1</b>/5</span>
+        <span class="pal-etichetta">{fermate.map((k, i) => <T k={k} data-i={i} class={i === 0 ? 'on' : ''} />)}</span>
+      </div>
+      <img class="pal-stef" src="/img/stefano.webp" width="458" height="640" alt="" />
+    </div>
+    <div class="pal-gruppo">{[0, 1, 2, 3, 4, 5, 6].map((i) => <span style={`--i:${i}`}></span>)}</div>
+    <T as="p" class="pal-follow hand" k="pal.follow" />
+  </aside>
+
+  <div class="pal-lingue"><Lingue class="su-verde" /></div>
+
+  <main id="contenuto" class="pal-tour">
+    <section class="pal-tappa" data-tappa="0">
+      <p class="pal-n">01</p>
+      <h1>Stefano In Italy</h1>
+      <T as="p" class="pal-lead g" k="intro.lead" />
+      <T as="p" class="g" k="intro.p1" />
+      <T as="p" class="g" k="intro.p2" />
+      <T as="p" class="pal-hint hand g" k="pal.group" />
+    </section>
+
+    <section class="pal-tappa" data-tappa="1">
+      <p class="pal-n">02</p>
+      <T as="h2" k="f.spec" />
+      <div class="pal-numeri">
+        <div class="g"><b>80</b><T k="stat.80.l" /></div>
+        <div class="g"><b>3</b><T k="stat.3.l" /></div>
+        <div class="g"><b>2022</b><T k="stat.2022.l" /></div>
+      </div>
+      <ul class="chips g">{SPECIALITA.map((k) => <T as="li" k={k} />)}</ul>
+      <ul class="chips g pal-lingue-chips">{LINGUE_PARLATE.map((k) => <T as="li" k={k} />)}</ul>
+    </section>
+
+    <section class="pal-tappa" data-tappa="2" id="recensioni">
+      <p class="pal-n">03</p>
+      <T as="h2" k="rev.h" />
+      <p class="pal-cit g">“{CITAZIONE.testo}”</p>
+      <T as="p" class="pal-fonte g" k="rev.quote.src" />
+      <div class="pal-recs g">{RECENSIONI.slice(0, 2).map((r, i) => <Recensione r={r} i={i} />)}</div>
+    </section>
+
+    <section class="pal-tappa" data-tappa="3">
+      <p class="pal-n">04</p>
+      <T as="h2" k="nav.cv" />
+      <ol class="pal-cv">
+        {TAPPE.slice(0, 5).map((tp) => (
+          <li class="g"><span class="pal-anni">{tp.anni}{tp.incorso && <> <T k="cv.now" /></>}</span><T as="h3" k={`cv.${tp.n}.h`} /></li>
+        ))}
+      </ol>
+      <a class="btn btn-linea g" href="#curriculum" data-cv-open><Icona nome="cv" /><T k="cv.open" /></a>
+    </section>
+
+    <section class="pal-tappa" data-tappa="4" id="contatti">
+      <p class="pal-n">05</p>
+      <T as="h2" k="col.h" />
+      <T as="p" class="g" k="col.p" />
+      <ul class="g">{SERVIZI.map((k) => <T as="li" k={k} />)}</ul>
+      <BottoniContatto class="g" />
+      <T as="p" class="pal-piede g" k="foot" />
+    </section>
+  </main>
+</div>
+
+<style is:global>
+.p-pal{display:grid;grid-template-columns:minmax(320px,40%) 1fr;overflow-x:clip}
+.pal-guida{position:sticky;top:0;height:100dvh;background:var(--verde);color:var(--crema);display:grid;grid-template-rows:1fr auto auto;justify-items:center;align-items:end;padding:24px 24px 90px;overflow:hidden}
+.pal-scena{position:relative;width:min(100%,420px);aspect-ratio:420/520}
+.pal-stef{position:absolute;left:0;bottom:0;width:62%;height:auto;z-index:2;transform:scaleX(-1)}
+.pal-paletta{position:absolute;right:4%;bottom:10%;width:42%;height:auto;transform-origin:50% 100%;transform:rotate(var(--tilt,0deg));transition:transform .2s ease-out;z-index:1}
+.pal-cartello{position:absolute;right:4%;bottom:10%;width:42%;aspect-ratio:200/420;transform-origin:50% 100%;transform:rotate(var(--tilt,0deg));transition:transform .2s ease-out;z-index:1;color:var(--verde);text-align:center;pointer-events:none}
+.pal-cartello>*{position:absolute;left:6%;right:6%}
+.pal-num{top:9%;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--terracotta)}
+.pal-etichetta{top:16%;height:20%;display:grid;place-items:center}
+.pal-etichetta span{grid-area:1/1;font:400 clamp(18px,2vw,26px)/1.05 var(--f-display);opacity:0;transform:translateY(10px) scale(.9);transition:opacity .35s,transform .35s}
+.pal-etichetta span.on{opacity:1;transform:none}
+.pal-gruppo{display:flex;gap:10px;margin-top:18px}
+.pal-gruppo span{width:14px;height:14px;border-radius:50%;background:var(--salvia)}
+.cammina .pal-gruppo span{animation:passo .45s ease-in-out infinite alternate;animation-delay:calc(var(--i) * -.07s)}
+@keyframes passo{to{transform:translateY(-7px)}}
+.pal-follow{font-size:30px;color:#E3B458;margin:6px 0 0}
+.pal-lingue{position:fixed;top:14px;right:var(--pad);z-index:50}
+.pal-lingue .lingue{color:var(--verde);background:color-mix(in srgb,var(--crema) 85%,transparent);border-color:var(--verde)}
+.pal-lingue .lingue button[aria-pressed="true"]{background:var(--verde);color:var(--crema)}
+.pal-tour{padding:0 clamp(20px,5vw,80px)}
+.pal-tappa{min-height:92vh;display:flex;flex-direction:column;justify-content:center;padding:96px 0 64px;max-width:680px;border-bottom:1px dashed rgba(0,59,31,.2)}
+.pal-tappa:last-child{border:0;padding-bottom:120px}
+.pal-n{font:400 clamp(60px,8vw,110px)/1 var(--f-display);color:rgba(0,59,31,.12);margin:0}
+.p-pal h1{font-size:clamp(46px,6vw,86px);margin-bottom:20px}
+.p-pal h2{font-size:clamp(38px,5vw,64px);margin-bottom:20px}
+.pal-lead{font:400 clamp(22px,2.4vw,28px)/1.35 var(--f-display)}
+.pal-tappa p{max-width:56ch}
+.pal-hint{font-size:26px;color:var(--terracotta)}
+.pal-numeri{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px}
+.pal-numeri div{display:grid;gap:4px;font-size:15px;color:var(--muted)}
+.pal-numeri b{font:400 clamp(44px,5vw,68px)/1 var(--f-display);color:var(--verde)}
+.pal-lingue-chips{margin-top:12px}
+.pal-lingue-chips li{background:var(--verde);color:var(--crema);border-color:var(--verde)}
+.pal-cit{font:italic 400 clamp(24px,3vw,34px)/1.2 var(--f-display);margin:0 0 6px}
+.pal-fonte{color:var(--muted);font-weight:600;margin:0 0 24px}
+.pal-recs{display:grid;grid-template-columns:repeat(2,minmax(0,260px));gap:16px}
+.pal-cv{list-style:none;margin:0 0 24px;padding:0;display:grid;gap:14px}
+.pal-cv li{display:grid;gap:2px;padding-left:18px;border-left:4px solid var(--ocra)}
+.pal-anni{font:600 22px/1 var(--f-hand);color:var(--terracotta)}
+.pal-cv h3{font-size:22px;line-height:1.2}
+.pal-tappa ul:not(.chips){padding-left:20px;color:var(--muted);margin:0 0 24px}
+.pal-piede{color:var(--muted);font-size:15px;margin-top:40px}
+/* la fila: ogni elemento segue il precedente */
+.pal-tappa .g{opacity:0;transform:translateX(60px);transition:opacity .6s ease,transform .7s cubic-bezier(.2,.8,.2,1)}
+.pal-tappa.dentro .g{opacity:1;transform:none}
+.pal-tappa.dentro .g:nth-of-type(2){transition-delay:.08s}
+.pal-tappa.dentro .g:nth-of-type(3){transition-delay:.16s}
+.pal-tappa.dentro .g:nth-of-type(4){transition-delay:.24s}
+.pal-tappa.dentro .g:nth-of-type(5){transition-delay:.32s}
+.pal-tappa.dentro .g:nth-of-type(6){transition-delay:.4s}
+@media (max-width:860px){
+  .p-pal{display:block}
+  .pal-guida{position:sticky;top:0;z-index:40;height:auto;display:flex;align-items:center;justify-content:flex-start;gap:12px;padding:8px 16px;grid-template-rows:none}
+  .pal-scena{width:92px;height:96px;aspect-ratio:auto;flex:none}
+  .pal-stef{width:62px;left:0}
+  .pal-paletta,.pal-cartello{width:44px;right:0;bottom:0}
+  .pal-cartello{display:none}
+  .pal-gruppo{margin:0}
+  .pal-gruppo span{width:9px;height:9px}
+  .pal-follow{display:none}
+  .pal-guida::after{content:attr(data-label);font:400 19px/1.1 var(--f-display);color:var(--crema);margin-right:150px}
+  .pal-lingue{top:30px;right:16px}
+  .pal-tappa{min-height:auto;padding:56px 0}
+  .pal-numeri{grid-template-columns:1fr}
+  .pal-recs{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:520px){.pal-gruppo{display:none}}
+@media (prefers-reduced-motion:reduce){.pal-tappa .g{opacity:1;transform:none}}
+</style>
+
+<script>
+  const guida = document.querySelector<HTMLElement>('.p-pal .pal-guida');
+  if (guida) {
+    const tappe = [...document.querySelectorAll<HTMLElement>('.pal-tappa')];
+    const etichette = [...guida.querySelectorAll<HTMLElement>('.pal-etichetta span')];
+    const num = guida.querySelector('.pal-num b')!;
+    const scena = guida.querySelector<HTMLElement>('.pal-scena')!;
+    const imposta = (i: number) => {
+      etichette.forEach((e, j) => e.classList.toggle('on', j === i));
+      num.textContent = String(i + 1);
+      guida.dataset.label = `${i + 1}/5 · ${etichette[i].textContent}`;
+    };
+    const io = new IntersectionObserver((voci) => voci.forEach((v) => {
+      if (v.isIntersecting) { const i = Number((v.target as HTMLElement).dataset.tappa); imposta(i); v.target.classList.add('dentro'); }
+    }), { rootMargin: '-40% 0px -45% 0px' });
+    tappe.forEach((t) => io.observe(t));
+    const ioEntrata = new IntersectionObserver((voci) => voci.forEach((v) => v.isIntersecting && v.target.classList.add('dentro')), { threshold: 0.15 });
+    tappe.forEach((t) => ioEntrata.observe(t));
+    document.addEventListener('sii:lingua', () => imposta(Number(num.textContent) - 1));
+    imposta(0);
+    // la paletta oscilla con la velocità dello scroll e il gruppo "cammina"
+    let ultimo = scrollY, tilt = 0, timer = 0;
+    const ridotto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function tick() {
+      const v = scrollY - ultimo; ultimo = scrollY;
+      tilt += (Math.max(-12, Math.min(12, v * 0.6)) - tilt) * 0.15;
+      if (!ridotto) scena.style.setProperty('--tilt', tilt.toFixed(2) + 'deg');
+      if (Math.abs(v) > 0.5) { guida!.classList.add('cammina'); clearTimeout(timer); timer = window.setTimeout(() => guida!.classList.remove('cammina'), 220); }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+</script>

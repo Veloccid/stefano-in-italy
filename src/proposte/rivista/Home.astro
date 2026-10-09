@@ -1,0 +1,144 @@
+---
+// Proposta C: Rivista di viaggio. Impaginata come un servizio di una rivista.
+import { RECENSIONI, CITAZIONE } from '../../data/recensioni';
+import { TAPPE, LINGUE_PARLATE, SPECIALITA, SERVIZI } from '../../data/curriculum';
+import { SITO } from '../../config';
+import Lingue from '../../components/Lingue.astro';
+import Recensione from '../../components/Recensione.astro';
+import BottoniContatto from '../../components/BottoniContatto.astro';
+import T from '../../components/T.astro';
+---
+<div class="p-riv">
+  <header class="riv-testata">
+    <div class="riv-riga wrap">
+      <T class="riv-numero" k="mag.issue" />
+      <Lingue />
+    </div>
+    <div class="wrap"><p class="riv-nome">Stefano <i>In</i> Italy</p></div>
+    <nav class="riv-nav wrap" aria-label="Sections" data-i18n-aria="nav.aria">
+      <a href="#ritratto"><T k="mag.kicker" /></a>
+      <a href="#tappe"><T k="mag.career" /></a>
+      <a href="#recensioni"><T k="nav.reviews" /></a>
+      <a href="#contatti"><T k="nav.collab" /></a>
+    </nav>
+  </header>
+
+  <main id="contenuto">
+    <article class="wrap riv-art" id="ritratto">
+      <div class="riv-apertura">
+        <T as="p" class="riv-kicker" k="mag.kicker" />
+        <T as="h1" k="mag.title" />
+        <T as="p" class="riv-firma" k="mag.by" />
+      </div>
+      <figure class="riv-foto">
+        <div class="foto-vuota"><T k="ph.photo" /></div>
+        <figcaption><img src="/img/stefano.webp" width="458" height="640" alt="" /><T k="hero.sub" /></figcaption>
+      </figure>
+      <div class="riv-corpo">
+        <T as="p" class="riv-occhiello" k="intro.lead" />
+        <div class="riv-colonne">
+          <T as="p" class="riv-capolettera" k="intro.p1" />
+          <T as="p" k="intro.p2" />
+          <blockquote class="riv-citazione">
+            <p>“{CITAZIONE.testo}”</p>
+            <T as="cite" k="rev.quote.src" />
+          </blockquote>
+          <aside class="riv-box">
+            <T as="h3" k="f.lang" />
+            <ul>{LINGUE_PARLATE.map((k) => <T as="li" k={k} />)}</ul>
+            <T as="h3" k="f.spec" />
+            <ul>{SPECIALITA.map((k) => <T as="li" k={k} />)}</ul>
+          </aside>
+        </div>
+      </div>
+    </article>
+
+    <section class="riv-tappe" id="tappe">
+      <div class="wrap">
+        <T as="h2" k="mag.career" />
+        <ol>
+          {TAPPE.map((tp, i) => (
+            <li class="entra"><span class="riv-n">{String(i + 1).padStart(2, '0')}</span><span class="riv-anni">{tp.anni}{tp.incorso && <> <T k="cv.now" /></>}</span><T as="h3" k={`cv.${tp.n}.h`} /><T as="p" k={`cv.${tp.n}.d`} /></li>
+          ))}
+        </ol>
+      </div>
+    </section>
+
+    <section class="wrap riv-rec" id="recensioni">
+      <div class="riv-rec-testo">
+        <T as="h2" k="rev.h" />
+        <p class="riv-grande">“{CITAZIONE.titolo}”</p>
+        <T as="p" k="rev.p" />
+      </div>
+      <Recensione r={RECENSIONI[0]} i={0} class="riv-rec-shot" />
+    </section>
+
+    <section class="riv-contatti" id="contatti">
+      <div class="wrap riv-contatti-in">
+        <div>
+          <T as="h2" k="col.h" />
+          <T as="p" k="col.p" />
+          <ul>{SERVIZI.map((k) => <T as="li" k={k} />)}</ul>
+        </div>
+        <BottoniContatto class="riv-bottoni" />
+      </div>
+    </section>
+  </main>
+  <footer class="riv-piede wrap"><span>SII!</span><T as="p" k="foot" /><a href={SITO.instagram} target="_blank" rel="noopener">{SITO.instagramHandle}</a></footer>
+</div>
+<style is:global>
+html[data-tema="rivista"] body{background:#FBF4E8}
+.riv-testata{border-bottom:3px double var(--verde)}
+.riv-riga{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:14px;padding-bottom:10px;border-bottom:1px solid var(--verde)}
+.riv-numero{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.12em}
+.riv-nome{font:400 clamp(52px,12vw,150px)/1 var(--f-display);text-align:center;margin:12px 0 6px;letter-spacing:-.02em}
+.riv-nav{display:flex;justify-content:center;flex-wrap:wrap;gap:6px 28px;padding-top:10px;padding-bottom:12px;border-top:1px solid var(--verde)}
+.riv-nav a{text-decoration:none;font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+.riv-art{padding-top:clamp(40px,7vw,80px)}
+.riv-apertura{text-align:center;max-width:900px;margin:0 auto}
+.riv-kicker{display:inline-block;margin:0 0 16px;font-weight:700;text-transform:uppercase;letter-spacing:.14em;font-size:13px;color:var(--terracotta);border-bottom:2px solid var(--terracotta);padding-bottom:4px}
+.p-riv h1{font-size:clamp(40px,6.4vw,84px);line-height:1}
+.riv-firma{font-style:italic;color:var(--muted);margin:18px 0 0}
+.riv-foto{margin:clamp(28px,5vw,56px) 0 0}
+.riv-foto .foto-vuota{aspect-ratio:16/8;border-radius:4px}
+.riv-foto figcaption{display:flex;align-items:center;gap:12px;font-size:14px;color:var(--muted);padding-top:10px;border-bottom:1px solid rgba(0,59,31,.2);padding-bottom:10px}
+.riv-foto figcaption img{width:34px;height:auto;background:var(--verde);border-radius:50%;padding:4px 4px 0}
+.riv-corpo{max-width:980px;margin:clamp(28px,5vw,56px) auto 0}
+.riv-occhiello{font:400 clamp(24px,3vw,34px)/1.3 var(--f-display);margin:0 0 28px;text-align:center}
+.riv-colonne{columns:2 300px;column-gap:48px;column-rule:1px solid rgba(0,59,31,.18)}
+.riv-colonne p{margin:0 0 16px;font-size:18px;line-height:1.65}
+.riv-capolettera::first-letter{float:left;font:400 5.2em/.8 var(--f-display);padding:6px 10px 0 0;color:var(--terracotta)}
+.riv-citazione{break-inside:avoid;margin:24px 0;padding:22px 0;border-top:3px solid var(--verde);border-bottom:3px solid var(--verde)}
+.riv-citazione p{font:italic 400 clamp(26px,3vw,34px)/1.2 var(--f-display);margin:0 0 12px}
+.riv-citazione cite{font-style:normal;font-size:14px;font-weight:700;color:var(--muted)}
+.riv-box{break-inside:avoid;background:var(--verde);color:var(--crema);padding:22px 24px;border-radius:4px}
+.riv-box h3{font-size:22px;margin:0 0 8px}
+.riv-box ul{margin:0 0 16px;padding-left:18px}
+.riv-box ul:last-child{margin:0}
+.riv-tappe{margin-top:clamp(64px,10vw,120px);padding:clamp(56px,8vw,96px) 0;background:var(--verde);color:var(--crema)}
+.riv-tappe h2{font-size:clamp(38px,6vw,72px);margin-bottom:36px}
+.riv-tappe ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:0 48px}
+.riv-tappe li{display:grid;grid-template-columns:auto 1fr;gap:2px 16px;padding:18px 0;border-top:1px solid rgba(254,246,235,.25)}
+.riv-n{grid-row:span 3;font:400 44px/1 var(--f-display);color:#E3B458}
+.riv-anni{font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--salvia)}
+.riv-tappe h3{font-size:22px;line-height:1.2}
+.riv-tappe p{margin:4px 0 0;color:#C9D6C6;font-size:15px}
+.riv-rec{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(28px,6vw,80px);align-items:center;padding-top:clamp(64px,10vw,120px);padding-bottom:clamp(64px,10vw,120px)}
+.riv-rec h2{font-size:clamp(34px,5vw,56px)}
+.riv-grande{font:italic 400 clamp(34px,5vw,64px)/1.05 var(--f-display);color:var(--terracotta);margin:20px 0}
+.riv-rec p{max-width:44ch}
+.riv-rec-shot{max-width:360px;transform:rotate(1.5deg);box-shadow:0 18px 40px rgba(0,40,20,.15)}
+.riv-contatti{border-top:3px double var(--verde);border-bottom:3px double var(--verde)}
+.riv-contatti-in{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(24px,5vw,64px);align-items:center;padding-top:clamp(56px,8vw,96px);padding-bottom:clamp(56px,8vw,96px)}
+.riv-contatti h2{font-size:clamp(34px,5vw,56px);margin-bottom:12px}
+.riv-contatti ul{padding-left:20px;color:var(--muted)}
+.riv-bottoni{flex-direction:column}
+.riv-piede{display:flex;flex-wrap:wrap;gap:8px 24px;align-items:center;padding-top:28px;padding-bottom:110px;font-size:15px;color:var(--muted)}
+.riv-piede span{font:400 32px/1 var(--f-display);color:var(--verde)}
+.riv-piede p{margin:0;flex:1;min-width:220px}
+@media (max-width:820px){
+  .riv-tappe ol,.riv-rec,.riv-contatti-in{grid-template-columns:1fr}
+  .riv-foto .foto-vuota{aspect-ratio:4/3}
+  .riv-rec-shot{justify-self:center}
+}
+</style>

@@ -1,0 +1,25 @@
+---
+// Barra in alto semplice, usata da più proposte.
+import Lingue from './Lingue.astro';
+import T from './T.astro';
+interface Props { class?: string; scura?: boolean }
+const { class: cls, scura = false } = Astro.props;
+---
+<header class:list={['testata', cls, { scura }]}>
+  <a class="testata-logo" href="#contenuto" aria-label="Stefano In Italy">SII!</a>
+  <nav aria-label="Sections" data-i18n-aria="nav.aria">
+    <a href="#recensioni" class="nascondi-sm"><T k="nav.reviews" /></a>
+    <a href="#curriculum" class="nascondi-sm" data-cv-open><T k="nav.cv" /></a>
+    <a href="#contatti"><T k="nav.collab" /></a>
+  </nav>
+  <Lingue class={scura ? 'su-verde' : ''} />
+</header>
+<style is:global>
+.testata{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:clamp(12px,3vw,32px);padding:12px var(--pad);background:color-mix(in srgb,var(--crema) 92%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid rgba(0,59,31,.1);color:var(--verde)}
+.testata.scura{background:color-mix(in srgb,var(--verde) 92%,transparent);color:var(--crema);border-color:rgba(254,246,235,.14)}
+.testata-logo{font:400 30px/1 var(--f-display);text-decoration:none;margin-right:auto}
+.testata nav{display:flex;gap:clamp(12px,2.4vw,28px)}
+.testata nav a{text-decoration:none;font-weight:600;font-size:15px}
+.testata nav a:hover{text-decoration:underline;text-underline-offset:4px}
+@media (max-width:640px){.testata .nascondi-sm{display:none}}
+</style>

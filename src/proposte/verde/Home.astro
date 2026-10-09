@@ -1,0 +1,104 @@
+---
+// Proposta D: Verde pieno. Tutto sul verde del logo, effetto poster.
+import { RECENSIONI } from '../../data/recensioni';
+import { SERVIZI, ZONE, LINGUE_PARLATE } from '../../data/curriculum';
+import { SITO } from '../../config';
+import Lingue from '../../components/Lingue.astro';
+import Recensione from '../../components/Recensione.astro';
+import Icona from '../../components/Icona.astro';
+import T from '../../components/T.astro';
+const nastro = [...ZONE, ...LINGUE_PARLATE];
+---
+<div class="p-verde">
+  <header class="ver-top">
+    <a href="#contatti" class="ver-top-link"><T k="nav.collab" /></a>
+    <a href="#curriculum" class="ver-top-link" data-cv-open><T k="nav.cv" /></a>
+    <Lingue class="su-verde" />
+  </header>
+  <main id="contenuto">
+    <section class="ver-hero">
+      <p class="ver-sigla" aria-hidden="true">SII!</p>
+      <img class="ver-stef" src="/img/stefano.webp" width="458" height="640" alt="Stefano, illustrated portrait" />
+      <div class="ver-hero-sotto">
+        <h1>Stefano In Italy</h1>
+        <T as="p" k="tag.role" class="ver-ruolo" />
+      </div>
+    </section>
+
+    <div class="ver-nastro" aria-hidden="true">
+      <div class="ver-nastro-in">
+        {[0, 1].map(() => nastro.map((k) => <><T k={k} /><span class="ver-punto">✦</span></>))}
+      </div>
+    </div>
+
+    <section class="ver-intro wrap">
+      <T as="p" class="ver-lead entra" k="intro.lead" />
+      <div class="ver-intro-cols">
+        <T as="p" k="intro.p1" class="entra" />
+        <T as="p" k="intro.p2" class="entra" />
+      </div>
+      <div class="ver-numeri">
+        <div class="entra"><b>80</b><T k="stat.80.l" /></div>
+        <div class="entra"><b>3</b><T k="stat.3.l" /></div>
+        <div class="entra"><b>2022</b><T k="stat.2022.l" /></div>
+      </div>
+    </section>
+
+    <section class="ver-rec" id="recensioni">
+      <div class="wrap"><T as="h2" k="rev.h" /><T as="p" k="rev.p" /></div>
+      <div class="ver-rec-fila">{RECENSIONI.map((r, i) => <Recensione r={r} i={i} />)}</div>
+    </section>
+
+    <section class="ver-contatti wrap" id="contatti">
+      <T as="h2" k="col.h" />
+      <T as="p" k="col.p" />
+      <ul class="chips">{SERVIZI.map((k) => <T as="li" k={k} />)}</ul>
+      <a class="ver-grande js-wa" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener"><Icona nome="wa" /><T k="wa.btn" /></a>
+      <p class="ver-alt"><a href={`mailto:${SITO.email}`}>{SITO.email}</a> · <a href={SITO.instagram} target="_blank" rel="noopener">{SITO.instagramHandle}</a></p>
+    </section>
+  </main>
+  <footer class="ver-piede"><T as="p" k="foot" /></footer>
+</div>
+<style is:global>
+html[data-tema="verde"]{--bg:var(--verde);--ink:var(--crema);--muted:#B9C9B8}
+html[data-tema="verde"] body{background:var(--verde);color:var(--crema)}
+.ver-top{position:fixed;top:0;right:0;left:0;z-index:50;display:flex;justify-content:flex-end;align-items:center;gap:20px;padding:14px var(--pad);background:linear-gradient(var(--verde),transparent)}
+.ver-top-link{color:var(--crema);font-weight:600;text-decoration:none;font-size:15px}
+.ver-hero{min-height:100svh;display:grid;grid-template-rows:1fr auto;position:relative;overflow:hidden;padding:72px var(--pad) 84px}
+.ver-sigla{margin:0;align-self:center;text-align:center;font:400 clamp(160px,42vw,560px)/.8 var(--f-display);letter-spacing:-.03em;color:var(--crema)}
+.ver-stef{position:absolute;bottom:var(--sotto,148px);left:50%;width:min(36vw,330px);height:auto;transform:translateX(-118%);-webkit-mask-image:linear-gradient(#000 80%,transparent);mask-image:linear-gradient(#000 80%,transparent)}
+.ver-hero-sotto{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:8px 24px;border-top:2px solid var(--crema);padding-top:16px;position:relative;z-index:2}
+.p-verde h1{font-size:clamp(30px,4vw,48px)}
+.ver-ruolo{margin:0;font-weight:600;text-transform:uppercase;letter-spacing:.12em;font-size:14px;color:#E3B458}
+.ver-nastro{background:var(--crema);color:var(--verde);overflow:hidden;padding:14px 0;font:400 clamp(22px,3vw,30px)/1 var(--f-display)}
+.ver-nastro-in{display:flex;gap:28px;width:max-content;animation:nastro 40s linear infinite;white-space:nowrap}
+.ver-punto{color:var(--terracotta)}
+@keyframes nastro{to{transform:translateX(-50%)}}
+.ver-intro{padding-top:clamp(72px,12vw,160px);padding-bottom:clamp(56px,8vw,96px)}
+.ver-lead{font:400 clamp(32px,5vw,64px)/1.1 var(--f-display);margin:0 0 40px;max-width:20ch}
+.ver-intro-cols{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,4vw,56px);color:#DDE6D5;font-size:18px}
+.ver-intro-cols p{margin:0}
+.ver-numeri{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:clamp(48px,8vw,96px);border-top:2px solid var(--crema)}
+.ver-numeri div{display:grid;gap:6px;padding-top:20px;color:#C9D6C6}
+.ver-numeri b{font:400 clamp(60px,9vw,120px)/.9 var(--f-display);color:var(--crema)}
+.ver-rec{padding:clamp(56px,8vw,96px) 0;background:var(--verde-2)}
+.ver-rec h2{font-size:clamp(40px,6vw,80px);margin-bottom:8px}
+.ver-rec p{color:#C9D6C6;margin:0 0 28px}
+.ver-rec-fila{display:flex;gap:20px;overflow-x:auto;padding:0 var(--pad) 12px;scroll-snap-type:x mandatory;scrollbar-width:thin}
+.ver-rec-fila .rec{flex:none;width:min(72vw,300px);scroll-snap-align:center;background:var(--crema)}
+.ver-contatti{padding-top:clamp(72px,12vw,160px);padding-bottom:clamp(72px,12vw,140px);text-align:center;display:grid;justify-items:center;gap:20px}
+.ver-contatti h2{font-size:clamp(56px,10vw,140px);line-height:.9}
+.ver-contatti>p{max-width:52ch;color:#DDE6D5;margin:0}
+.ver-contatti .chips{justify-content:center}
+.ver-grande{display:inline-flex;align-items:center;gap:16px;background:var(--crema);color:var(--verde);text-decoration:none;font:400 clamp(26px,4vw,44px)/1 var(--f-display);padding:22px 36px;border-radius:999px;margin-top:20px;transition:transform .2s}
+.ver-grande:hover{transform:scale(1.04)}
+.ver-grande svg{width:1.1em;height:1.1em;color:var(--wa)}
+.ver-alt a{color:var(--crema)}
+.ver-piede{text-align:center;padding:24px var(--pad) 110px;color:#B9C9B8;border-top:1px solid rgba(254,246,235,.15)}
+html[data-tema="verde"] .wa-fisso{background:var(--crema);color:var(--wa)}
+@media (max-width:760px){
+  .ver-intro-cols,.ver-numeri{grid-template-columns:1fr}
+  .ver-stef{width:52vw;transform:translateX(-50%);--sotto:170px}
+  .ver-sigla{align-self:start;margin-top:12vh}
+}
+</style>

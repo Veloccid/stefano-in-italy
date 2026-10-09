@@ -1,0 +1,244 @@
+---
+// Proposta A: la bozza attuale. "Stefano In Italy" diventa SII!, Stefano vola nell'header e cammina allo scroll.
+import { RECENSIONI } from '../../data/recensioni';
+import { SERVIZI } from '../../data/curriculum';
+import { SITO } from '../../config';
+import Recensione from '../../components/Recensione.astro';
+import BottoniContatto from '../../components/BottoniContatto.astro';
+import Lingue from '../../components/Lingue.astro';
+import Icona from '../../components/Icona.astro';
+import T from '../../components/T.astro';
+---
+<div class="p-cammino">
+  <header class="bar" id="bar">
+    <nav aria-label="Sections" data-i18n-aria="nav.aria">
+      <a href="#recensioni" class="hide-sm"><T k="nav.reviews" /></a>
+      <a href="#curriculum" class="hide-sm" data-cv-open><T k="nav.cv" /></a>
+      <a href="#collabora" class="hide-xs"><T k="nav.collab" /></a>
+    </nav>
+    <Lingue class="su-verde" />
+  </header>
+
+  <div id="stef" aria-hidden="true"><div class="move" id="stefMove"><img id="stefImg" alt="" src="/img/stefano.webp" width="458" height="640" /></div></div>
+
+  <h1 id="brand" aria-label="Stefano In Italy"><a href="#top"><span class="k">S</span><span class="c">tefano</span><span class="c">&nbsp;</span><span class="k">I</span><span class="c">n</span><span class="c">&nbsp;</span><span class="k">I</span><span class="c">taly</span><span class="bang">!</span></a></h1>
+
+  <main id="contenuto">
+    <section class="hero" id="top" aria-label="Welcome" data-i18n-aria="hero.aria">
+      <T as="p" class="sub" k="hero.sub" />
+      <div class="hint hand" aria-hidden="true">
+        <T k="hero.hint" />
+        <svg viewBox="0 0 34 60"><path d="M17 4 C 8 20, 26 32, 17 54"/><path d="M8 45 L17 55 L27 46"/></svg>
+      </div>
+    </section>
+
+    <section class="intro">
+      <div class="wrap grid">
+        <div>
+          <T as="h2" k="intro.h" />
+          <T as="p" class="lead" k="intro.lead" />
+          <T as="p" k="intro.p1" />
+          <T as="p" k="intro.p2" />
+          <div class="note hand">
+            <svg viewBox="0 0 70 48" aria-hidden="true"><path d="M6 8 C 20 40, 44 44, 62 30"/><path d="M52 24 L63 29 L56 40"/></svg>
+            <T k="intro.note" />
+          </div>
+          <a class="btn btn-linea cv-btn" href="#curriculum" data-cv-open><T k="cv.open" /><Icona nome="cv" /></a>
+        </div>
+        <div class="arch foto-vuota"><T k="ph.photo" /></div>
+      </div>
+    </section>
+
+    <section class="reviews" id="recensioni">
+      <div class="wrap head">
+        <div>
+          <T as="h2" k="rev.h" />
+          <T as="p" k="rev.p" />
+        </div>
+        <div class="note hand">
+          <T k="rev.note" />
+          <svg viewBox="0 0 70 48" aria-hidden="true" style="transform:scaleX(-1) rotate(20deg)"><path d="M6 8 C 20 40, 44 44, 62 30"/><path d="M52 24 L63 29 L56 40"/></svg>
+        </div>
+      </div>
+      <div class="rv-viewport" id="rvView" tabindex="0" aria-label="Reviews" data-i18n-aria="nav.reviews">
+        <div class="rv-track">{RECENSIONI.map((r, i) => <Recensione r={r} i={i} />)}</div>
+      </div>
+      <div class="wrap rv-bottom">
+        <div class="rv-progress" aria-hidden="true"><span></span></div>
+        <div class="rv-arrows">
+          <button type="button" id="rvPrev" aria-label="Previous" data-i18n-aria="rv.prev"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+          <button type="button" id="rvNext" aria-label="Next" data-i18n-aria="rv.next"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5l7 7-7 7"/></svg></button>
+        </div>
+      </div>
+    </section>
+
+    <section class="collab" id="collabora">
+      <div class="wrap box">
+        <div>
+          <T as="h2" k="col.h" />
+          <T as="p" k="col.p" />
+          <ul>{SERVIZI.map((k) => <T as="li" k={k} />)}</ul>
+        </div>
+        <div class="ct-actions">
+          <BottoniContatto />
+          <p class="ct-mail">{SITO.email}</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p class="sii" aria-hidden="true">SII!</p>
+    <T as="p" k="foot" />
+  </footer>
+</div>
+
+<style is:global>
+html[data-tema="cammino"]{scroll-padding-top:80px}
+.p-cammino h2{font-size:clamp(36px,6vw,64px);margin:0 0 20px}
+.p-cammino .hand{font-size:clamp(24px,3.4vw,32px);line-height:1.05}
+.p-cammino .note{display:flex;align-items:flex-end;gap:6px;color:var(--terracotta)}
+.p-cammino .note svg{width:70px;height:48px;flex:none;stroke:currentColor;fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.p-cammino .bar{position:fixed;top:0;left:0;right:0;z-index:40;height:calc(72px + env(safe-area-inset-top,0px));padding-top:env(safe-area-inset-top,0px);background:rgba(0,59,31,var(--p,0));display:flex;align-items:center;justify-content:flex-end;padding-right:var(--pad);pointer-events:none}
+.p-cammino .bar nav{position:relative;z-index:43;display:flex;gap:clamp(14px,2.4vw,32px);opacity:clamp(0,calc((var(--p,0) - .75)*4),1);pointer-events:auto}
+.p-cammino .bar nav a{color:var(--crema);text-decoration:none;font-weight:600;font-size:15px}
+.p-cammino .bar nav a:hover{text-decoration:underline;text-underline-offset:4px}
+.p-cammino .bar .lingue{position:relative;z-index:44;margin-left:clamp(14px,2.4vw,28px);pointer-events:auto}
+@media (max-width:640px){.p-cammino .bar nav a.hide-sm{display:none}}
+@media (max-width:420px){.p-cammino .bar nav a.hide-xs{display:none}}
+.p-cammino #brand{position:fixed;z-index:41;margin:0;color:var(--crema);white-space:nowrap;--big:min(10.4vw,150px);
+  font-size:calc(var(--big)*(1 - var(--p,0)) + 30px*var(--p,0));line-height:1;letter-spacing:-.01em;
+  left:calc(50% * (1 - var(--p,0)) + var(--pad) * var(--p,0));
+  top:calc(var(--ht,40vh) * (1 - var(--p,0)) + (env(safe-area-inset-top,0px) + 36px) * var(--p,0));
+  transform:translate(calc(-50% * (1 - var(--p,0))),-50%)}
+.p-cammino #brand a{text-decoration:none;display:inline-flex;align-items:baseline}
+.p-cammino #brand .c{display:inline-block;overflow:hidden;vertical-align:baseline;padding-bottom:.22em;margin-bottom:-.22em;max-width:calc(var(--w,1em) * (1 - var(--q,0)));opacity:calc(1 - var(--q,0)*3)}
+.p-cammino #brand .bang{display:inline-block;overflow:hidden;max-width:calc(.36em * var(--q,0));opacity:var(--q,0)}
+.p-cammino .hero{min-height:100svh;background:var(--verde);color:var(--crema);position:relative;display:flex;flex-direction:column;justify-content:flex-start;align-items:center;text-align:center;padding:calc(var(--ht,58vh) + min(10.4vw,150px) * .62 + 28px) var(--pad) 56px;overflow:hidden}
+.p-cammino .hero .sub{max-width:34ch;margin:0 0 28px;font-size:clamp(17px,2vw,21px);color:#DDE6D5;opacity:calc(1 - var(--p,0)*2)}
+.p-cammino .hero .hint{color:var(--ocra);opacity:calc(1 - var(--p,0)*2.5);display:flex;flex-direction:column;align-items:center;gap:4px}
+.p-cammino .hero .hint svg{width:34px;height:60px;stroke:currentColor;fill:none;stroke-width:3;stroke-linecap:round}
+.p-cammino section:not(.hero){padding:clamp(80px,12vw,140px) 0}
+.p-cammino .intro .grid{display:grid;grid-template-columns:1.1fr .9fr;gap:clamp(32px,6vw,80px);align-items:center}
+.p-cammino .intro p{max-width:56ch;margin:0 0 16px}
+.p-cammino .intro .lead{font:400 clamp(22px,2.6vw,28px)/1.35 var(--f-display)}
+.p-cammino .arch{aspect-ratio:4/5;border-radius:999px 999px 14px 14px}
+.p-cammino .cv-btn{margin-top:28px}
+.p-cammino .cv-btn svg{width:20px;height:20px}
+@media (max-width:760px){.p-cammino .intro .grid{grid-template-columns:1fr}.p-cammino .arch{max-width:320px}}
+.p-cammino .reviews{background:var(--bg-alt)}
+.p-cammino .reviews .head{display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:12px 32px;margin-bottom:clamp(20px,4vh,40px)}
+.p-cammino .reviews .head h2{margin-bottom:12px}
+.p-cammino .reviews .head p{margin:0;color:var(--muted);max-width:44ch}
+.p-cammino .rv-viewport{--rvpad:max(var(--pad),calc((100% - var(--max))/2 + var(--pad)));overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-padding-inline:var(--rvpad);scrollbar-width:none;cursor:grab}
+.p-cammino .rv-viewport::-webkit-scrollbar{display:none}
+.p-cammino .rv-viewport.drag{scroll-snap-type:none;cursor:grabbing;user-select:none}
+.p-cammino .rv-viewport.drag img{pointer-events:none}
+.p-cammino .rv-track{display:flex;gap:clamp(16px,2vw,28px);width:max-content;padding:4px var(--rvpad) 8px}
+.p-cammino .rec{flex:none;scroll-snap-align:start;width:min(76vw,340px)}
+.p-cammino .rv-bottom{display:flex;align-items:center;gap:20px;margin-top:clamp(18px,3vh,28px)}
+.p-cammino .rv-progress{flex:1;height:3px;border-radius:3px;background:rgba(0,59,31,.14);position:relative;overflow:hidden}
+.p-cammino .rv-progress span{position:absolute;top:0;bottom:0;left:var(--rvl,0%);width:var(--rvw,30%);border-radius:3px;background:var(--ocra)}
+.p-cammino .rv-arrows{display:flex;gap:10px}
+.p-cammino .rv-arrows button{width:46px;height:46px;border-radius:50%;border:2px solid var(--ink);background:transparent;color:var(--ink);display:grid;place-items:center;cursor:pointer}
+.p-cammino .rv-arrows button:hover:not(:disabled){background:var(--ink);color:var(--bg)}
+.p-cammino .rv-arrows button:disabled{opacity:.3;cursor:default}
+.p-cammino .rv-arrows svg{width:20px;height:20px;stroke:currentColor;stroke-width:2.4;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.p-cammino .collab .box{display:grid;grid-template-columns:1fr auto;gap:clamp(32px,6vw,80px);align-items:center}
+.p-cammino .collab p{max-width:52ch;margin:0 0 12px}
+.p-cammino .collab ul{margin:16px 0 0;padding-left:20px;color:var(--muted)}
+.p-cammino .ct-actions .contatti{flex-direction:column;min-width:min(100%,320px)}
+.p-cammino .ct-mail{margin:10px 0 0;text-align:center;color:var(--muted);font-size:15px}
+@media (max-width:760px){.p-cammino .collab .box{grid-template-columns:1fr}}
+.p-cammino footer{background:var(--verde);color:var(--crema);padding:clamp(80px,12vw,140px) var(--pad) 140px;text-align:center}
+.p-cammino footer .sii{font:400 clamp(96px,22vw,260px)/.9 var(--f-display);margin:0}
+.p-cammino footer p{color:#C9D6C6;margin:16px 0 0}
+.p-cammino #stef{position:fixed;left:0;top:0;z-index:42;pointer-events:none;transform-origin:0 0;will-change:transform;-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - var(--mf,0%)),transparent);mask-image:linear-gradient(to bottom,#000 calc(100% - var(--mf,0%)),transparent)}
+.p-cammino #stef .move{transform-origin:50% 100%;will-change:transform}
+.p-cammino #stef img{display:block;height:var(--h0,300px);width:auto;max-width:none;transition:transform .45s cubic-bezier(.4,0,.2,1)}
+.p-cammino #stef img.right{transform:scaleX(-1)}
+@media (max-width:760px){.p-cammino .hero .sub{margin-bottom:16px}}
+</style>
+
+<script>
+  const radice = document.querySelector('.p-cammino');
+  if (radice) {
+    // Carosello recensioni (la pagina continua a scorrere normalmente)
+    const rvView = document.getElementById('rvView')!, rvPrev = document.getElementById('rvPrev') as HTMLButtonElement, rvNext = document.getElementById('rvNext') as HTMLButtonElement;
+    const rvBar = radice.querySelector('.rv-progress span') as HTMLElement;
+    const ridotto = () => matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const passo = () => { const c = rvView.querySelector('.rec'); return c ? c.getBoundingClientRect().width + 24 : 320; };
+    const misuraRv = () => {
+      const max = rvView.scrollWidth - rvView.clientWidth, x = rvView.scrollLeft;
+      const vis = rvView.scrollWidth ? rvView.clientWidth / rvView.scrollWidth : 1;
+      rvBar.style.setProperty('--rvw', (Math.min(1, vis) * 100).toFixed(2) + '%');
+      rvBar.style.setProperty('--rvl', (max > 0 ? (x / max) * (1 - vis) * 100 : 0).toFixed(2) + '%');
+      rvPrev.disabled = x <= 2; rvNext.disabled = x >= max - 2;
+    };
+    rvView.addEventListener('scroll', misuraRv, { passive: true });
+    addEventListener('resize', misuraRv); addEventListener('load', misuraRv);
+    rvPrev.addEventListener('click', () => rvView.scrollBy({ left: -passo(), behavior: ridotto() ? 'auto' : 'smooth' }));
+    rvNext.addEventListener('click', () => rvView.scrollBy({ left: passo(), behavior: ridotto() ? 'auto' : 'smooth' }));
+    let dragX: number | null = null, dragL = 0, mosso = false;
+    rvView.addEventListener('pointerdown', (e) => { if (e.pointerType !== 'mouse' || e.button !== 0) return; dragX = e.clientX; dragL = rvView.scrollLeft; mosso = false; });
+    addEventListener('pointermove', (e) => { if (dragX === null) return; const dx = e.clientX - dragX; if (Math.abs(dx) > 4) { mosso = true; rvView.classList.add('drag'); } if (mosso) rvView.scrollLeft = dragL - dx; });
+    addEventListener('pointerup', () => { if (dragX === null) return; dragX = null; if (mosso) { const st = passo(); rvView.classList.remove('drag'); rvView.scrollTo({ left: Math.round(rvView.scrollLeft / st) * st, behavior: 'smooth' }); } });
+    rvView.addEventListener('click', (e) => { if (mosso) { e.preventDefault(); mosso = false; } }, true);
+    rvView.addEventListener('keydown', (e) => { if (e.key === 'ArrowRight') { e.preventDefault(); rvNext.click(); } if (e.key === 'ArrowLeft') { e.preventDefault(); rvPrev.click(); } });
+    misuraRv();
+
+    // Titolo che diventa SII! e Stefano che vola nell'header e cammina
+    const root = document.documentElement, brand = document.getElementById('brand')!;
+    const stef = document.getElementById('stef')!, stefMove = document.getElementById('stefMove')!, stefImg = document.getElementById('stefImg')!;
+    const navEl = radice.querySelector('.bar nav')!, bar = document.getElementById('bar')!;
+    const reduce = ridotto();
+    const clamp = (v: number, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+    const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
+    const ease = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+    const ASPECT = 458 / 640, HB = 84;
+    let kW = 1.9, H0 = 300, ht = 0;
+    function measure() {
+      const mobile = innerWidth <= 760;
+      ht = innerHeight * (mobile ? 0.5 : 0.53);
+      root.style.setProperty('--ht', ht + 'px');
+      H0 = mobile ? Math.min(innerHeight * 0.3, 260) : Math.min(innerHeight * 0.37, 340);
+      stef.style.setProperty('--h0', H0 + 'px');
+      const fs = parseFloat(getComputedStyle(brand).fontSize);
+      brand.querySelectorAll<HTMLElement>('.c').forEach((el) => { el.style.maxWidth = 'none'; const w = el.scrollWidth / fs; el.style.maxWidth = ''; el.style.setProperty('--w', w + 0.02 + 'em'); });
+      let k = 0; brand.querySelectorAll('.k').forEach((el) => (k += el.getBoundingClientRect().width / fs)); kW = k + 0.36;
+    }
+    let pS = clamp(scrollY / (innerHeight * 0.7)), curX = 0, prevX = 0, phase = 0, walk = 0, facing = 0, first = true;
+    function tick() {
+      const y = scrollY, vh = innerHeight, p = clamp(y / (vh * 0.7));
+      pS = reduce ? p : pS + (p - pS) * 0.16; if (Math.abs(p - pS) < 0.0005) pS = p;
+      const q = clamp((pS - 0.08) / 0.62);
+      root.style.setProperty('--p', pS.toFixed(4)); root.style.setProperty('--q', q.toFixed(4));
+      const e = ease(pS);
+      const barB = bar.getBoundingClientRect().bottom;
+      const laneL = Math.min(72, Math.max(16, innerWidth * 0.05)) + kW * 30 + 16;
+      const laneR = (navEl.getBoundingClientRect().width ? navEl.getBoundingClientRect().left : bar.querySelector('.lingue')!.getBoundingClientRect().left) - 16;
+      const wH = HB * ASPECT, room = Math.max(0, laneR - laneL - wH);
+      const docP = clamp(y / Math.max(1, document.documentElement.scrollHeight - vh));
+      prevX = curX; curX = reduce || first ? docP * room : curX + (docP * room - curX) * 0.085; first = false;
+      const v = curX - prevX;
+      const bigFs = Math.min(innerWidth * 0.104, 150), w0 = H0 * ASPECT;
+      const heroX = innerWidth / 2 - w0 / 2, heroY = ht - bigFs * 0.62 - H0 - 6;
+      const hdrY = barB + 14 - HB, hdrX = laneL + curX;
+      const h = lerp(H0, HB, e), x = lerp(heroX, hdrX, e), yy = lerp(heroY, hdrY, e), sc = h / H0;
+      stef.style.transform = `translate3d(${x.toFixed(2)}px,${yy.toFixed(2)}px,0) scale(${sc.toFixed(4)})`;
+      stef.style.clipPath = `inset(0 0 ${((14 * e) / sc).toFixed(2)}px 0)`;
+      stef.style.setProperty('--mf', (26 * (1 - e)).toFixed(1) + '%');
+      walk += (clamp(Math.abs(v) / 1.2) - walk) * 0.12; phase += Math.abs(v) * 0.11 + walk * 0.05;
+      const bob = reduce ? 0 : -Math.abs(Math.sin(phase)) * 6 * walk * e;
+      const tilt = reduce ? 0 : (Math.sin(phase) * 2.4 * walk + clamp(v * 0.9, -4, 4)) * e;
+      stefMove.style.transform = `translateY(${bob.toFixed(2)}px) rotate(${tilt.toFixed(2)}deg)`;
+      if (v > 0.25) facing = 1; else if (v < -0.25) facing = -1;
+      stefImg.classList.toggle('right', facing === 1);
+      requestAnimationFrame(tick);
+    }
+    addEventListener('resize', measure);
+    measure(); requestAnimationFrame(tick);
+    document.fonts?.ready.then(measure);
+    document.addEventListener('sii:lingua', () => { misuraRv(); });
+  }
+</script>

@@ -1,0 +1,197 @@
+---
+// Proposta F: Cartoline. Esperienze e recensioni come cartoline da girare.
+import { TAPPE } from '../../data/curriculum';
+import { RECENSIONI, CITAZIONE } from '../../data/recensioni';
+import { SITO } from '../../config';
+import Testata from '../../components/Testata.astro';
+import BottoniContatto from '../../components/BottoniContatto.astro';
+import Icona from '../../components/Icona.astro';
+import T from '../../components/T.astro';
+const luoghi = [
+  { id: 'firenze', k: 'pl.firenze', tinta: 'verde' },
+  { id: 'toscana', k: 'pl.toscana', tinta: 'terra' },
+  { id: 'sora', k: 'pl.sora', tinta: 'chiara' },
+  { id: 'italia', k: 'f.where.2', tinta: 'verde' },
+  { id: 'parma', k: 'pl.parma', tinta: 'chiara' },
+  { id: 'ferrara', k: 'pl.ferrara', tinta: 'terra' },
+];
+const perLuogo = (id: string) => TAPPE.filter((t) => t.luoghi.includes(id)).slice(0, 2);
+const rec = RECENSIONI[0];
+---
+<div class="p-car">
+  <Testata />
+  <main id="contenuto">
+    <section class="car-hero wrap">
+      <div class="car-grande">
+        <div class="car-grande-in">
+          <T as="p" class="car-saluti hand" k="pc.greet" />
+          <h1><span>Stefano</span> <span class="car-in">In</span> <span>Italy</span></h1>
+          <T as="p" class="car-sub" k="hero.sub" />
+        </div>
+        <div class="car-franco" aria-hidden="true"><img src="/img/stefano.webp" width="458" height="640" alt="" /><span>SII!</span></div>
+        <div class="car-timbro" aria-hidden="true"><span>Sora · FR</span><b>2022</b><span>Italia</span></div>
+      </div>
+    </section>
+
+    <section class="car-sez wrap" id="esperienze">
+      <div class="car-titolo"><T as="h2" k="pc.h" /><T as="p" class="hand" k="pc.hint" /></div>
+      <ul class="car-griglia">
+        {luoghi.map((l, i) => (
+          <li class="car-pos entra" style={`--r:${[-2.5, 1.8, -1.2, 2.4, -1.8, 1.2][i]}deg`}>
+            <button type="button" class="car-carta" aria-pressed="false">
+              <span class={`car-fronte car-${l.tinta}`}>
+                <T class="car-mini hand" k="pc.greet" />
+                <T class="car-luogo" k={l.k} />
+                <span class="car-gira"><T k="pc.turn" /> ↻</span>
+              </span>
+              <span class="car-retro">
+                <span class="car-righe">
+                  {l.id === 'sora' ? (
+                    <T class="car-testo" k="pl.sora.d" />
+                  ) : null}
+                  {perLuogo(l.id).map((tp) => (
+                    <span class="car-voce"><span class="car-anni">{tp.anni}</span><T class="car-h" k={`cv.${tp.n}.h`} /><T class="car-testo" k={`cv.${tp.n}.d`} /></span>
+                  ))}
+                </span>
+                <span class="car-firma hand">— Stefano</span>
+                <span class="car-francobollo" aria-hidden="true">SII!</span>
+              </span>
+            </button>
+          </li>
+        ))}
+      </ul>
+      <p class="car-piu"><a href="#curriculum" data-cv-open><T k="cv.open" /> <Icona nome="freccia" /></a></p>
+    </section>
+
+    <section class="car-rec" id="recensioni">
+      <div class="wrap car-rec-in">
+        <div>
+          <T as="h2" k="rev.h" />
+          <T as="p" k="rev.p" />
+        </div>
+        <div class="car-pos car-pos-rec" style="--r:-1.5deg">
+          <button type="button" class="car-carta" aria-pressed="false">
+            <span class="car-fronte car-verde car-fronte-rec">
+              <span class="car-stelle" aria-label="5/5">{[1, 2, 3, 4, 5].map(() => <Icona nome="stella" />)}</span>
+              <span class="car-cit">“{CITAZIONE.titolo}”</span>
+              <T class="car-mini" k="rev.quote.src" />
+              <span class="car-gira"><T k="pc.turn" /> ↻</span>
+            </span>
+            <span class="car-retro car-retro-rec">
+              <img src={rec.img} width={rec.w} height={rec.h} alt={`Verified review on ${rec.fonte}`} loading="lazy" />
+              <a href={rec.img} target="_blank" rel="noopener" class="car-apri"><T k="rev.open" /></a>
+            </span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section class="car-sez wrap" id="contatti">
+      <div class="car-scrivi">
+        <div class="car-scrivi-sx">
+          <T as="h2" k="col.h" />
+          <T as="p" k="col.p" />
+          <BottoniContatto />
+        </div>
+        <div class="car-scrivi-dx">
+          <span class="car-francobollo grande" aria-hidden="true"><img src="/img/stefano.webp" width="458" height="640" alt="" /></span>
+          <p class="car-indirizzo hand">Stefano Alonzi<br />Sora (FR)<br />Italia</p>
+          <p class="car-ind-riga"><a href={`mailto:${SITO.email}`}>{SITO.email}</a></p>
+          <p class="car-ind-riga"><a href={SITO.instagram} target="_blank" rel="noopener">{SITO.instagramHandle}</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+  <footer class="car-piede wrap"><T as="p" k="foot" /></footer>
+</div>
+
+<style is:global>
+html[data-tema="cartoline"] body{background:var(--carta)}
+.p-car{overflow-x:clip}
+.p-car h2{font-size:clamp(34px,5vw,56px)}
+.car-hero{padding-top:clamp(32px,6vw,72px);padding-bottom:clamp(40px,6vw,72px)}
+.car-grande{position:relative;background:var(--crema);border-radius:10px;padding:clamp(28px,5vw,64px);box-shadow:0 24px 60px rgba(0,40,20,.18);transform:rotate(-1.2deg);border:10px solid #fff;min-height:min(70vh,560px);display:flex;align-items:center;overflow:hidden;animation:arrivo 1s cubic-bezier(.2,.8,.2,1) both}
+@keyframes arrivo{from{opacity:0;transform:translateY(60px) rotate(-6deg)}}
+.car-grande-in{position:relative;z-index:2;max-width:62%}
+.car-saluti{font-size:clamp(28px,4vw,44px);color:var(--terracotta);margin:0}
+.p-car h1{font-size:clamp(56px,10vw,150px);line-height:.88;text-transform:uppercase;letter-spacing:-.01em;color:var(--verde);-webkit-text-stroke:0}
+.p-car h1 span{display:inline-block}
+.car-in{font-family:var(--f-hand);text-transform:none;color:var(--terracotta);font-size:.6em}
+.car-sub{font-size:clamp(17px,1.8vw,20px);max-width:36ch;color:var(--muted);margin:18px 0 0}
+.car-franco{position:absolute;right:clamp(16px,4vw,48px);top:clamp(16px,4vw,48px);width:clamp(120px,18vw,210px);aspect-ratio:4/5;background:var(--verde);padding:12px 10px 0;display:grid;grid-template-rows:1fr auto;justify-items:center;outline:3px dashed var(--crema);outline-offset:-7px;box-shadow:0 0 0 5px var(--verde),0 8px 18px rgba(0,40,20,.25);transform:rotate(4deg)}
+.car-franco img{width:86%;height:auto;align-self:end}
+.car-franco span{font:400 24px/1 var(--f-display);color:var(--crema);padding:6px 0 4px}
+.car-timbro{position:absolute;right:clamp(150px,22vw,290px);top:clamp(150px,24vw,280px);width:150px;height:150px;border-radius:50%;border:3px solid rgba(176,74,42,.6);color:rgba(176,74,42,.75);display:grid;place-items:center;align-content:center;transform:rotate(-14deg);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;z-index:3}
+.car-timbro b{font:400 34px/1 var(--f-display);letter-spacing:0}
+.car-sez{padding-top:clamp(56px,8vw,96px);padding-bottom:clamp(56px,8vw,96px)}
+.car-titolo{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 24px;margin-bottom:28px}
+.car-titolo p{font-size:26px;color:var(--terracotta);margin:0}
+.car-griglia{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:clamp(18px,3vw,36px)}
+.car-pos{perspective:1400px;rotate:var(--r)}
+.car-pos.entra{transform:translateY(40px) rotate(calc(var(--r) * -3))}
+.car-pos.entra.visto{transform:none}
+.car-carta{all:unset;display:block;position:relative;width:100%;aspect-ratio:3/2;cursor:pointer;transform-style:preserve-3d;transition:transform .8s cubic-bezier(.3,.7,.2,1)}
+.car-carta:focus-visible{outline:3px solid var(--ocra);outline-offset:6px;border-radius:6px}
+.car-carta[aria-pressed="true"]{transform:rotateY(180deg)}
+.car-fronte,.car-retro{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:6px;border:8px solid #fff;box-shadow:0 12px 30px rgba(0,40,20,.16);overflow:hidden}
+.car-fronte{display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:16px 20px}
+.car-verde{background:var(--verde);color:var(--crema)}
+.car-terra{background:var(--terracotta);color:var(--crema)}
+.car-chiara{background:var(--crema);color:var(--verde)}
+.car-mini{font-size:20px;opacity:.85}
+.car-luogo{font:400 clamp(26px,3vw,40px)/1 var(--f-display);text-transform:uppercase;letter-spacing:.01em}
+.car-gira{position:absolute;right:14px;bottom:10px;font-size:13px;font-weight:700;opacity:.8}
+.car-retro{transform:rotateY(180deg);background:#fffdf8;color:var(--verde);display:grid;grid-template-columns:1fr auto;padding:14px 16px;gap:10px;text-align:left}
+.car-righe{display:grid;align-content:start;gap:8px;overflow:auto;background:repeating-linear-gradient(transparent 0 25px,rgba(0,59,31,.12) 25px 26px)}
+.car-voce{display:grid;gap:2px}
+.car-anni{font:600 18px/1 var(--f-hand);color:var(--terracotta)}
+.car-h{font:400 17px/1.15 var(--f-display)}
+.car-testo{font-size:13px;line-height:1.4;color:var(--muted)}
+.car-firma{position:absolute;left:16px;bottom:8px;font-size:20px;color:var(--terracotta)}
+.car-francobollo{align-self:start;width:52px;height:62px;background:var(--verde);color:var(--crema);display:grid;place-items:center;font:400 16px/1 var(--f-display);outline:2px dashed var(--crema);outline-offset:-5px}
+.car-francobollo.grande{width:120px;height:146px;padding:10px 10px 0;display:grid;place-items:end center}
+.car-francobollo.grande img{width:90%;height:auto}
+.car-piu{text-align:center;margin:36px 0 0}
+.car-piu a{display:inline-flex;align-items:center;gap:8px;font-weight:700}
+.car-piu svg{width:20px;height:20px}
+.car-rec{background:var(--verde);color:var(--crema);padding:clamp(56px,8vw,96px) 0}
+.car-rec-in{display:grid;grid-template-columns:.9fr 1.1fr;gap:clamp(28px,6vw,80px);align-items:center}
+.car-rec p{color:#C9D6C6;max-width:40ch}
+.car-pos-rec{max-width:560px;width:100%;justify-self:center}
+.car-pos-rec .car-carta{aspect-ratio:4/5}
+.car-fronte-rec{align-items:center;text-align:center;gap:14px;border-color:var(--crema)}
+.car-stelle{display:flex;gap:4px;color:var(--ocra)}
+.car-stelle svg{width:34px;height:34px}
+.car-cit{font:italic 400 clamp(30px,4vw,48px)/1.1 var(--f-display)}
+.car-retro-rec{display:block;padding:0;background:#fff;border-color:var(--crema)}
+.car-retro-rec img{width:100%;height:100%;object-fit:cover;object-position:top}
+.car-apri{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:var(--verde);color:var(--crema);padding:8px 14px;border-radius:999px;font-size:14px;font-weight:700;text-decoration:none;white-space:nowrap}
+.car-scrivi{display:grid;grid-template-columns:1.2fr .8fr;background:#fffdf8;border:10px solid #fff;border-radius:8px;box-shadow:0 24px 60px rgba(0,40,20,.14);padding:clamp(24px,4vw,48px);gap:clamp(24px,4vw,48px);rotate:.6deg}
+.car-scrivi-sx{border-right:2px solid rgba(0,59,31,.15);padding-right:clamp(24px,4vw,48px)}
+.car-scrivi-sx p{max-width:46ch;color:var(--muted);margin:14px 0 22px}
+.car-scrivi-dx{display:grid;align-content:start;gap:10px}
+.car-scrivi-dx .car-francobollo{justify-self:end}
+.car-indirizzo{font-size:30px;line-height:1.3;margin:12px 0 0;border-bottom:1px solid rgba(0,59,31,.25)}
+.car-ind-riga{margin:0;padding:6px 0;border-bottom:1px solid rgba(0,59,31,.25);font-weight:600}
+.car-piede{padding-top:12px;padding-bottom:110px;color:var(--muted);text-align:center}
+@media (max-width:900px){.car-griglia{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:760px){
+  .car-grande-in{max-width:100%}
+  .car-grande{padding-top:170px}
+  .car-franco{width:110px;left:24px;right:auto;top:24px}
+  .car-timbro{right:24px;top:40px;width:120px;height:120px}
+  .car-griglia{grid-template-columns:1fr;padding:0 6px}
+  .car-pos{rotate:calc(var(--r) * .5)}
+  .car-rec-in,.car-scrivi{grid-template-columns:1fr}
+  .car-scrivi-sx{border-right:0;padding-right:0;border-bottom:2px solid rgba(0,59,31,.15);padding-bottom:24px}
+}
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.p-car .car-carta').forEach((b) => {
+    b.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) return;
+      b.setAttribute('aria-pressed', String(b.getAttribute('aria-pressed') !== 'true'));
+    });
+  });
+</script>

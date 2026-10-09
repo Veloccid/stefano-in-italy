@@ -1,0 +1,7 @@
+---
+// Testo tradotto: mostra l'inglese e si aggiorna quando si cambia lingua.
+import { t } from '../data/testi';
+interface Props { k: string; as?: string; class?: string; [x: string]: unknown }
+const { k, as: Tag = 'span', class: cls, ...rest } = Astro.props;
+---
+<Tag class={cls} data-i18n={k} {...rest} set:html={t(k)} />

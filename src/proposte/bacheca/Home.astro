@@ -1,0 +1,169 @@
+---
+// Proposta J: Bacheca recensioni. Screenshot appesi da spostare e ingrandire.
+import { RECENSIONI } from '../../data/recensioni';
+import { SERVIZI, LINGUE_PARLATE } from '../../data/curriculum';
+import Testata from '../../components/Testata.astro';
+import BottoniContatto from '../../components/BottoniContatto.astro';
+import Icona from '../../components/Icona.astro';
+import T from '../../components/T.astro';
+const [vera, ...vuote] = RECENSIONI;
+// posizioni in % (desktop x,y e mobile x,y) e rotazione
+const posti = [
+  { x: 40, y: 6, xm: 4, ym: 22, r: -3 },
+  { x: 66, y: 6, xm: 52, ym: 52, r: 4 },
+  { x: 6, y: 52, xm: 4, ym: 70, r: -5 },
+  { x: 64, y: 54, xm: 54, ym: 79, r: 3 },
+];
+---
+<div class="p-bac">
+  <Testata scura />
+  <main id="contenuto">
+    <section class="bac-cornice" id="recensioni" aria-labelledby="bacTitolo">
+      <div class="bac-intesta wrap">
+        <div>
+          <h1>Stefano In Italy</h1>
+          <T as="h2" k="board.h" id="bacTitolo" />
+        </div>
+        <T as="p" class="hand bac-hint" k="board.hint" />
+      </div>
+      <div class="bac-tavola" id="bacTavola">
+        <figure class="bac-pezzo bac-foto" style="--x:37;--y:6;--xm:4;--ym:22;--r:-3deg;--w:25%;--wm:58%" data-zoom>
+          <span class="bac-puntina"></span>
+          <img src={vera.img} width={vera.w} height={vera.h} alt={`Verified review on ${vera.fonte}`} draggable="false" />
+          <figcaption><Icona nome="spunta" /> <T k="rev.badge" /> · {vera.fonte}</figcaption>
+        </figure>
+        {vuote.slice(0, 3).map((r, i) => (
+          <figure class="bac-pezzo bac-foto bac-vuota" style={`--x:${posti[i + 1].x};--y:${posti[i + 1].y};--xm:${posti[i + 1].xm};--ym:${posti[i + 1].ym};--r:${posti[i + 1].r}deg;--w:17%;--wm:42%`}>
+            <span class="bac-puntina"></span>
+            <div class="bac-vuota-in"><T k="board.soon" /></div>
+            <figcaption>{r.fonte}</figcaption>
+          </figure>
+        ))}
+        <div class="bac-pezzo bac-postit" style="--x:8;--y:8;--xm:4;--ym:2;--r:-4deg;--w:24%;--wm:52%">
+          <span class="bac-nastro"></span>
+          <div class="bac-stelle">{[1, 2, 3, 4, 5].map(() => <Icona nome="stella" />)}</div>
+          <T as="p" class="hand" k="rev.note" />
+        </div>
+        <div class="bac-pezzo bac-biglietto" style="--x:27;--y:56;--xm:4;--ym:45;--r:2deg;--w:30%;--wm:46%">
+          <span class="bac-puntina"></span>
+          <T as="h3" k="intro.h" />
+          <T as="p" k="intro.lead" />
+        </div>
+        <div class="bac-pezzo bac-adesivo" style="--x:84;--y:50;--xm:60;--ym:9;--r:6deg;--w:14%;--wm:34%">
+          <img src="/img/stefano.webp" width="458" height="640" alt="" draggable="false" />
+        </div>
+        <div class="bac-pezzo bac-ticket" style="--x:32;--y:88;--xm:56;--ym:2;--r:-2deg;--w:20%;--wm:40%">
+          <span>SII!</span><b>EN · IT · ES</b>
+        </div>
+      </div>
+      <T as="p" class="bac-nota wrap" k="board.note" />
+    </section>
+
+    <section class="bac-sotto wrap" id="contatti">
+      <div>
+        <T as="h2" k="col.h" />
+        <T as="p" k="col.p" />
+        <ul class="chips">{SERVIZI.map((k) => <T as="li" k={k} />)}</ul>
+        <ul class="chips bac-lingue">{LINGUE_PARLATE.map((k) => <T as="li" k={k} />)}</ul>
+      </div>
+      <div class="bac-box">
+        <T as="p" k="intro.p1" />
+        <BottoniContatto />
+      </div>
+    </section>
+  </main>
+  <footer class="bac-piede wrap"><span>SII!</span><T as="p" k="foot" /></footer>
+
+  <dialog class="bac-zoom" id="bacZoom">
+    <button type="button" class="bac-chiudi" aria-label="Close" data-i18n-aria="cv.close"><Icona nome="chiudi" /></button>
+    <img src={vera.img} width={vera.w} height={vera.h} alt={`Verified review on ${vera.fonte}`} />
+  </dialog>
+</div>
+
+<style is:global>
+html[data-tema="bacheca"] body{background:var(--crema)}
+.bac-cornice{background:var(--verde);color:var(--crema);padding:clamp(24px,4vw,44px) 0 clamp(28px,4vw,48px)}
+.bac-intesta{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:6px 28px;margin-bottom:20px}
+.p-bac h1{font-size:clamp(20px,2vw,24px);color:#E3B458;font-family:var(--f-sans);font-weight:700;text-transform:uppercase;letter-spacing:.1em}
+.bac-intesta h2{font-size:clamp(40px,6vw,76px)}
+.bac-hint{font-size:26px;color:#E3B458;margin:0}
+.bac-tavola{position:relative;margin:0 var(--pad);height:min(76vw,760px);border-radius:14px;background-color:#C9A57A;background-image:radial-gradient(rgba(90,60,30,.35) 1px,transparent 1.5px),radial-gradient(rgba(255,255,255,.18) 1px,transparent 1.5px);background-size:9px 9px,13px 13px;background-position:0 0,4px 6px;box-shadow:inset 0 0 0 14px #5C3A1E,inset 0 0 40px rgba(0,0,0,.35);overflow:hidden;touch-action:pan-y}
+.bac-pezzo{position:absolute;left:calc(var(--x) * 1%);top:calc(var(--y) * 1%);width:var(--w);rotate:var(--r);margin:0;cursor:grab;touch-action:none;user-select:none;transition:box-shadow .2s,scale .2s;z-index:1}
+.bac-pezzo.preso{cursor:grabbing;scale:1.04;z-index:30!important;box-shadow:0 30px 50px rgba(0,0,0,.35)}
+.bac-pezzo.entra{opacity:0;translate:0 -30px}
+.bac-pezzo.entra.visto{opacity:1;translate:0 0;transition:opacity .5s,translate .6s cubic-bezier(.2,.8,.2,1),box-shadow .2s,scale .2s}
+.bac-puntina{position:absolute;left:50%;top:-8px;width:20px;height:20px;margin-left:-10px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#E27A55,#B04A2A 60%,#7A2E16);box-shadow:0 3px 4px rgba(0,0,0,.4);z-index:2}
+.bac-foto{background:#fff;padding:10px 10px 0;box-shadow:0 12px 26px rgba(0,0,0,.3)}
+.bac-foto img{width:100%;height:auto;aspect-ratio:1125/1590;object-fit:cover;object-position:top;pointer-events:none}
+.bac-foto figcaption{display:flex;align-items:center;gap:6px;color:var(--verde);font-size:13px;font-weight:600;padding:8px 2px 10px}
+.bac-foto figcaption svg{width:16px;height:16px}
+.bac-vuota-in{aspect-ratio:1125/1590;display:grid;place-items:center;text-align:center;background:var(--carta);color:var(--muted);border:2px dashed rgba(0,59,31,.3);font-size:14px;padding:10px}
+.bac-postit{background:#F6E7A8;color:var(--verde);padding:22px 18px 18px;box-shadow:0 10px 20px rgba(0,0,0,.25);aspect-ratio:1;display:grid;align-content:center;justify-items:center;text-align:center}
+.bac-nastro{position:absolute;top:-12px;left:50%;width:90px;height:26px;margin-left:-45px;background:rgba(254,246,235,.7);rotate:-3deg}
+.bac-stelle{display:flex;gap:2px;color:#C98E2B}
+.bac-stelle svg{width:clamp(20px,2.6vw,34px);height:clamp(20px,2.6vw,34px)}
+.bac-postit p{font-size:clamp(22px,2.6vw,34px);margin:6px 0 0;line-height:1}
+.bac-biglietto{background:var(--crema);color:var(--verde);padding:24px 22px;box-shadow:0 12px 24px rgba(0,0,0,.28)}
+.bac-biglietto h3{font-size:clamp(20px,2.4vw,30px)}
+.bac-biglietto p{margin:8px 0 0;font-size:clamp(13px,1.3vw,16px)}
+.bac-adesivo{background:var(--verde);border:5px solid var(--crema);border-radius:50%;aspect-ratio:1;overflow:hidden;display:grid;place-items:end center;box-shadow:0 10px 20px rgba(0,0,0,.3)}
+.bac-adesivo img{width:76%;height:auto;pointer-events:none}
+.bac-ticket{background:var(--crema);color:var(--verde);display:flex;align-items:center;gap:12px;padding:10px 16px;border-left:6px dashed var(--terracotta);box-shadow:0 8px 16px rgba(0,0,0,.25)}
+.bac-ticket span{font:400 clamp(22px,2.6vw,34px)/1 var(--f-display)}
+.bac-ticket b{font-size:clamp(11px,1.1vw,14px);letter-spacing:.08em}
+.bac-nota{color:#C9D6C6;margin:16px auto 0;font-size:15px}
+.bac-sotto{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,64px);padding-top:clamp(56px,8vw,96px);padding-bottom:clamp(56px,8vw,96px)}
+.bac-sotto h2{font-size:clamp(34px,5vw,56px);margin-bottom:12px}
+.bac-sotto p{max-width:52ch;color:var(--muted)}
+.bac-lingue{margin-top:10px}
+.bac-lingue li{background:var(--verde);color:var(--crema);border-color:var(--verde)}
+.bac-box{background:#fff;border:1px solid rgba(0,59,31,.14);border-radius:20px;padding:clamp(22px,4vw,36px)}
+.bac-piede{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;padding-top:24px;padding-bottom:110px;color:var(--muted);border-top:1px solid rgba(0,59,31,.15)}
+.bac-piede span{font:400 32px/1 var(--f-display);color:var(--verde)}
+.bac-piede p{margin:0}
+.bac-zoom{border:0;padding:0;background:transparent;max-width:min(92vw,560px);max-height:92dvh;overflow:auto}
+.bac-zoom::backdrop{background:rgba(0,20,10,.75)}
+.bac-zoom img{width:100%;height:auto;border-radius:10px}
+.bac-chiudi{position:sticky;top:8px;float:right;margin:8px 8px -52px 0;width:44px;height:44px;border-radius:50%;border:0;background:var(--verde);color:var(--crema);display:grid;place-items:center;cursor:pointer;z-index:2}
+.bac-chiudi svg{width:20px;height:20px}
+@media (max-width:760px){
+  .bac-tavola{height:auto;aspect-ratio:auto;min-height:0;height:1040px;margin:0 10px}
+  .bac-pezzo{left:calc(var(--xm) * 1%);top:calc(var(--ym) * 1%);width:var(--wm)}
+  .bac-sotto{grid-template-columns:1fr}
+}
+</style>
+<script>
+  const tavola = document.getElementById('bacTavola');
+  if (tavola) {
+    const zoom = document.getElementById('bacZoom') as HTMLDialogElement;
+    zoom.querySelector('.bac-chiudi')!.addEventListener('click', () => zoom.close());
+    zoom.addEventListener('click', (e) => { if (e.target === zoom) zoom.close(); });
+    let zTop = 10;
+    const pezzi = [...tavola.querySelectorAll<HTMLElement>('.bac-pezzo')];
+    pezzi.forEach((p, i) => {
+      p.classList.add('entra'); setTimeout(() => p.classList.add('visto'), 150 + i * 110);
+      let sx = 0, sy = 0, ox = 0, oy = 0, mosso = false, id: number | null = null;
+      p.addEventListener('pointerdown', (e) => {
+        id = e.pointerId; p.setPointerCapture(id); mosso = false;
+        sx = e.clientX; sy = e.clientY; ox = p.offsetLeft; oy = p.offsetTop;
+        p.style.zIndex = String(++zTop);
+      });
+      p.addEventListener('pointermove', (e) => {
+        if (id !== e.pointerId) return;
+        const dx = e.clientX - sx, dy = e.clientY - sy;
+        if (!mosso && Math.hypot(dx, dy) < 5) return;
+        mosso = true; p.classList.add('preso');
+        const W = tavola.clientWidth, H = tavola.clientHeight;
+        const x = Math.min(Math.max(ox + dx, -p.offsetWidth * 0.3), W - p.offsetWidth * 0.7);
+        const y = Math.min(Math.max(oy + dy, -10), H - p.offsetHeight * 0.5);
+        p.style.left = x + 'px'; p.style.top = y + 'px';
+      });
+      const fine = (e: PointerEvent) => {
+        if (id !== e.pointerId) return; id = null; p.classList.remove('preso');
+        if (!mosso && p.hasAttribute('data-zoom')) { zoom.showModal(); }
+      };
+      p.addEventListener('pointerup', fine);
+      p.addEventListener('pointercancel', fine);
+    });
+  }
+</script>

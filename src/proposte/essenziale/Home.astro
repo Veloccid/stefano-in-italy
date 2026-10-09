@@ -1,0 +1,111 @@
+---
+// Proposta B: Essenziale. Pulita, titoli grandi, tutto leggibile in 30 secondi.
+import { RECENSIONI } from '../../data/recensioni';
+import { SERVIZI } from '../../data/curriculum';
+import { SITO } from '../../config';
+import Testata from '../../components/Testata.astro';
+import Recensione from '../../components/Recensione.astro';
+import BottoniContatto from '../../components/BottoniContatto.astro';
+import Icona from '../../components/Icona.astro';
+import T from '../../components/T.astro';
+---
+<div class="p-ess">
+  <Testata />
+  <main id="contenuto">
+    <section class="ess-hero wrap">
+      <div class="ess-hero-testo">
+        <T as="p" class="ess-kicker" k="tag.role" />
+        <h1>Stefano <span>In Italy</span></h1>
+        <T as="p" class="ess-sub" k="hero.sub" />
+        <BottoniContatto email={false} />
+      </div>
+      <div class="ess-ritratto"><img src="/img/stefano.webp" width="458" height="640" alt="Stefano, illustrated portrait" /></div>
+    </section>
+
+    <section class="ess-numeri" aria-label="Numbers">
+      <ul class="wrap">
+        <li><b>80</b><T k="stat.80.l" /></li>
+        <li><b>3</b><T k="stat.3.l" /></li>
+        <li><b>2022</b><T k="stat.2022.l" /></li>
+        <li><b>5<Icona nome="stella" /></b><T k="stat.5.l" /></li>
+      </ul>
+    </section>
+
+    <section class="ess-chi wrap">
+      <div class="foto-vuota ess-foto"><T k="ph.photo" /></div>
+      <div>
+        <T as="h2" k="intro.h" />
+        <T as="p" class="ess-lead" k="intro.lead" />
+        <T as="p" k="intro.p1" />
+        <T as="p" k="intro.p2" />
+        <a class="ess-link" href="#curriculum" data-cv-open><T k="cv.open" /> <Icona nome="freccia" /></a>
+      </div>
+    </section>
+
+    <section class="ess-rec" id="recensioni">
+      <div class="wrap">
+        <div class="ess-titolo"><T as="h2" k="rev.h" /><T as="p" k="rev.p" /></div>
+        <div class="ess-griglia">{RECENSIONI.slice(0, 3).map((r, i) => <Recensione r={r} i={i} />)}</div>
+      </div>
+    </section>
+
+    <section class="ess-contatti wrap" id="contatti">
+      <div class="ess-box">
+        <div>
+          <T as="h2" k="col.h" />
+          <T as="p" k="col.p" />
+          <ul>{SERVIZI.map((k) => <T as="li" k={k} />)}</ul>
+        </div>
+        <BottoniContatto class="ess-bottoni" />
+      </div>
+    </section>
+  </main>
+  <footer class="ess-piede wrap">
+    <span class="ess-sii">SII!</span>
+    <T as="p" k="foot" />
+    <a href={SITO.instagram} target="_blank" rel="noopener" class="ess-ig"><Icona nome="ig" />{SITO.instagramHandle}</a>
+  </footer>
+</div>
+<style is:global>
+.p-ess h2{font-size:clamp(34px,5vw,56px);margin-bottom:16px}
+.ess-hero{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(24px,5vw,64px);align-items:center;padding-top:clamp(40px,8vw,96px);padding-bottom:clamp(40px,8vw,96px)}
+.ess-kicker{margin:0 0 12px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:14px;color:var(--terracotta)}
+.p-ess h1{font-size:clamp(56px,9vw,128px);line-height:.92}
+.p-ess h1 span{display:block}
+.ess-sub{font-size:clamp(18px,2vw,22px);max-width:36ch;margin:20px 0 28px;color:var(--muted)}
+.ess-ritratto{background:var(--verde);border-radius:50%;aspect-ratio:1;display:grid;place-items:end center;overflow:hidden;max-width:440px;justify-self:center;width:100%}
+.ess-ritratto img{width:72%;height:auto}
+.ess-numeri{background:var(--verde);color:var(--crema)}
+.ess-numeri ul{list-style:none;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding-top:40px;padding-bottom:40px}
+.ess-numeri li{display:grid;gap:4px;color:#C9D6C6;font-size:15px}
+.ess-numeri b{font:400 clamp(44px,6vw,72px)/1 var(--f-display);color:var(--crema);display:flex;align-items:center;gap:4px}
+.ess-numeri b svg{width:.7em;height:.7em;color:var(--ocra)}
+.ess-chi{display:grid;grid-template-columns:.8fr 1.2fr;gap:clamp(24px,6vw,80px);align-items:center;padding-top:clamp(64px,10vw,120px);padding-bottom:clamp(64px,10vw,120px)}
+.ess-chi p{max-width:58ch}
+.ess-foto{aspect-ratio:4/5;border-radius:20px}
+.ess-lead{font:400 clamp(21px,2.4vw,26px)/1.35 var(--f-display)}
+.ess-link{display:inline-flex;align-items:center;gap:8px;font-weight:700;margin-top:8px}
+.ess-link svg{width:20px;height:20px}
+.ess-rec{background:var(--carta);padding:clamp(64px,10vw,120px) 0}
+.ess-titolo{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:8px 32px;margin-bottom:32px}
+.ess-titolo p{margin:0;color:var(--muted);max-width:40ch}
+.ess-griglia{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.ess-contatti{padding-top:clamp(64px,10vw,120px);padding-bottom:clamp(64px,10vw,120px)}
+.ess-box{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(24px,5vw,64px);align-items:center;border:2px solid var(--verde);border-radius:28px;padding:clamp(28px,5vw,64px)}
+.ess-box p{max-width:50ch}
+.ess-box ul{padding-left:20px;color:var(--muted)}
+.ess-bottoni{flex-direction:column}
+.ess-piede{display:flex;flex-wrap:wrap;align-items:center;gap:12px 28px;padding-top:32px;padding-bottom:110px;border-top:1px solid rgba(0,59,31,.15)}
+.ess-sii{font:400 40px/1 var(--f-display)}
+.ess-piede p{margin:0;color:var(--muted);flex:1;min-width:240px}
+.ess-ig{display:inline-flex;align-items:center;gap:8px;font-weight:600;text-decoration:none}
+.ess-ig svg{width:22px;height:22px}
+@media (max-width:820px){
+  .ess-hero,.ess-chi,.ess-box{grid-template-columns:1fr}
+  .ess-ritratto{max-width:300px;grid-row:1}
+  .ess-numeri ul{grid-template-columns:repeat(2,1fr)}
+  .ess-griglia{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;margin:0 calc(var(--pad)*-1);padding:0 var(--pad) 8px}
+  .ess-griglia .rec{flex:none;width:78vw;max-width:340px;scroll-snap-align:center}
+  .ess-foto{max-width:360px}
+}
+</style>

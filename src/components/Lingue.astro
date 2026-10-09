@@ -1,0 +1,8 @@
+---
+// Selettore lingua: EN (principale), IT, ES. Sempre a portata di dito.
+interface Props { class?: string }
+const { class: cls } = Astro.props;
+---
+<div class:list={['lingue', cls]} role="group" aria-label="Language" data-i18n-aria="lang.aria">
+  <button type="button" data-lang="en" lang="en" aria-pressed="true">EN</button><button type="button" data-lang="it" lang="it" aria-pressed="false">IT</button><button type="button" data-lang="es" lang="es" aria-pressed="false">ES</button>
+</div>

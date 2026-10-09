@@ -1,0 +1,623 @@
+// Tutti i testi del sito in 3 lingue: inglese (principale), italiano, spagnolo.
+export type Lingua = 'en' | 'it' | 'es';
+export const LINGUE: Lingua[] = ['en', 'it', 'es'];
+export const TESTI: Record<string, Record<Lingua, string>> = {
+ "meta.title": {
+  "en": "Stefano In Italy — Tour leader in Italy",
+  "it": "Stefano In Italy — Tour leader in Italia",
+  "es": "Stefano In Italy — Tour leader en Italia"
+ },
+ "meta.desc": {
+  "en": "Stefano Alonzi, certified tour leader: day tours and multi-day trips across Italy for groups of up to 80, in English, Italian and Spanish. Verified reviews, experience and contacts for collaborations.",
+  "it": "Stefano Alonzi, tour leader certificato: tour di giornata e viaggi di più giorni in Italia per gruppi fino a 80 persone, in italiano, inglese e spagnolo. Recensioni verificate, curriculum e contatti per collaborazioni.",
+  "es": "Stefano Alonzi, tour leader certificado: tours de un día y viajes de varios días por Italia para grupos de hasta 80 personas, en inglés, italiano y español. Reseñas verificadas, experiencia y contacto para colaboraciones."
+ },
+ "nav.aria": {
+  "en": "Sections",
+  "it": "Sezioni",
+  "es": "Secciones"
+ },
+ "nav.reviews": {
+  "en": "Reviews",
+  "it": "Recensioni",
+  "es": "Reseñas"
+ },
+ "nav.cv": {
+  "en": "Experience",
+  "it": "Curriculum",
+  "es": "Experiencia"
+ },
+ "nav.collab": {
+  "en": "Contact",
+  "it": "Contatti",
+  "es": "Contacto"
+ },
+ "lang.aria": {
+  "en": "Language",
+  "it": "Lingua",
+  "es": "Idioma"
+ },
+ "hero.aria": {
+  "en": "Welcome",
+  "it": "Benvenuto",
+  "es": "Bienvenida"
+ },
+ "hero.sub": {
+  "en": "Tours and trips across Italy, told by someone who walks them every day: art, architecture, local food and traditions.",
+  "it": "Tour e viaggi in Italia raccontati da chi ci cammina ogni giorno: arte, architettura, cibo locale e tradizioni.",
+  "es": "Tours y viajes por Italia contados por quien los recorre cada día: arte, arquitectura, cocina local y tradiciones."
+ },
+ "hero.hint": {
+  "en": "scroll, let's go!",
+  "it": "scorri, si parte!",
+  "es": "¡desliza, nos vamos!"
+ },
+ "intro.h": {
+  "en": "Hi, I'm Stefano",
+  "it": "Ciao, sono Stefano",
+  "es": "Hola, soy Stefano"
+ },
+ "intro.lead": {
+  "en": "I'll show you Italy the way I would a friend who's visiting: no script, plenty of true stories.",
+  "it": "Ti porto in giro per l'Italia come farei con un amico in visita: niente copione, tante storie vere.",
+  "es": "Te llevo por Italia como haría con un amigo de visita: sin guion, muchas historias reales."
+ },
+ "intro.p1": {
+  "en": "I'm Stefano Alonzi, a certified tour leader with a degree in Science and Technology for Cultural Heritage. Since 2022 I've led groups across Tuscany and the rest of Italy: day tours, multi-day trips and food tours in Florence, with groups of up to 80 people.",
+  "it": "Sono Stefano Alonzi, tour leader certificato e laureato in Scienze e Tecnologie per i Beni Culturali. Dal 2022 accompagno gruppi in Toscana e in tutta Italia: tour di giornata, viaggi di più giorni, food tour a Firenze, fino a gruppi di 80 persone.",
+  "es": "Soy Stefano Alonzi, tour leader certificado y graduado en Ciencias y Tecnologías para el Patrimonio Cultural. Desde 2022 acompaño grupos por la Toscana y toda Italia: tours de un día, viajes de varios días y food tours en Florencia, con grupos de hasta 80 personas."
+ },
+ "intro.p2": {
+  "en": "I speak English, Italian and Spanish. I love art history, architecture, local food and traditions, and I look after every detail so the trip runs smoothly from arrival to departure.",
+  "it": "Parlo italiano, inglese e spagnolo. Mi appassionano la storia dell'arte, l'architettura, la cucina locale e le tradizioni, e curo ogni dettaglio perché il viaggio fili liscio dall'arrivo alla partenza.",
+  "es": "Hablo inglés, italiano y español. Me apasionan la historia del arte, la arquitectura, la cocina local y las tradiciones, y cuido cada detalle para que el viaje fluya desde la llegada hasta la salida."
+ },
+ "intro.note": {
+  "en": "SII! sounds like sì, yes!",
+  "it": "SII! è anche un sì",
+  "es": "SII! suena a «sí»"
+ },
+ "intro.arch": {
+  "en": "Photo of Stefano on tour<br>(portrait 4:5, arch crop)",
+  "it": "Foto di Stefano in tour<br>(verticale 4:5, ritaglio ad arco)",
+  "es": "Foto de Stefano en tour<br>(vertical 4:5, recorte en arco)"
+ },
+ "rev.h": {
+  "en": "What travellers say",
+  "it": "Cosa dicono i viaggiatori",
+  "es": "Lo que dicen los viajeros"
+ },
+ "rev.p": {
+  "en": "Original screenshots of reviews left after the tours, unedited.",
+  "it": "Screenshot originali delle recensioni lasciate dopo i tour, senza modifiche.",
+  "es": "Capturas originales de las reseñas dejadas tras los tours, sin modificar."
+ },
+ "rev.note": {
+  "en": "all verified!",
+  "it": "tutte verificate!",
+  "es": "¡todas verificadas!"
+ },
+ "rev.badge": {
+  "en": "Verified",
+  "it": "Verificata",
+  "es": "Verificada"
+ },
+ "rev.ph": {
+  "en": "Review screenshot",
+  "it": "Screenshot recensione",
+  "es": "Captura de reseña"
+ },
+ "rev.alt": {
+  "en": "Verified review on",
+  "it": "Recensione verificata su",
+  "es": "Reseña verificada en"
+ },
+ "cv.h": {
+  "en": "Experience",
+  "it": "Curriculum",
+  "es": "Experiencia"
+ },
+ "cv.now": {
+  "en": "present",
+  "it": "oggi",
+  "es": "hoy"
+ },
+ "cv.0.h": {
+  "en": "Tour leader, Michelangelo International",
+  "it": "Tour leader, Michelangelo International",
+  "es": "Tour leader, Michelangelo International"
+ },
+ "cv.0.d": {
+  "en": "Tours across Italy for groups of 30+: logistics, hotels and transport, and the main contact for guests and local suppliers.",
+  "it": "Tour in Italia per gruppi di oltre 30 persone: logistica, hotel e trasporti, punto di riferimento per ospiti e fornitori locali.",
+  "es": "Tours por Italia para grupos de más de 30 personas: logística, hoteles y transporte, y punto de referencia para huéspedes y proveedores locales."
+ },
+ "cv.1.h": {
+  "en": "Tour leader, SRISA Santa Reparata International School of Art",
+  "it": "Tour leader, SRISA Santa Reparata International School of Art",
+  "es": "Tour leader, SRISA Santa Reparata International School of Art"
+ },
+ "cv.1.d": {
+  "en": "1 to 4-day trips across Italy for international university students: transport, logistics and accommodation.",
+  "it": "Viaggi da 1 a 4 giorni in Italia per studenti universitari internazionali: trasporti, logistica e alloggi.",
+  "es": "Viajes de 1 a 4 días por Italia para estudiantes universitarios internacionales: transporte, logística y alojamiento."
+ },
+ "cv.2.h": {
+  "en": "Travel consultant, Italy Luxury Travel",
+  "it": "Travel consultant, Italy Luxury Travel",
+  "es": "Consultor de viajes, Italy Luxury Travel"
+ },
+ "cv.2.d": {
+  "en": "Tailor-made itineraries for a luxury incoming DMC: high-end services, bookings and last-minute changes.",
+  "it": "Itinerari su misura per una DMC incoming del lusso: servizi di fascia alta, prenotazioni e cambi dell'ultimo minuto.",
+  "es": "Itinerarios a medida para una DMC receptiva de lujo: servicios de alta gama, reservas y cambios de última hora."
+ },
+ "cv.3.h": {
+  "en": "Tour leader, Walkabout Florence",
+  "it": "Tour leader, Walkabout Florence",
+  "es": "Tour leader, Walkabout Florence"
+ },
+ "cv.3.d": {
+  "en": "Daily tours in Tuscany for groups of 40+ with an agency awarded TripAdvisor Travelers' Choice four years in a row.",
+  "it": "Tour quotidiani in Toscana per gruppi di oltre 40 persone con un'agenzia premiata per 4 anni di fila con il Travelers' Choice di TripAdvisor.",
+  "es": "Tours diarios por la Toscana para grupos de más de 40 personas con una agencia premiada cuatro años seguidos con el Travelers' Choice de TripAdvisor."
+ },
+ "cv.4.h": {
+  "en": "Tour leader, Tourist Italy and Streaty",
+  "it": "Tour leader, Tourist Italy e Streaty",
+  "es": "Tour leader, Tourist Italy y Streaty"
+ },
+ "cv.4.d": {
+  "en": "Private and small-group tours in Tuscany, plus market tours and exclusive food tours in Florence.",
+  "it": "Tour privati e per piccoli gruppi in Toscana, mercati e food tour esclusivi a Firenze.",
+  "es": "Tours privados y para grupos pequeños en la Toscana, mercados y food tours exclusivos en Florencia."
+ },
+ "cv.5.h": {
+  "en": "Tour leader, Ciao Florence",
+  "it": "Tour leader, Ciao Florence",
+  "es": "Tour leader, Ciao Florence"
+ },
+ "cv.5.d": {
+  "en": "Tuscany tours for groups of up to 80 in three languages: 2,000+ guests and 150+ five-star reviews for the agency.",
+  "it": "Tour in Toscana per gruppi fino a 80 persone in tre lingue: oltre 2.000 clienti e più di 150 recensioni a cinque stelle per l'agenzia.",
+  "es": "Tours por la Toscana para grupos de hasta 80 personas en tres idiomas: más de 2.000 clientes y más de 150 reseñas de cinco estrellas para la agencia."
+ },
+ "cv.6.h": {
+  "en": "Orientation worker, Syracuse University",
+  "it": "Orientation worker, Syracuse University",
+  "es": "Orientation worker, Syracuse University"
+ },
+ "cv.6.d": {
+  "en": "Welcoming students at the Florence campus: arrivals, shuttles and support.",
+  "it": "Accoglienza degli studenti nel campus di Firenze: arrivi, navette e assistenza.",
+  "es": "Acogida de estudiantes en el campus de Florencia: llegadas, traslados y asistencia."
+ },
+ "cv.7.h": {
+  "en": "Project designer, DMO Ciociaria – Valle di Comino",
+  "it": "Project designer, DMO Ciociaria – Valle di Comino",
+  "es": "Diseñador de proyectos, DMO Ciociaria – Valle di Comino"
+ },
+ "cv.7.d": {
+  "en": "Winning project in the LazioCrea regional call «Valcomino turistica: tra proposte originali, valori autentici e innovazioni sostenibili».",
+  "it": "Progetto vincitore del bando regionale LazioCrea «Valcomino turistica: tra proposte originali, valori autentici e innovazioni sostenibili».",
+  "es": "Proyecto ganador de la convocatoria regional de LazioCrea «Valcomino turistica: tra proposte originali, valori autentici e innovazioni sostenibili»."
+ },
+ "cv.8.h": {
+  "en": "Tour Leader Certification",
+  "it": "Certificazione Tour Leader",
+  "es": "Certificación de Tour Leader"
+ },
+ "cv.8.d": {
+  "en": "Forma Futuro, Parma, issued by the Emilia-Romagna Region.",
+  "it": "Forma Futuro di Parma, rilasciata dalla Regione Emilia-Romagna.",
+  "es": "Forma Futuro de Parma, expedida por la Región de Emilia-Romaña."
+ },
+ "cv.9.h": {
+  "en": "Bachelor's in Science and Technology for Cultural Heritage",
+  "it": "Laurea in Scienze e Tecnologie per i Beni Culturali",
+  "es": "Grado en Ciencias y Tecnologías para el Patrimonio Cultural"
+ },
+ "cv.9.d": {
+  "en": "University of Ferrara, with an Erasmus+ exchange in Art History at the University of Zaragoza (2015).",
+  "it": "Università degli Studi di Ferrara, con Erasmus+ in Storia dell'Arte all'Universidad de Zaragoza (2015).",
+  "es": "Universidad de Ferrara, con un Erasmus+ en Historia del Arte en la Universidad de Zaragoza (2015)."
+ },
+ "f.lang": {
+  "en": "Languages",
+  "it": "Lingue",
+  "es": "Idiomas"
+ },
+ "f.lang.0": {
+  "en": "English, C1",
+  "it": "English, C1",
+  "es": "Inglés, C1"
+ },
+ "f.lang.1": {
+  "en": "Italian, native",
+  "it": "Italiano, madrelingua",
+  "es": "Italiano, nativo"
+ },
+ "f.lang.2": {
+  "en": "Spanish, C2",
+  "it": "Español, C2",
+  "es": "Español, C2"
+ },
+ "f.spec": {
+  "en": "Specialties",
+  "it": "Specialità",
+  "es": "Especialidades"
+ },
+ "f.spec.0": {
+  "en": "Day tours",
+  "it": "Tour di giornata",
+  "es": "Tours de un día"
+ },
+ "f.spec.1": {
+  "en": "Multi-day trips",
+  "it": "Viaggi di più giorni",
+  "es": "Viajes de varios días"
+ },
+ "f.spec.2": {
+  "en": "Food and market tours",
+  "it": "Food tour e mercati",
+  "es": "Food tours y mercados"
+ },
+ "f.spec.3": {
+  "en": "Groups of up to 80",
+  "it": "Gruppi fino a 80 persone",
+  "es": "Grupos de hasta 80 personas"
+ },
+ "f.spec.4": {
+  "en": "University students",
+  "it": "Studenti universitari",
+  "es": "Estudiantes universitarios"
+ },
+ "f.spec.5": {
+  "en": "Tailor-made itineraries",
+  "it": "Itinerari su misura",
+  "es": "Itinerarios a medida"
+ },
+ "f.where": {
+  "en": "Where",
+  "it": "Dove",
+  "es": "Dónde"
+ },
+ "f.where.0": {
+  "en": "Florence",
+  "it": "Firenze",
+  "es": "Florencia"
+ },
+ "f.where.1": {
+  "en": "Tuscany",
+  "it": "Toscana",
+  "es": "Toscana"
+ },
+ "f.where.2": {
+  "en": "All of Italy",
+  "it": "Tutta Italia",
+  "es": "Toda Italia"
+ },
+ "f.where.3": {
+  "en": "Ciociaria, Valle di Comino",
+  "it": "Ciociaria, Valle di Comino",
+  "es": "Ciociaria, Valle di Comino"
+ },
+ "f.dl": {
+  "en": "Ask for my full CV on WhatsApp",
+  "it": "Chiedi il CV completo su WhatsApp",
+  "es": "Pide mi CV completo por WhatsApp"
+ },
+ "col.h": {
+  "en": "Contact me",
+  "it": "Contattami",
+  "es": "Contáctame"
+ },
+ "col.p": {
+  "en": "Agencies, tour operators, DMCs, schools and universities: tell me about your group and your dates, in English, Italian or Spanish, and let's plan it together.",
+  "it": "Agenzie, tour operator, DMC, scuole e università: raccontami il tuo gruppo e le date, in italiano, inglese o spagnolo, e organizziamo insieme.",
+  "es": "Agencias, touroperadores, DMC, escuelas y universidades: cuéntame tu grupo y las fechas, en inglés, italiano o español, y lo organizamos juntos."
+ },
+ "col.0": {
+  "en": "Day tours and multi-day trips for groups",
+  "it": "Tour di giornata e viaggi di più giorni per gruppi",
+  "es": "Tours de un día y viajes de varios días para grupos"
+ },
+ "col.1": {
+  "en": "Programmes for international students and universities",
+  "it": "Programmi per studenti e università internazionali",
+  "es": "Programas para estudiantes y universidades internacionales"
+ },
+ "col.2": {
+  "en": "Tailor-made itineraries and food tours",
+  "it": "Itinerari su misura e food tour",
+  "es": "Itinerarios a medida y food tours"
+ },
+ "wa.btn": {
+  "en": "Message me on WhatsApp",
+  "it": "Scrivimi su WhatsApp",
+  "es": "Escríbeme por WhatsApp"
+ },
+ "wa.aria": {
+  "en": "Message Stefano on WhatsApp",
+  "it": "Scrivi a Stefano su WhatsApp",
+  "es": "Escribe a Stefano por WhatsApp"
+ },
+ "wa.text": {
+  "en": "Hi Stefano, I'm writing from your website about a collaboration.",
+  "it": "Ciao Stefano, ti scrivo dal sito per una collaborazione.",
+  "es": "Hola Stefano, te escribo desde tu web por una colaboración."
+ },
+ "foot": {
+  "en": "Stefano Alonzi, certified tour leader. Based in Sora (FR), travelling all over Italy.",
+  "it": "Stefano Alonzi, tour leader certificato. Base a Sora (FR), in viaggio per tutta Italia.",
+  "es": "Stefano Alonzi, tour leader certificado. Con base en Sora (FR), viajando por toda Italia."
+ },
+ "cv.open": {
+  "en": "View my CV",
+  "it": "Vedi il curriculum",
+  "es": "Ver mi currículum"
+ },
+ "cv.close": {
+  "en": "Close",
+  "it": "Chiudi",
+  "es": "Cerrar"
+ },
+ "ct.email": {
+  "en": "Send me an email",
+  "it": "Scrivimi una email",
+  "es": "Envíame un email"
+ },
+ "rv.prev": {
+  "en": "Previous reviews",
+  "it": "Recensioni precedenti",
+  "es": "Reseñas anteriores"
+ },
+ "rv.next": {
+  "en": "Next reviews",
+  "it": "Recensioni successive",
+  "es": "Reseñas siguientes"
+ },
+ "ph.photo": {
+  "en": "Photo of Stefano coming soon",
+  "it": "Foto di Stefano in arrivo",
+  "es": "Foto de Stefano próximamente"
+ },
+ "cta.collab": {
+  "en": "Let's work together",
+  "it": "Lavoriamo insieme",
+  "es": "Trabajemos juntos"
+ },
+ "tag.role": {
+  "en": "Certified tour leader",
+  "it": "Tour leader certificato",
+  "es": "Tour leader certificado"
+ },
+ "stat.80.l": {
+  "en": "people per group, at most",
+  "it": "persone per gruppo, al massimo",
+  "es": "personas por grupo, como máximo"
+ },
+ "stat.3.l": {
+  "en": "languages: English, Italian, Spanish",
+  "it": "lingue: inglese, italiano, spagnolo",
+  "es": "idiomas: inglés, italiano, español"
+ },
+ "stat.2022.l": {
+  "en": "first groups as a tour leader",
+  "it": "primi gruppi da tour leader",
+  "es": "primeros grupos como tour leader"
+ },
+ "stat.5.l": {
+  "en": "stars from the travellers",
+  "it": "stelle dai viaggiatori",
+  "es": "estrellas de los viajeros"
+ },
+ "rev.quote.src": {
+  "en": "Bridget C., Ireland · Trustpilot",
+  "it": "Bridget C., Irlanda · Trustpilot",
+  "es": "Bridget C., Irlanda · Trustpilot"
+ },
+ "rev.open": {
+  "en": "Open the original review",
+  "it": "Apri la recensione originale",
+  "es": "Abrir la reseña original"
+ },
+ "mag.issue": {
+  "en": "No. 01 · Italy on foot",
+  "it": "N. 01 · L'Italia a piedi",
+  "es": "N.º 01 · Italia a pie"
+ },
+ "mag.kicker": {
+  "en": "Portrait",
+  "it": "Ritratto",
+  "es": "Retrato"
+ },
+ "mag.title": {
+  "en": "The tour leader who walks Italy every day",
+  "it": "Il tour leader che cammina l'Italia ogni giorno",
+  "es": "El tour leader que recorre Italia cada día"
+ },
+ "mag.by": {
+  "en": "Words and routes by Stefano Alonzi",
+  "it": "Testi e percorsi di Stefano Alonzi",
+  "es": "Textos y rutas de Stefano Alonzi"
+ },
+ "mag.career": {
+  "en": "Ten stops in a career",
+  "it": "Dieci tappe di una carriera",
+  "es": "Diez etapas de una carrera"
+ },
+ "path.h": {
+  "en": "The road so far",
+  "it": "La strada fatta finora",
+  "es": "El camino hasta ahora"
+ },
+ "path.p": {
+  "en": "Scroll and follow the route: every stop is a real step of my career.",
+  "it": "Scorri e segui il percorso: ogni tappa è un pezzo vero della mia carriera.",
+  "es": "Desliza y sigue la ruta: cada parada es una etapa real de mi carrera."
+ },
+ "path.start": {
+  "en": "Departure",
+  "it": "Partenza",
+  "es": "Salida"
+ },
+ "path.end": {
+  "en": "Next stop: your group",
+  "it": "Prossima tappa: il tuo gruppo",
+  "es": "Próxima parada: tu grupo"
+ },
+ "pc.h": {
+  "en": "Postcards from the road",
+  "it": "Cartoline dal viaggio",
+  "es": "Postales del camino"
+ },
+ "pc.hint": {
+  "en": "tap a postcard to turn it over",
+  "it": "tocca una cartolina per girarla",
+  "es": "toca una postal para darle la vuelta"
+ },
+ "pc.greet": {
+  "en": "Greetings from",
+  "it": "Saluti da",
+  "es": "Saludos desde"
+ },
+ "pc.turn": {
+  "en": "Turn over",
+  "it": "Gira",
+  "es": "Dar la vuelta"
+ },
+ "pal.follow": {
+  "en": "Follow me!",
+  "it": "Seguitemi!",
+  "es": "¡Seguidme!"
+ },
+ "pal.stop": {
+  "en": "Stop",
+  "it": "Tappa",
+  "es": "Parada"
+ },
+ "pal.hello": {
+  "en": "Hello",
+  "it": "Ciao",
+  "es": "Hola"
+ },
+ "pal.group": {
+  "en": "The group follows: scroll to move to the next stop.",
+  "it": "Il gruppo segue: scorri per passare alla tappa dopo.",
+  "es": "El grupo sigue: desliza para pasar a la siguiente parada."
+ },
+ "map.h": {
+  "en": "Where I've worked",
+  "it": "Dove ho lavorato",
+  "es": "Dónde he trabajado"
+ },
+ "map.hint": {
+  "en": "tap a point on the map",
+  "it": "tocca un punto sulla mappa",
+  "es": "toca un punto del mapa"
+ },
+ "map.all": {
+  "en": "Tours all over Italy",
+  "it": "Tour in tutta Italia",
+  "es": "Tours por toda Italia"
+ },
+ "pl.firenze": {
+  "en": "Florence",
+  "it": "Firenze",
+  "es": "Florencia"
+ },
+ "pl.toscana": {
+  "en": "Tuscany",
+  "it": "Toscana",
+  "es": "Toscana"
+ },
+ "pl.ferrara": {
+  "en": "Ferrara",
+  "it": "Ferrara",
+  "es": "Ferrara"
+ },
+ "pl.parma": {
+  "en": "Parma",
+  "it": "Parma",
+  "es": "Parma"
+ },
+ "pl.sora": {
+  "en": "Sora and Valle di Comino",
+  "it": "Sora e Valle di Comino",
+  "es": "Sora y Valle di Comino"
+ },
+ "pl.sora.d": {
+  "en": "My home base, and the area where I designed the Valle di Comino tourism project.",
+  "it": "La mia base, e la zona dove ho progettato il turismo della Valle di Comino.",
+  "es": "Mi base, y la zona donde diseñé el proyecto turístico del Valle di Comino."
+ },
+ "kit.h": {
+  "en": "My tour leader kit",
+  "it": "Il mio kit da tour leader",
+  "es": "Mi kit de tour leader"
+ },
+ "kit.hint": {
+  "en": "click the objects on the desk",
+  "it": "clicca gli oggetti sulla scrivania",
+  "es": "haz clic en los objetos del escritorio"
+ },
+ "kit.paddle": {
+  "en": "The paddle: the groups I lead",
+  "it": "La paletta: i gruppi che accompagno",
+  "es": "La paleta: los grupos que acompaño"
+ },
+ "kit.radio": {
+  "en": "The radio: three languages",
+  "it": "La radio: tre lingue",
+  "es": "La radio: tres idiomas"
+ },
+ "kit.folder": {
+  "en": "The folder: my experience",
+  "it": "La cartellina: la mia esperienza",
+  "es": "La carpeta: mi experiencia"
+ },
+ "kit.notebook": {
+  "en": "The notebook: what travellers say",
+  "it": "Il taccuino: cosa dicono i viaggiatori",
+  "es": "El cuaderno: lo que dicen los viajeros"
+ },
+ "kit.phone": {
+  "en": "The phone: write to me",
+  "it": "Il telefono: scrivimi",
+  "es": "El teléfono: escríbeme"
+ },
+ "kit.radio.p": {
+  "en": "I lead groups in English, Italian and Spanish, switching language without losing anyone along the way.",
+  "it": "Accompagno gruppi in inglese, italiano e spagnolo, cambiando lingua senza perdere nessuno per strada.",
+  "es": "Acompaño grupos en inglés, italiano y español, cambiando de idioma sin perder a nadie por el camino."
+ },
+ "board.h": {
+  "en": "The review board",
+  "it": "La bacheca delle recensioni",
+  "es": "El tablón de reseñas"
+ },
+ "board.hint": {
+  "en": "drag the screenshots around, tap one to enlarge it",
+  "it": "sposta gli screenshot trascinandoli, toccane uno per ingrandirlo",
+  "es": "arrastra las capturas, toca una para ampliarla"
+ },
+ "board.soon": {
+  "en": "screenshot coming soon",
+  "it": "screenshot in arrivo",
+  "es": "captura próximamente"
+ },
+ "board.note": {
+  "en": "Real reviews, unedited screenshots.",
+  "it": "Recensioni vere, screenshot senza modifiche.",
+  "es": "Reseñas reales, capturas sin modificar."
+ },
+ "scroll": {
+  "en": "scroll",
+  "it": "scorri",
+  "es": "desliza"
+ }
+};
+
+/** Testo in inglese (la lingua principale): il cambio lingua avviene nel browser. */
+export const t = (k: string): string => TESTI[k]?.en ?? (console.warn('Testo mancante: ' + k), k);
