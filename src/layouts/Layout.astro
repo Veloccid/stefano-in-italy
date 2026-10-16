@@ -10,7 +10,7 @@ import Icona from '../components/Icona.astro';
 interface Props { tema?: Tema; titoloKey?: string; descrizione?: string; contatti?: boolean }
 const { tema, titoloKey = 'meta.title', descrizione = t('meta.desc'), contatti = true } = Astro.props;
 const titolo = t(titoloKey);
-const og = new URL('/og.jpg', Astro.site).href;
+const og = new URL('/og.jpg?v=2', Astro.site).href;
 ---
 <!doctype html>
 <html lang="en" data-tema={tema?.id} data-titolo={titoloKey}>
@@ -27,6 +27,10 @@ const og = new URL('/og.jpg', Astro.site).href;
   <meta property="og:title" content={titolo} />
   <meta property="og:description" content={descrizione} />
   <meta property="og:image" content={og} />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
+  <meta property="og:site_name" content="Stefano In Italy" />
   <meta name="twitter:card" content="summary_large_image" />
 </head>
 <body>
