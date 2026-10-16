@@ -1,73 +1,106 @@
 ---
-import '../styles/font.css';
-import '../styles/base.css';
-import { TEMI, link } from '../temi';
+// Home provvisoria: pagina "lavori in corso" finché Stefano non sceglie la proposta.
+import Layout from '../layouts/Layout.astro';
+import Lingue from '../components/Lingue.astro';
+import Icona from '../components/Icona.astro';
+import T from '../components/T.astro';
+import { SITO } from '../config';
 ---
-<!doctype html>
-<html lang="it">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="robots" content="noindex, nofollow" />
-  <title>Proposte per il sito · Stefano In Italy</title>
-  <meta name="description" content="Dieci proposte grafiche per il sito di Stefano In Italy." />
-  <meta property="og:title" content="Proposte per il sito · Stefano In Italy" />
-  <meta property="og:description" content="Dieci proposte grafiche da confrontare: scegli quella che ti somiglia di più." />
-  <meta property="og:image" content="https://stefano-in-italy.vercel.app/og.jpg" />
-  <meta name="theme-color" content="#003B1F" />
-</head>
-<body>
-  <header class="sc-testa">
-    <div class="wrap sc-testa-in">
-      <img class="sc-logo" src="/img/logo-sii.png" width="1254" height="1254" alt="Logo Stefano In Italy" />
-      <div>
-        <p class="sc-kicker hand">ciao Stefano!</p>
-        <h1>Proposte per il sito</h1>
-        <p class="sc-lead">Dieci direzioni diverse per lo stesso sito: stessi colori, stesso logo, stessi testi. Cambiano impaginazione, movimento e interazione. Aprile tutte, anche dal telefono, e dimmi quale ti somiglia di più (o cosa prenderesti da ognuna).</p>
+<Layout titoloKey="wip.title" contatti={false}>
+  <div class="wip">
+    <div class="wip-lingue"><Lingue class="su-verde" /></div>
+    <main id="contenuto" class="wip-centro">
+      <p class="wip-kicker"><span class="wip-luce"></span><T k="wip.kicker" /></p>
+
+      <p class="wip-brand" aria-label="Stefano In Italy"><span class="k">S</span><span class="c">tefano</span><span class="c">&nbsp;</span><span class="k">I</span><span class="c">n</span><span class="c">&nbsp;</span><span class="k">I</span><span class="c">taly</span><span class="bang">!</span></p>
+
+      <div class="wip-scena" aria-hidden="true">
+        <div class="wip-paletta">
+          <svg viewBox="0 0 200 420"><rect x="94" y="150" width="12" height="270" rx="6" fill="#C98E2B" /><circle cx="100" cy="92" r="88" fill="#FEF6EB" stroke="#B04A2A" stroke-width="10" /></svg>
+          <T class="wip-cartello" k="wip.sign" />
+        </div>
+        <img class="wip-stef" src="/img/stefano.webp" width="458" height="640" alt="" />
       </div>
-    </div>
-  </header>
-  <main class="wrap">
-    <ol class="sc-lista">
-      {TEMI.map((tema) => (
-        <li>
-          <a href={link(tema)}>
-            <span class="sc-lettera">{tema.lettera}</span>
-            <span class="sc-testo">
-              <span class="sc-tipo">{tema.tipo}</span>
-              <span class="sc-nome">{tema.nome}</span>
-              <span class="sc-idea">{tema.idea}</span>
-            </span>
-            <span class="sc-apri">Apri la proposta →</span>
-          </a>
-        </li>
-      ))}
-    </ol>
-    <p class="sc-nota">Le recensioni mostrano lo screenshot vero di Trustpilot e dei riquadri in attesa degli altri. La foto di Stefano è ancora un segnaposto. Le pagine non compaiono su Google.</p>
-  </main>
-  <style>
-    .sc-testa{background:var(--verde);color:var(--crema);padding:clamp(32px,6vw,72px) 0}
-    .sc-testa-in{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,48px);align-items:center}
-    .sc-logo{width:clamp(110px,18vw,200px);height:auto;border-radius:16px}
-    .sc-kicker{font-size:28px;color:#E3B458;margin:0}
-    h1{font-size:clamp(40px,7vw,80px)}
-    .sc-lead{max-width:60ch;margin:16px 0 0;color:#DDE6D5;font-size:18px}
-    .sc-lista{list-style:none;margin:clamp(28px,5vw,56px) 0 0;padding:0;display:grid;gap:14px}
-    .sc-lista a{display:grid;grid-template-columns:72px 1fr auto;gap:20px;align-items:center;padding:18px 22px;border:2px solid rgba(0,59,31,.16);border-radius:18px;text-decoration:none;background:#fff;transition:border-color .15s,transform .15s}
-    .sc-lista a:hover{border-color:var(--verde);transform:translateY(-2px)}
-    .sc-lettera{width:64px;height:64px;border-radius:50%;background:var(--verde);color:var(--crema);display:grid;place-items:center;font:400 34px/1 var(--f-display)}
-    .sc-testo{display:grid;gap:2px}
-    .sc-tipo{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--terracotta)}
-    .sc-nome{font:400 28px/1.1 var(--f-display)}
-    .sc-idea{color:var(--muted)}
-    .sc-apri{font-weight:700;white-space:nowrap;background:var(--verde);color:var(--crema);padding:10px 16px;border-radius:999px}
-    .sc-nota{color:var(--muted);font-size:15px;margin:28px 0 64px;max-width:70ch}
-    @media (max-width:700px){
-      .sc-testa-in{grid-template-columns:1fr}
-      .sc-lista a{grid-template-columns:52px 1fr;gap:14px;padding:16px}
-      .sc-lettera{width:48px;height:48px;font-size:26px}
-      .sc-apri{grid-column:2;justify-self:start}
-    }
-  </style>
-</body>
-</html>
+
+      <T as="h1" k="wip.h" />
+
+      <div class="wip-appello">
+        <T class="wip-appello-t" k="wip.roll" />
+        <ol class="wip-gruppo" aria-hidden="true">{Array.from({ length: 20 }, (_, i) => <li style={`--i:${i}`}></li>)}</ol>
+        <p class="wip-conta"><b>19/20</b> · <T k="wip.missing" /></p>
+      </div>
+
+      <T as="p" class="wip-p" k="wip.p" />
+      <div class="wip-bottoni">
+        <a class="btn btn-wa js-wa" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener"><Icona nome="wa" /><T k="wa.btn" /></a>
+        <a class="btn wip-ig" href={SITO.instagram} target="_blank" rel="noopener"><Icona nome="ig" /><T k="wip.ig" /></a>
+      </div>
+    </main>
+    <footer class="wip-piede"><T k="wip.foot" /> · <a href={SITO.instagram} target="_blank" rel="noopener">{SITO.instagramHandle}</a></footer>
+  </div>
+</Layout>
+
+<style is:global>
+@property --q { syntax: '<number>'; inherits: true; initial-value: 0; }
+html:has(.wip) body{background:var(--verde);color:var(--crema)}
+.wip{min-height:100dvh;display:grid;grid-template-rows:auto 1fr auto;padding:16px var(--pad) 20px;overflow-x:clip}
+.wip-lingue{justify-self:end}
+.wip-centro{display:grid;justify-items:center;align-content:center;text-align:center;gap:14px;padding:8px 0 24px}
+.wip-kicker{display:inline-flex;align-items:center;gap:10px;margin:0;font-size:13px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:#E3B458;border:1.5px solid rgba(227,180,88,.5);border-radius:999px;padding:6px 14px}
+.wip-luce{width:9px;height:9px;border-radius:50%;background:#E3B458;animation:luce 1.1s ease-in-out infinite}
+@keyframes luce{50%{opacity:.2}}
+.wip-brand{margin:6px 0 0;font:400 clamp(44px,9vw,104px)/1 var(--f-display);white-space:nowrap;display:inline-flex;align-items:baseline;animation:morph 8s cubic-bezier(.6,0,.3,1) infinite 1.2s}
+.wip-brand .c{display:inline-block;overflow:hidden;vertical-align:baseline;padding-bottom:.22em;margin-bottom:-.22em;max-width:calc(var(--w,4em) * (1 - var(--q)));opacity:calc(1 - var(--q) * 3)}
+.wip-brand .bang{display:inline-block;overflow:hidden;max-width:calc(.36em * var(--q));opacity:var(--q)}
+@keyframes morph{0%,30%{--q:0}45%,80%{--q:1}95%,100%{--q:0}}
+.wip-scena{position:relative;width:min(300px,62vw);aspect-ratio:300/260;margin-top:4px}
+.wip-stef{position:absolute;left:4%;bottom:0;width:48%;height:auto;transform:scaleX(-1);animation:passo 1s ease-in-out infinite;transform-origin:50% 100%}
+@keyframes passo{0%,100%{transform:scaleX(-1) translateY(0) rotate(0)}25%{transform:scaleX(-1) translateY(-5px) rotate(-1.5deg)}75%{transform:scaleX(-1) translateY(-5px) rotate(1.5deg)}}
+.wip-paletta{position:absolute;right:8%;bottom:4%;width:34%;aspect-ratio:200/420;transform-origin:50% 100%;animation:sventola 2.2s ease-in-out infinite}
+.wip-paletta svg{width:100%;height:100%;display:block}
+@keyframes sventola{0%,100%{transform:rotate(-7deg)}50%{transform:rotate(7deg)}}
+.wip-cartello{text-align:center;position:absolute;left:8%;right:8%;top:9%;height:26%;display:grid;place-items:center;color:var(--verde);font:400 clamp(14px,3.4vw,19px)/1.05 var(--f-display);text-wrap:balance}
+.wip h1{font-size:clamp(30px,5vw,54px);line-height:1.08;max-width:18ch;margin-top:6px}
+.wip-appello{display:grid;justify-items:center;gap:8px;margin-top:6px}
+.wip-appello-t{font:600 26px/1 var(--f-hand);color:#E3B458}
+.wip-gruppo{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(20,1fr);gap:6px;width:min(420px,84vw)}
+.wip-gruppo li{aspect-ratio:1;border-radius:50%;border:2px solid rgba(169,191,163,.5);transition:background-color .3s,border-color .3s,transform .3s}
+.wip-gruppo li.ok{background:var(--salvia);border-color:var(--salvia);transform:scale(1.08)}
+.wip-gruppo li:last-child{border-color:#E3B458;animation:manca 1.2s ease-in-out infinite}
+@keyframes manca{50%{background:rgba(227,180,88,.35);transform:scale(1.2)}}
+.wip-conta{margin:0;font-size:15px;color:#C9D6C6}
+.wip-conta b{color:var(--crema)}
+.wip-p{max-width:46ch;margin:8px 0 0;color:#DDE6D5}
+.wip-bottoni{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:6px}
+.wip-ig{border:2px solid var(--crema);color:var(--crema)}
+.wip-ig:hover{background:var(--crema);color:var(--verde)}
+.wip-piede{text-align:center;font-size:14px;color:#A9BFA3}
+.wip-piede a{color:inherit}
+.wip h1{text-wrap:balance}
+@media (min-width:900px){
+  .wip-centro{grid-template-columns:minmax(300px,.9fr) 1.1fr;column-gap:clamp(32px,5vw,80px);justify-items:start;text-align:left;max-width:1180px;width:100%;margin:0 auto;row-gap:12px}
+  .wip-centro>*{grid-column:2}
+  .wip-scena{grid-column:1;grid-row:1 / span 7;align-self:center;justify-self:center;width:min(440px,100%)}
+  .wip h1{max-width:20ch}
+  .wip-appello{justify-items:start}
+  .wip-bottoni{justify-content:flex-start}
+}
+@media (prefers-reduced-motion:reduce){.wip-brand{animation:none}.wip-stef,.wip-paletta,.wip-luce,.wip-gruppo li:last-child{animation:none}}
+</style>
+
+<script>
+  const brand = document.querySelector<HTMLElement>('.wip-brand');
+  if (brand) {
+    const misura = () => {
+      const fs = parseFloat(getComputedStyle(brand).fontSize);
+      brand.querySelectorAll<HTMLElement>('.c').forEach((el) => {
+        el.style.maxWidth = 'none'; const w = el.scrollWidth / fs; el.style.maxWidth = ''; el.style.setProperty('--w', w + 0.02 + 'em');
+      });
+    };
+    misura(); document.fonts?.ready.then(misura); addEventListener('resize', misura);
+    // l'appello: i viaggiatori arrivano uno alla volta, manca solo il sito
+    const posti = [...document.querySelectorAll<HTMLElement>('.wip-gruppo li')].slice(0, 19);
+    if (matchMedia('(prefers-reduced-motion: reduce)').matches) posti.forEach((p) => p.classList.add('ok'));
+    else posti.forEach((p, i) => setTimeout(() => p.classList.add('ok'), 600 + i * 140));
+  }
+</script>

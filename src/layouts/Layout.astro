@@ -7,12 +7,13 @@ import type { Tema } from '../temi';
 import Curriculum from '../components/Curriculum.astro';
 import Icona from '../components/Icona.astro';
 
-interface Props { tema?: Tema; titolo?: string; descrizione?: string; contatti?: boolean }
-const { tema, titolo = t('meta.title'), descrizione = t('meta.desc'), contatti = true } = Astro.props;
+interface Props { tema?: Tema; titoloKey?: string; descrizione?: string; contatti?: boolean }
+const { tema, titoloKey = 'meta.title', descrizione = t('meta.desc'), contatti = true } = Astro.props;
+const titolo = t(titoloKey);
 const og = new URL('/og.jpg', Astro.site).href;
 ---
 <!doctype html>
-<html lang="en" data-tema={tema?.id}>
+<html lang="en" data-tema={tema?.id} data-titolo={titoloKey}>
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -20,6 +21,8 @@ const og = new URL('/og.jpg', Astro.site).href;
   <title>{titolo}</title>
   <meta name="description" content={descrizione} />
   <meta name="theme-color" content="#003B1F" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content={titolo} />
   <meta property="og:description" content={descrizione} />
@@ -34,7 +37,7 @@ const og = new URL('/og.jpg', Astro.site).href;
     <a class="wa-fisso js-wa" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener" aria-label="Message Stefano on WhatsApp" data-i18n-aria="wa.aria"><Icona nome="wa" /></a>
   )}
   {tema && (
-    <div class="pillola" lang="it"><span><b>Proposta {tema.lettera}</b><span class="pillola-nome">: {tema.nome}</span></span><a href="/">Cambia</a></div>
+    <div class="pillola" lang="it"><span><b>Proposta {tema.lettera}</b><span class="pillola-nome">: {tema.nome}</span></span><a href="/proposte/">Cambia</a></div>
   )}
   <script type="application/json" id="testi" set:html={JSON.stringify(TESTI)} />
   <script>

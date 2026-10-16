@@ -1,9 +1,11 @@
 # Stefano In Italy — sito (Astro)
 
-Sito di Stefano Alonzi, tour leader. Per ora contiene le **10 proposte grafiche** da far scegliere a Stefano.
+Sito di Stefano Alonzi, tour leader. Per ora contiene la pagina "lavori in corso" e le **10 proposte grafiche** da far scegliere a Stefano.
 
-- `/` pagina di scelta con le proposte A–J
-- `/<proposta>/` ogni proposta (es. `/cammino/`, `/mappa/`)
+- `/` pagina "lavori in corso" (in 3 lingue)
+- `/proposte/` pagina di scelta con le proposte A–J
+- `/proposte/<proposta>/` ogni proposta (es. `/proposte/cammino/`, `/proposte/mappa/`)
+- i vecchi link `/<proposta>/` portano in automatico a `/proposte/<proposta>/`
 
 ## Dove si cambiano le cose
 

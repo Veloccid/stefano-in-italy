@@ -17,4 +17,4 @@ export const TEMI: Tema[] = [
 export const temaDa = (id: string) => TEMI.find((x) => x.id === id)!;
 export const percorsiTemi = () => TEMI.map((tema) => ({ params: { tema: tema.id }, props: { tema } }));
 export const link = (tema: Tema | string, percorso = '') =>
-  `/${typeof tema === 'string' ? tema : tema.id}/${percorso}`.replace(/\/+$/, '/') ;
+  `/proposte/${typeof tema === 'string' ? tema : tema.id}/${percorso}`.replace(/\/+$/, '/') ;

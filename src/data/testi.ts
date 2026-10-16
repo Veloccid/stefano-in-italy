@@ -619,5 +619,54 @@ export const TESTI: Record<string, Record<Lingua, string>> = {
  }
 };
 
+// Pagina "lavori in corso" sulla home
+Object.assign(TESTI, {
+ "wip.title": {
+  "en": "Stefano In Italy — The website is about to depart",
+  "it": "Stefano In Italy — Il sito sta per partire",
+  "es": "Stefano In Italy — La web está a punto de salir"
+ },
+ "wip.kicker": {
+  "en": "Work in progress",
+  "it": "Lavori in corso",
+  "es": "Obras en curso"
+ },
+ "wip.h": {
+  "en": "I'm gathering the group.<br>The website departs soon!",
+  "it": "Sto radunando il gruppo.<br>Il sito parte a breve!",
+  "es": "Estoy reuniendo al grupo.<br>¡La web sale muy pronto!"
+ },
+ "wip.p": {
+  "en": "In the meantime you can find me on Instagram, or write to me on WhatsApp for groups and collaborations.",
+  "it": "Intanto mi trovi su Instagram, oppure scrivimi su WhatsApp per gruppi e collaborazioni.",
+  "es": "Mientras tanto me encuentras en Instagram, o escríbeme por WhatsApp para grupos y colaboraciones."
+ },
+ "wip.roll": {
+  "en": "Headcount",
+  "it": "Appello",
+  "es": "Recuento"
+ },
+ "wip.missing": {
+  "en": "only the website is missing",
+  "it": "manca solo il sito",
+  "es": "solo falta la web"
+ },
+ "wip.sign": {
+  "en": "Almost there!",
+  "it": "Ci siamo quasi!",
+  "es": "¡Casi listos!"
+ },
+ "wip.ig": {
+  "en": "Follow me on Instagram",
+  "it": "Seguimi su Instagram",
+  "es": "Sígueme en Instagram"
+ },
+ "wip.foot": {
+  "en": "Stefano Alonzi · Tour leader in Italy",
+  "it": "Stefano Alonzi · Tour leader in Italia",
+  "es": "Stefano Alonzi · Tour leader en Italia"
+ }
+});
+
 /** Testo in inglese (la lingua principale): il cambio lingua avviene nel browser. */
 export const t = (k: string): string => TESTI[k]?.en ?? (console.warn('Testo mancante: ' + k), k);

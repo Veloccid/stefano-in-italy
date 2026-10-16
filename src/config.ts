@@ -3,7 +3,7 @@ export const SITO = {
   nome: 'Stefano In Italy',
   sigla: 'SII!',
   persona: 'Stefano Alonzi',
-  url: 'https://stefano-in-italy.vercel.app', // da cambiare quando c'è il dominio
+  url: 'https://www.stefanoinitaly.com',
   whatsapp: '393467603667', // solo cifre, con prefisso 39
   email: 'alonzistefano@hotmail.it',
   instagram: 'https://www.instagram.com/stefanoinitaly/',

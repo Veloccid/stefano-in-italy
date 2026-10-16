@@ -1,0 +1,22 @@
+---
+import Layout from '../../../layouts/Layout.astro';
+import { percorsiTemi, type Tema } from '../../../temi';
+import Cammino from '../../../proposte/cammino/Home.astro';
+import Essenziale from '../../../proposte/essenziale/Home.astro';
+import Rivista from '../../../proposte/rivista/Home.astro';
+import Verde from '../../../proposte/verde/Home.astro';
+import Percorso from '../../../proposte/percorso/Home.astro';
+import Cartoline from '../../../proposte/cartoline/Home.astro';
+import Paletta from '../../../proposte/paletta/Home.astro';
+import Mappa from '../../../proposte/mappa/Home.astro';
+import Kit from '../../../proposte/kit/Home.astro';
+import Bacheca from '../../../proposte/bacheca/Home.astro';
+
+export const getStaticPaths = percorsiTemi;
+const { tema } = Astro.props as { tema: Tema };
+const HOME = { cammino: Cammino, essenziale: Essenziale, rivista: Rivista, verde: Verde, percorso: Percorso, cartoline: Cartoline, paletta: Paletta, mappa: Mappa, kit: Kit, bacheca: Bacheca } as const;
+const Home = HOME[tema.id as keyof typeof HOME];
+---
+<Layout tema={tema}>
+  <Home />
+</Layout>

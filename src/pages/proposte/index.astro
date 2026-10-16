@@ -1,0 +1,75 @@
+---
+import '../../styles/font.css';
+import '../../styles/base.css';
+import { TEMI, link } from '../../temi';
+---
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="noindex, nofollow" />
+  <title>Proposte per il sito · Stefano In Italy</title>
+  <meta name="description" content="Dieci proposte grafiche per il sito di Stefano In Italy." />
+  <meta property="og:title" content="Proposte per il sito · Stefano In Italy" />
+  <meta property="og:description" content="Dieci proposte grafiche da confrontare: scegli quella che ti somiglia di più." />
+  <meta property="og:image" content="https://www.stefanoinitaly.com/og.jpg" />
+  <meta name="theme-color" content="#003B1F" />
+  <link rel="icon" type="image/png" href="/favicon.png" />
+  <link rel="apple-touch-icon" href="/favicon.png" />
+</head>
+<body>
+  <header class="sc-testa">
+    <div class="wrap sc-testa-in">
+      <img class="sc-logo" src="/img/logo-sii.png" width="1254" height="1254" alt="Logo Stefano In Italy" />
+      <div>
+        <p class="sc-kicker hand">ciao Stefano!</p>
+        <h1>Proposte per il sito</h1>
+        <p class="sc-lead">Dieci direzioni diverse per lo stesso sito: stessi colori, stesso logo, stessi testi. Cambiano impaginazione, movimento e interazione. Aprile tutte, anche dal telefono, e dimmi quale ti somiglia di più (o cosa prenderesti da ognuna).</p>
+      </div>
+    </div>
+  </header>
+  <main class="wrap">
+    <ol class="sc-lista">
+      {TEMI.map((tema) => (
+        <li>
+          <a href={link(tema)}>
+            <span class="sc-lettera">{tema.lettera}</span>
+            <span class="sc-testo">
+              <span class="sc-tipo">{tema.tipo}</span>
+              <span class="sc-nome">{tema.nome}</span>
+              <span class="sc-idea">{tema.idea}</span>
+            </span>
+            <span class="sc-apri">Apri la proposta →</span>
+          </a>
+        </li>
+      ))}
+    </ol>
+    <p class="sc-nota">Le recensioni mostrano lo screenshot vero di Trustpilot e dei riquadri in attesa degli altri. La foto di Stefano è ancora un segnaposto. Le pagine non compaiono su Google.</p>
+  </main>
+  <style>
+    .sc-testa{background:var(--verde);color:var(--crema);padding:clamp(32px,6vw,72px) 0}
+    .sc-testa-in{display:grid;grid-template-columns:auto 1fr;gap:clamp(20px,4vw,48px);align-items:center}
+    .sc-logo{width:clamp(110px,18vw,200px);height:auto;border-radius:16px}
+    .sc-kicker{font-size:28px;color:#E3B458;margin:0}
+    h1{font-size:clamp(40px,7vw,80px)}
+    .sc-lead{max-width:60ch;margin:16px 0 0;color:#DDE6D5;font-size:18px}
+    .sc-lista{list-style:none;margin:clamp(28px,5vw,56px) 0 0;padding:0;display:grid;gap:14px}
+    .sc-lista a{display:grid;grid-template-columns:72px 1fr auto;gap:20px;align-items:center;padding:18px 22px;border:2px solid rgba(0,59,31,.16);border-radius:18px;text-decoration:none;background:#fff;transition:border-color .15s,transform .15s}
+    .sc-lista a:hover{border-color:var(--verde);transform:translateY(-2px)}
+    .sc-lettera{width:64px;height:64px;border-radius:50%;background:var(--verde);color:var(--crema);display:grid;place-items:center;font:400 34px/1 var(--f-display)}
+    .sc-testo{display:grid;gap:2px}
+    .sc-tipo{font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:var(--terracotta)}
+    .sc-nome{font:400 28px/1.1 var(--f-display)}
+    .sc-idea{color:var(--muted)}
+    .sc-apri{font-weight:700;white-space:nowrap;background:var(--verde);color:var(--crema);padding:10px 16px;border-radius:999px}
+    .sc-nota{color:var(--muted);font-size:15px;margin:28px 0 64px;max-width:70ch}
+    @media (max-width:700px){
+      .sc-testa-in{grid-template-columns:1fr}
+      .sc-lista a{grid-template-columns:52px 1fr;gap:14px;padding:16px}
+      .sc-lettera{width:48px;height:48px;font-size:26px}
+      .sc-apri{grid-column:2;justify-self:start}
+    }
+  </style>
+</body>
+</html>

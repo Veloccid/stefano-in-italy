@@ -10,7 +10,7 @@ export const tr = (k: string, l: L = lingua()) => testi[k]?.[l] ?? testi[k]?.en 
 function applica(l: L, salva: boolean) {
   if (!LINGUE.includes(l)) l = 'en';
   document.documentElement.lang = l;
-  document.title = tr('meta.title', l);
+  document.title = tr(document.documentElement.dataset.titolo || 'meta.title', l);
   document.querySelector('meta[name="description"]')?.setAttribute('content', tr('meta.desc', l));
   document.querySelectorAll<HTMLElement>('[data-i18n]').forEach((el) => (el.innerHTML = tr(el.dataset.i18n!, l)));
   document.querySelectorAll<HTMLElement>('[data-i18n-aria]').forEach((el) => el.setAttribute('aria-label', tr(el.dataset.i18nAria!, l)));
