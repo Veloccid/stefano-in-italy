@@ -1,160 +1,308 @@
 ---
-// Proposta H: Mappa dell'Italia. I punti dove Stefano ha lavorato, da toccare.
+// Proposta H: Mappa dell'Italia. Si disegna da sola, si inclina col mouse, vola dentro le regioni.
 import { TAPPE, SERVIZI } from '../../data/curriculum';
 import { RECENSIONI, CITAZIONE } from '../../data/recensioni';
-import { ITALIA_PATH, ITALIA_W, ITALIA_H, PUNTI } from '../../data/italia';
+import { ITALIA_PATH, ITALIA_W, ITALIA_H } from '../../data/italia';
+import { ZONE_MAPPA, NOMI, NOMI_KEY, xy, percorso } from '../../data/zone';
 import Testata from '../../components/Testata.astro';
 import Recensione from '../../components/Recensione.astro';
 import BottoniContatto from '../../components/BottoniContatto.astro';
 import T from '../../components/T.astro';
-const luoghi = [
-  { id: 'firenze', k: 'pl.firenze', p: PUNTI.firenze },
-  { id: 'toscana', k: 'pl.toscana', p: PUNTI.siena },
-  { id: 'ferrara', k: 'pl.ferrara', p: PUNTI.ferrara },
-  { id: 'parma', k: 'pl.parma', p: PUNTI.parma },
-  { id: 'sora', k: 'pl.sora', p: PUNTI.sora },
-];
-const xy = (p: [number, number]) => [(p[0] / 100) * ITALIA_W, (p[1] / 100) * ITALIA_H];
-const [pa, fe, fi, si, so] = [PUNTI.parma, PUNTI.ferrara, PUNTI.firenze, PUNTI.siena, PUNTI.sora].map(xy);
-const strada = `M${pa[0]} ${pa[1]} Q${(pa[0] + fe[0]) / 2} ${pa[1] - 30} ${fe[0]} ${fe[1]} Q${fe[0] + 20} ${(fe[1] + fi[1]) / 2} ${fi[0]} ${fi[1]} Q${fi[0] - 20} ${(fi[1] + si[1]) / 2} ${si[0]} ${si[1]} Q${si[0] + 60} ${si[1] + 40} ${so[0]} ${so[1]}`;
-const perLuogo = (id: string) => TAPPE.filter((t) => t.luoghi.includes(id));
+const tappa = (n: number) => TAPPE.find((t) => t.n === n)!;
+const tuttiPunti = [...new Set(ZONE_MAPPA.flatMap((z) => z.punti))];
+const [pugX, pugY] = xy('alberobello');
 ---
 <div class="p-map">
   <Testata />
   <main id="contenuto">
-    <section class="map-hero wrap">
-      <div class="map-testo">
-        <T as="p" class="map-kicker" k="tag.role" />
+    <section class="mp-scena">
+      <div class="mp-lato">
+        <T as="p" class="mp-kicker" k="tag.role" />
         <h1>Stefano In Italy</h1>
-        <T as="p" class="map-sub" k="hero.sub" />
-        <T as="h2" k="map.h" />
-        <T as="p" class="map-hint hand" k="map.hint" />
-        <div class="map-pannello" aria-live="polite">
-          {luoghi.map((l, i) => (
-            <div class="map-scheda" data-luogo={l.id} hidden={i !== 0}>
-              <T as="h3" k={l.k} />
-              {l.id === 'sora' && <T as="p" class="map-desc" k="pl.sora.d" />}
-              <ul>
-                {perLuogo(l.id).map((tp) => (
-                  <li><span class="map-anni">{tp.anni}{tp.incorso && <> <T k="cv.now" /></>}</span><T as="strong" k={`cv.${tp.n}.h`} /><T as="span" class="map-d" k={`cv.${tp.n}.d`} /></li>
+        <T as="h2" k="map2.h" />
+        <T as="p" class="mp-hint hand" k="map2.hint" />
+        <div class="mp-zone" role="tablist" aria-label="Regions">
+          <button type="button" class="mp-chip" data-zona="tutta" aria-pressed="true"><T k="map2.tutta" /></button>
+          {ZONE_MAPPA.map((z) => (
+            <button type="button" class:list={['mp-chip', { 'mp-chip-recente': z.recente }]} data-zona={z.id} aria-pressed="false"><T k={z.k} />{z.recente && <span class="mp-punto-vivo" aria-hidden="true"></span>}</button>
+          ))}
+        </div>
+        <div class="mp-scheda" aria-live="polite">
+          <div class="mp-info" data-info="tutta">
+            <T as="h3" k="map2.tutta" />
+            <T as="p" k="map2.tutta.d" />
+            <div class="mp-numeri">
+              <div><b data-conta="4">4</b><T k="stat.reg.l" /></div>
+              <div><b data-conta="80">80</b><T k="stat.80.l" /></div>
+              <div><b data-conta="3">3</b><T k="stat.3.l" /></div>
+            </div>
+          </div>
+          {ZONE_MAPPA.map((z) => (
+            <div class="mp-info" data-info={z.id} hidden>
+              <h3><T k={z.k} />{z.recente && <T class="mp-badge" k="z.recente" />}</h3>
+              <T as="p" k={z.d} />
+              <ol class="mp-tappe-nomi">{z.punti.map((p) => <li>{NOMI_KEY[p] ? <T k={NOMI_KEY[p]} /> : NOMI[p]}</li>)}</ol>
+              <ul class="mp-cv">
+                {z.tappe.map((n) => (
+                  <li><span>{tappa(n).anni}{tappa(n).incorso && <> <T k="cv.now" /></>}</span><T as="strong" k={`cv.${n}.h`} /></li>
                 ))}
               </ul>
             </div>
           ))}
-          <div class="map-scheda" data-luogo="italia" hidden>
-            <T as="h3" k="map.all" />
-            <ul>
-              {perLuogo('italia').map((tp) => (
-                <li><span class="map-anni">{tp.anni}{tp.incorso && <> <T k="cv.now" /></>}</span><T as="strong" k={`cv.${tp.n}.h`} /><T as="span" class="map-d" k={`cv.${tp.n}.d`} /></li>
-              ))}
-            </ul>
-          </div>
         </div>
       </div>
 
-      <div class="map-carta">
-        <svg viewBox={`0 0 ${ITALIA_W} ${ITALIA_H}`} aria-hidden="true">
-          <path class="map-italia" d={ITALIA_PATH} />
-          <path class="map-strada" d={strada} />
-        </svg>
-        {luoghi.map((l, i) => (
-          <button type="button" class="map-pin" style={`left:${l.p[0]}%;top:${l.p[1]}%`} data-luogo={l.id} aria-pressed={i === 0 ? 'true' : 'false'}>
-            <span class="map-pin-punto"></span><T class="map-pin-nome" k={l.k} />
-          </button>
-        ))}
-        <button type="button" class="map-tutta" data-luogo="italia" aria-pressed="false"><T k="map.all" /></button>
+      <div class="mp-palco">
+        <div class="mp-inclina">
+          <svg class="mp-svg" viewBox={`-24 -24 ${ITALIA_W + 48} ${ITALIA_H + 48}`} role="img" aria-label="Map of Italy">
+            <defs>
+              <radialGradient id="mpAlone"><stop offset="0" stop-color="#E3B458" stop-opacity=".75" /><stop offset="1" stop-color="#E3B458" stop-opacity="0" /></radialGradient>
+              <clipPath id="mpTondo"><circle r="15" cx="0" cy="0" /></clipPath>
+            </defs>
+            <path class="mp-spessore" d={ITALIA_PATH} transform="translate(0 7)" />
+            <path class="mp-terra" d={ITALIA_PATH} pathLength="1" />
+            <circle class="mp-alone" cx={pugX} cy={pugY} r="70" fill="url(#mpAlone)" />
+            {ZONE_MAPPA.map((z) => <path class="mp-rotta" data-rotta={z.id} d={percorso(z.punti)} />)}
+            {tuttiPunti.map((p, i) => {
+              const [x, y] = xy(p);
+              const zona = ZONE_MAPPA.find((z) => z.punti.includes(p))!;
+              return (
+                <g class="mp-pin" data-zona={zona.id} data-punto={p} transform={`translate(${x} ${y})`} style={`--d:${1.6 + i * 0.12}s`} tabindex="0" role="button" aria-label={NOMI[p]}>
+                  <g class="mp-pin-s">
+                    <circle class="mp-pin-onda" r="9" />
+                    <circle class="mp-pin-c" r="7" />
+                    <text class="mp-pin-t" x="12" y="5" data-i18n={NOMI_KEY[p]}>{NOMI_KEY[p] ? 'Florence' : NOMI[p]}</text>
+                  </g>
+                </g>
+              );
+            })}
+            <g class="mp-stef" transform={`translate(${pugX} ${pugY - 30})`}>
+              <g class="mp-stef-s">
+                <circle r="17" class="mp-stef-bordo" />
+                <image href="/img/stefano.webp" x="-13" y="-16" width="26" height="36" clip-path="url(#mpTondo)" />
+              </g>
+            </g>
+          </svg>
+        </div>
       </div>
     </section>
 
-    <section class="map-rec" id="recensioni">
-      <div class="wrap map-rec-in">
+    <section class="mp-rec" id="recensioni">
+      <div class="wrap mp-rec-in">
         <div>
           <T as="h2" k="rev.h" />
-          <p class="map-cit">“{CITAZIONE.testo}”</p>
-          <T as="p" class="map-fonte" k="rev.quote.src" />
+          <p class="mp-cit">“{CITAZIONE.testo}”</p>
+          <T as="p" class="mp-fonte" k="rev.quote.src" />
         </div>
-        <div class="map-recs">{RECENSIONI.slice(0, 2).map((r, i) => <Recensione r={r} i={i} />)}</div>
+        <div class="mp-recs">{RECENSIONI.slice(0, 2).map((r, i) => <Recensione r={r} i={i} />)}</div>
       </div>
     </section>
 
-    <section class="map-contatti wrap" id="contatti">
+    <section class="mp-contatti wrap" id="contatti">
       <div>
         <T as="h2" k="col.h" />
         <T as="p" k="col.p" />
         <ul class="chips">{SERVIZI.map((k) => <T as="li" k={k} />)}</ul>
       </div>
-      <BottoniContatto class="map-btn" />
+      <BottoniContatto class="mp-btn" />
     </section>
   </main>
-  <footer class="map-piede wrap"><span>SII!</span><T as="p" k="foot" /></footer>
+  <footer class="mp-piede wrap"><span>SII!</span><T as="p" k="foot" /></footer>
 </div>
 
 <style is:global>
-.map-hero{display:grid;grid-template-columns:1fr 1fr;gap:clamp(24px,5vw,64px);align-items:start;padding-top:clamp(32px,6vw,72px);padding-bottom:clamp(48px,8vw,96px)}
-.map-kicker{margin:0 0 10px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:14px;color:var(--terracotta)}
-.p-map h1{font-size:clamp(48px,7vw,96px)}
-.map-sub{font-size:clamp(17px,1.8vw,20px);color:var(--muted);max-width:40ch;margin:16px 0 36px}
-.p-map h2{font-size:clamp(32px,4vw,48px)}
-.map-hint{font-size:26px;color:var(--terracotta);margin:4px 0 14px}
-.map-pannello{background:#fff;border:1px solid rgba(0,59,31,.14);border-radius:18px;padding:20px 22px;box-shadow:0 12px 30px rgba(0,40,20,.07);min-height:220px}
-.map-scheda h3{font-size:28px;margin-bottom:10px}
-.map-scheda:not([hidden]){animation:scheda .4s cubic-bezier(.2,.8,.2,1)}
-@keyframes scheda{from{opacity:0;transform:translateY(10px)}}
-.map-desc{margin:0 0 12px;color:var(--muted)}
-.map-scheda ul{list-style:none;margin:0;padding:0;display:grid;gap:12px}
-.map-scheda li{display:grid;gap:2px;padding-left:14px;border-left:3px solid var(--ocra)}
-.map-anni{font:600 20px/1 var(--f-hand);color:var(--terracotta)}
-.map-scheda strong{font:400 19px/1.2 var(--f-display);font-weight:400}
-.map-d{font-size:15px;color:var(--muted)}
-.map-carta{position:sticky;top:80px;aspect-ratio:600/720;width:100%;max-width:560px;justify-self:center}
-.map-carta svg{width:100%;height:100%;display:block}
-.map-italia{fill:var(--verde);stroke:var(--verde);stroke-width:1.5;stroke-linejoin:round}
-.map-strada{fill:none;stroke:#E3B458;stroke-width:3;stroke-dasharray:3 9;stroke-linecap:round;animation:strada 2.4s ease-out both}
-@keyframes strada{from{stroke-dashoffset:300;opacity:0}}
-.map-pin{all:unset;position:absolute;transform:translate(-50%,-50%);cursor:pointer;display:flex;align-items:center;gap:6px}
-.map-pin-punto{width:20px;height:20px;border-radius:50%;background:var(--crema);border:4px solid #E3B458;box-shadow:0 0 0 0 rgba(227,180,88,.6);animation:pulsa 2.2s infinite;flex:none}
-.map-pin[aria-pressed="true"] .map-pin-punto{background:var(--terracotta);border-color:var(--crema);transform:scale(1.25)}
-@keyframes pulsa{70%{box-shadow:0 0 0 14px rgba(227,180,88,0)}100%{box-shadow:0 0 0 0 rgba(227,180,88,0)}}
-.map-pin-nome{background:var(--crema);color:var(--verde);font-weight:700;font-size:13px;padding:3px 9px;border-radius:999px;white-space:nowrap;box-shadow:0 2px 6px rgba(0,0,0,.2)}
-.map-pin[data-luogo="parma"],.map-pin[data-luogo="toscana"]{flex-direction:row-reverse}
-.map-pin[data-luogo="parma"]{transform:translate(calc(-100% + 10px),-50%)}
-.map-pin[data-luogo="toscana"]{transform:translate(calc(-100% + 10px),-50%)}
-.map-pin:not([data-luogo="parma"]):not([data-luogo="toscana"]){transform:translate(-10px,-50%)}
-.map-pin:focus-visible .map-pin-nome{outline:3px solid var(--ocra)}
-.map-tutta{all:unset;position:absolute;right:0;bottom:12%;background:var(--crema);border:2px solid var(--verde);color:var(--verde);font-weight:700;font-size:14px;padding:8px 14px;border-radius:999px;cursor:pointer}
-.map-tutta[aria-pressed="true"]{background:var(--terracotta);border-color:var(--terracotta);color:var(--crema)}
-.map-rec{background:var(--verde);color:var(--crema);padding:clamp(56px,8vw,96px) 0}
-.map-rec-in{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center}
-.map-cit{font:italic 400 clamp(24px,3vw,36px)/1.2 var(--f-display);margin:18px 0 8px}
-.map-fonte{color:#C9D6C6;font-weight:600}
-.map-recs{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
-.map-contatti{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(24px,5vw,64px);align-items:center;padding-top:clamp(56px,8vw,96px);padding-bottom:clamp(56px,8vw,96px)}
-.map-contatti p{max-width:50ch;color:var(--muted)}
-.map-btn{flex-direction:column}
-.map-piede{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;padding-top:24px;padding-bottom:110px;color:var(--muted);border-top:1px solid rgba(0,59,31,.15)}
-.map-piede span{font:400 32px/1 var(--f-display);color:var(--verde)}
-.map-piede p{margin:0}
-@media (max-width:860px){
-  .map-hero{grid-template-columns:1fr}
-  .map-hero{gap:0}
-  .map-carta{position:relative;top:0;order:1;max-width:420px;margin:8px auto 16px}
-  .map-testo{display:contents}
-  .map-pannello{order:2}
-  .map-rec-in,.map-contatti{grid-template-columns:1fr}
-  .map-pin.map-pin[data-luogo="sora"]{flex-direction:row-reverse;transform:translate(calc(-100% + 10px),-50%)}
-  .map-recs{grid-template-columns:repeat(2,minmax(0,1fr))}
+.mp-scena{display:grid;grid-template-columns:minmax(320px,420px) 1fr;gap:clamp(16px,3vw,48px);align-items:center;min-height:calc(100dvh - 60px);padding:clamp(20px,3vw,40px) var(--pad);max-width:1400px;margin:0 auto}
+.mp-kicker{margin:0 0 8px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:13px;color:var(--terracotta)}
+.p-map h1{font-size:clamp(40px,5vw,68px)}
+.mp-lato h2{font-size:clamp(24px,2.6vw,34px);margin-top:14px}
+.mp-hint{font-size:24px;color:var(--terracotta);margin:2px 0 14px}
+.mp-zone{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.mp-chip{appearance:none;position:relative;border:2px solid var(--verde);background:transparent;color:var(--verde);font:600 15px/1 var(--f-sans);padding:10px 16px;border-radius:999px;cursor:pointer;transition:background-color .2s,color .2s,transform .2s}
+.mp-chip:hover{transform:translateY(-2px)}
+.mp-chip[aria-pressed="true"]{background:var(--verde);color:var(--crema)}
+.mp-chip-recente{border-color:var(--terracotta);color:var(--terracotta)}
+.mp-chip-recente[aria-pressed="true"]{background:var(--terracotta);color:var(--crema)}
+.mp-punto-vivo{position:absolute;top:-3px;right:-3px;width:12px;height:12px;border-radius:50%;background:#E3B458;box-shadow:0 0 0 0 rgba(227,180,88,.7);animation:mpVivo 1.8s infinite}
+@keyframes mpVivo{70%{box-shadow:0 0 0 10px rgba(227,180,88,0)}100%{box-shadow:0 0 0 0 rgba(227,180,88,0)}}
+.mp-scheda{background:#fff;border:1px solid rgba(0,59,31,.12);border-radius:20px;padding:20px 22px;box-shadow:0 14px 34px rgba(0,40,20,.08);min-height:230px}
+.mp-info:not([hidden]){animation:mpInfo .45s cubic-bezier(.2,.8,.2,1)}
+@keyframes mpInfo{from{opacity:0;transform:translateY(12px)}}
+.mp-info h3{font-size:28px;display:flex;align-items:center;flex-wrap:wrap;gap:10px}
+.mp-info>p{color:var(--muted);margin:8px 0 12px}
+.mp-badge{font:700 11px/1 var(--f-sans);letter-spacing:.1em;text-transform:uppercase;background:var(--terracotta);color:var(--crema);padding:6px 9px;border-radius:999px}
+.mp-numeri{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.mp-numeri div{display:grid;gap:2px;font-size:13px;color:var(--muted);line-height:1.3}
+.mp-numeri b{font:400 40px/1 var(--f-display);color:var(--verde)}
+.mp-tappe-nomi{list-style:none;margin:0 0 12px;padding:0;display:flex;flex-wrap:wrap;gap:6px}
+.mp-tappe-nomi li{font-size:13px;font-weight:700;background:var(--carta);border-radius:999px;padding:5px 10px;counter-increment:t}
+.mp-tappe-nomi li::before{content:counter(t) " · ";color:var(--terracotta)}
+.mp-cv{list-style:none;margin:0;padding:0;display:grid;gap:8px}
+.mp-cv li{display:grid;padding-left:12px;border-left:3px solid #E3B458}
+.mp-cv span{font:600 18px/1 var(--f-hand);color:var(--terracotta)}
+.mp-cv strong{font:400 17px/1.2 var(--f-display)}
+.mp-palco{perspective:1400px;display:grid;place-items:center;min-width:0}
+.mp-inclina{width:100%;max-width:600px;border-radius:28px;aspect-ratio:648/768;transform:rotateX(var(--rx,10deg)) rotateY(var(--ry,0deg));transform-style:preserve-3d;transition:transform .6s cubic-bezier(.2,.8,.2,1);filter:drop-shadow(0 30px 40px rgba(0,40,20,.18))}
+.mp-svg{width:100%;height:100%;display:block;overflow:hidden;--k:1;border-radius:28px;background:radial-gradient(circle at 70% 30%,#FFFDF8,var(--carta) 75%);box-shadow:inset 0 0 0 1px rgba(0,59,31,.08)}
+.mp-spessore{fill:#00230F}
+.mp-terra{fill:var(--verde);stroke:var(--verde);stroke-width:1.2;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;fill-opacity:0;animation:mpDisegna 2.2s cubic-bezier(.6,0,.3,1) forwards,mpRiempi .9s 1.6s ease forwards}
+.mp-spessore{opacity:0;animation:mpRiempi .9s 1.6s ease forwards}
+@keyframes mpDisegna{to{stroke-dashoffset:0}}
+@keyframes mpRiempi{to{fill-opacity:1;opacity:1}}
+.mp-alone{opacity:0;animation:mpAlone 3s 2.4s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+@keyframes mpAlone{0%,100%{opacity:.35;transform:scale(.85)}50%{opacity:.9;transform:scale(1.1)}}
+.mp-rotta{fill:none;stroke:#E3B458;stroke-width:calc(3px * var(--k));stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:var(--L,1000);stroke-dashoffset:var(--L,1000);opacity:.95}
+.mp-rotta.disegna{transition:stroke-dashoffset 2.2s cubic-bezier(.5,0,.3,1);stroke-dashoffset:0}
+.mp-pin{cursor:pointer;opacity:0;animation:mpPin .5s var(--d) cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes mpPin{from{opacity:0}to{opacity:1}}
+.mp-pin-s{transform:scale(var(--k));transition:transform .2s}
+.mp-pin:hover .mp-pin-s,.mp-pin:focus-visible .mp-pin-s{transform:scale(calc(var(--k) * 1.3))}
+.mp-pin:focus{outline:none}
+.mp-pin-c{fill:var(--crema);stroke:#E3B458;stroke-width:3}
+.mp-pin[data-zona="puglia"] .mp-pin-c{fill:#E3B458;stroke:var(--crema)}
+.mp-pin-onda{fill:none;stroke:#E3B458;stroke-width:2;opacity:0;transform-box:fill-box;transform-origin:center;animation:mpOnda 2.4s calc(var(--d) + .4s) infinite}
+@keyframes mpOnda{0%{opacity:.8;transform:scale(.6)}100%{opacity:0;transform:scale(2.4)}}
+.mp-pin-t{font:700 16px var(--f-sans);fill:var(--crema);paint-order:stroke;stroke:var(--verde);stroke-width:3px;opacity:0;transition:opacity .3s}
+.mp-svg.zoom .mp-pin-t,.mp-pin:hover .mp-pin-t,.mp-pin:focus-visible .mp-pin-t{opacity:1}
+.mp-stef{transition:none}
+.mp-stef-s{transform:scale(var(--k))}
+.mp-stef-bordo{fill:var(--verde);stroke:var(--crema);stroke-width:3}
+.mp-stef image{transform:scaleX(var(--verso,1));transform-box:fill-box;transform-origin:center}
+.mp-rec{background:var(--verde);color:var(--crema);padding:clamp(56px,8vw,96px) 0}
+.mp-rec-in{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center}
+.mp-rec h2{font-size:clamp(34px,5vw,56px)}
+.mp-cit{font:italic 400 clamp(24px,3vw,36px)/1.2 var(--f-display);margin:18px 0 8px}
+.mp-fonte{color:#C9D6C6;font-weight:600}
+.mp-recs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.mp-contatti{display:grid;grid-template-columns:1.2fr .8fr;gap:clamp(24px,5vw,64px);align-items:center;padding-top:clamp(56px,8vw,96px);padding-bottom:clamp(56px,8vw,96px)}
+.mp-contatti h2{font-size:clamp(34px,5vw,56px)}
+.mp-contatti p{max-width:50ch;color:var(--muted)}
+.mp-btn{flex-direction:column}
+.mp-piede{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;padding-top:24px;padding-bottom:110px;color:var(--muted);border-top:1px solid rgba(0,59,31,.15)}
+.mp-piede span{font:400 32px/1 var(--f-display);color:var(--verde)}
+.mp-piede p{margin:0}
+@media (max-width:900px){
+  .mp-scena{grid-template-columns:1fr;min-height:0;gap:8px}
+  .mp-lato{display:contents}
+  .mp-kicker,.p-map h1,.mp-lato h2,.mp-hint{order:0}
+  .mp-zone{order:1;flex-wrap:nowrap;overflow-x:auto;margin:0 calc(var(--pad) * -1);padding:4px var(--pad) 8px;scrollbar-width:none}
+  .mp-chip{flex:none}
+  .mp-palco{order:2;margin:0 -8px}
+  .mp-inclina{max-width:460px}
+  .mp-scheda{order:3}
+  .mp-rec-in,.mp-contatti{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){
+  .mp-terra{stroke-dashoffset:0;fill-opacity:1}
+  .mp-spessore,.mp-pin{opacity:1}
 }
 </style>
+
 <script>
-  const radice = document.querySelector('.p-map');
-  if (radice) {
-    const bottoni = [...radice.querySelectorAll<HTMLButtonElement>('[data-luogo].map-pin, .map-tutta')];
-    const schede = [...radice.querySelectorAll<HTMLElement>('.map-scheda')];
-    bottoni.forEach((b) => b.addEventListener('click', () => {
-      const id = b.dataset.luogo;
-      bottoni.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-      schede.forEach((s) => (s.hidden = s.dataset.luogo !== id));
-      if (innerWidth <= 860) radice.querySelector('.map-pannello')!.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }));
+  const svg = document.querySelector<SVGSVGElement>('.p-map .mp-svg');
+  if (svg) {
+    const W = 600, H = 720, PAD = 24;
+    const TUTTA = [-PAD, -PAD, W + 2 * PAD, H + 2 * PAD];
+    const ridotto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const inclina = document.querySelector<HTMLElement>('.mp-inclina')!;
+    const stef = svg.querySelector<SVGGElement>('.mp-stef')!;
+    const img = stef.querySelector('image')!;
+    const pins = [...svg.querySelectorAll<SVGGElement>('.mp-pin')];
+    const chips = [...document.querySelectorAll<HTMLButtonElement>('.mp-chip')];
+    const infos = [...document.querySelectorAll<HTMLElement>('.mp-info')];
+    const rotte = [...svg.querySelectorAll<SVGPathElement>('.mp-rotta')];
+    rotte.forEach((r) => r.style.setProperty('--L', String(r.getTotalLength() + 1)));
+    const pos = (p: string): [number, number] => {
+      const t = svg.querySelector<SVGGElement>(`[data-punto="${p}"]`)!.transform.baseVal[0].matrix;
+      return [t.e, t.f];
+    };
+    // viewBox animato
+    let vb = [0, 0, W, H];
+    const imposta = (v: number[]) => { vb = v; svg.setAttribute('viewBox', v.map((n) => n.toFixed(1)).join(' ')); svg.style.setProperty('--k', (v[2] / (W + 2 * PAD)).toFixed(3)); };
+    let anim = 0;
+    function vola(dest: number[], durata = 1300) {
+      cancelAnimationFrame(anim);
+      const da = [...vb], t0 = performance.now();
+      if (ridotto) { imposta(dest); return Promise.resolve(); }
+      return new Promise<void>((ok) => {
+        const passo = (t: number) => {
+          const x = Math.min(1, (t - t0) / durata), e = x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+          imposta(da.map((a, i) => a + (dest[i] - a) * e));
+          if (x < 1) anim = requestAnimationFrame(passo); else ok();
+        };
+        anim = requestAnimationFrame(passo);
+      });
+    }
+    function riquadro(punti: string[]) {
+      const ps = punti.map(pos), xs = ps.map((p) => p[0]), ys = ps.map((p) => p[1]);
+      let x0 = Math.min(...xs), x1 = Math.max(...xs), y0 = Math.min(...ys), y1 = Math.max(...ys);
+      const cx = (x0 + x1) / 2, cy = (y0 + y1) / 2;
+      let w = Math.max(x1 - x0 + 90, 150), h = Math.max(y1 - y0 + 90, 150);
+      const r = (W + 2 * PAD) / (H + 2 * PAD); if (w / h > r) h = w / r; else w = h * r;
+      return [cx - w / 2, cy - h / 2, w, h];
+    }
+    // Stefano percorre la rotta
+    let corsa = 0;
+    function muoviStef(rotta: SVGPathElement | null, x?: number, y?: number) {
+      cancelAnimationFrame(corsa);
+      if (!rotta) { stef.setAttribute('transform', `translate(${x} ${y})`); return; }
+      const L = rotta.getTotalLength(), t0 = performance.now(), dur = ridotto ? 1 : 2200;
+      let px = rotta.getPointAtLength(0).x;
+      const passo = (t: number) => {
+        const k = Math.min(1, (t - t0) / dur), e = 1 - Math.pow(1 - k, 3);
+        const p = rotta.getPointAtLength(L * e);
+        const s = parseFloat(svg.style.getPropertyValue('--k') || '1');
+        stef.setAttribute('transform', `translate(${p.x} ${p.y - 26 * s})`);
+        if (Math.abs(p.x - px) > 0.05) img.style.setProperty('--verso', p.x > px ? '-1' : '1');
+        px = p.x;
+        if (k < 1) corsa = requestAnimationFrame(passo);
+      };
+      corsa = requestAnimationFrame(passo);
+    }
+    async function scegli(id: string) {
+      chips.forEach((c) => c.setAttribute('aria-pressed', String(c.dataset.zona === id)));
+      infos.forEach((i) => (i.hidden = i.dataset.info !== id));
+      rotte.forEach((r) => r.classList.remove('disegna'));
+      if (id === 'tutta') {
+        svg!.classList.remove('zoom');
+        const [x, y] = pos('alberobello');
+        muoviStef(null, x, y - 30);
+        await vola(TUTTA);
+        return;
+      }
+      const z = pins.filter((p) => p.dataset.zona === id).map((p) => p.dataset.punto!);
+      svg!.classList.add('zoom');
+      const [sx, sy] = pos(z[0]);
+      await vola(riquadro(z));
+      const rotta = rotte.find((r) => r.dataset.rotta === id) || null;
+      const s = parseFloat(svg!.style.getPropertyValue('--k') || '1');
+      stef.setAttribute('transform', `translate(${sx} ${sy - 26 * s})`);
+      if (rotta) { void rotta.getBoundingClientRect(); rotta.classList.add('disegna'); muoviStef(z.length > 1 ? rotta : null, sx, sy - 26 * s); }
+    }
+    chips.forEach((c) => c.addEventListener('click', () => scegli(c.dataset.zona!)));
+    pins.forEach((p) => {
+      const vai = () => scegli(p.dataset.zona!);
+      p.addEventListener('click', vai);
+      p.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); vai(); } });
+    });
+    // inclinazione che segue il mouse
+    if (!ridotto && matchMedia('(hover: hover)').matches) {
+      const palco = document.querySelector<HTMLElement>('.mp-palco')!;
+      palco.addEventListener('pointermove', (e) => {
+        const r = palco.getBoundingClientRect();
+        const dx = (e.clientX - r.left) / r.width - 0.5, dy = (e.clientY - r.top) / r.height - 0.5;
+        inclina.style.setProperty('--ry', (dx * 12).toFixed(2) + 'deg');
+        inclina.style.setProperty('--rx', (10 - dy * 12).toFixed(2) + 'deg');
+      });
+      palco.addEventListener('pointerleave', () => { inclina.style.setProperty('--ry', '0deg'); inclina.style.setProperty('--rx', '10deg'); });
+    }
+    // numeri che salgono
+    const numeri = [...document.querySelectorAll<HTMLElement>('[data-conta]')];
+    const conta = () => numeri.forEach((n) => {
+      const fine = Number(n.dataset.conta), t0 = performance.now();
+      const passo = (t: number) => { const k = Math.min(1, (t - t0) / 1400); n.textContent = String(Math.round(fine * (1 - Math.pow(1 - k, 3)))); if (k < 1) requestAnimationFrame(passo); };
+      if (!ridotto) requestAnimationFrame(passo);
+    });
+    setTimeout(conta, 1800);
+    imposta(TUTTA);
   }
 </script>

@@ -627,9 +627,9 @@ Object.assign(TESTI, {
   "es": "Stefano In Italy — La web está a punto de salir"
  },
  "wip.kicker": {
-  "en": "Work in progress",
-  "it": "Lavori in corso",
-  "es": "Obras en curso"
+  "en": "Website coming soon",
+  "it": "Sito in arrivo",
+  "es": "Web muy pronto"
  },
  "wip.h": {
   "en": "I'm gathering the group.<br>The website departs soon!",
@@ -665,6 +665,165 @@ Object.assign(TESTI, {
   "en": "Stefano Alonzi · Tour leader in Italy",
   "it": "Stefano Alonzi · Tour leader in Italia",
   "es": "Stefano Alonzi · Tour leader en Italia"
+ }
+});
+
+// Proposte con mappe e paesaggi
+Object.assign(TESTI, {
+ "z.toscana": {
+  "en": "Tuscany",
+  "it": "Toscana",
+  "es": "Toscana"
+ },
+ "z.emilia": {
+  "en": "Emilia-Romagna",
+  "it": "Emilia-Romagna",
+  "es": "Emilia-Romaña"
+ },
+ "z.lazio": {
+  "en": "Lazio",
+  "it": "Lazio",
+  "es": "Lacio"
+ },
+ "z.puglia": {
+  "en": "Apulia",
+  "it": "Puglia",
+  "es": "Apulia"
+ },
+ "z.toscana.d": {
+  "en": "Where it all took off: day tours, food tours and multi-day trips from Florence, with groups of up to 80.",
+  "it": "Dove è partito tutto: tour di giornata, food tour e viaggi di più giorni da Firenze, con gruppi fino a 80 persone.",
+  "es": "Donde empezó todo: tours de un día, food tours y viajes de varios días desde Florencia, con grupos de hasta 80 personas."
+ },
+ "z.emilia.d": {
+  "en": "Where I studied and trained: my degree in Ferrara and the tour leader certification in Parma.",
+  "it": "Dove ho studiato e mi sono formato: la laurea a Ferrara e la certificazione da tour leader a Parma.",
+  "es": "Donde estudié y me formé: la carrera en Ferrara y la certificación de tour leader en Parma."
+ },
+ "z.puglia.d": {
+  "en": "Lately you will find me here: trulli, white towns and the sea, with groups from all over the world.",
+  "it": "Ultimamente mi trovi qui: trulli, città bianche e mare, con gruppi da tutto il mondo.",
+  "es": "Últimamente me encuentras aquí: trulli, pueblos blancos y mar, con grupos de todo el mundo."
+ },
+ "z.recente": {
+  "en": "lately here",
+  "it": "ultimamente qui",
+  "es": "últimamente aquí"
+ },
+ "map2.h": {
+  "en": "Explore my Italy",
+  "it": "Esplora la mia Italia",
+  "es": "Explora mi Italia"
+ },
+ "map2.hint": {
+  "en": "tap a region or a point on the map",
+  "it": "tocca una regione o un punto sulla mappa",
+  "es": "toca una región o un punto del mapa"
+ },
+ "map2.tutta": {
+  "en": "All of Italy",
+  "it": "Tutta Italia",
+  "es": "Toda Italia"
+ },
+ "map2.tutta.d": {
+  "en": "Four regions, three languages and groups from all over the world. Tap a region to fly in.",
+  "it": "Quattro regioni, tre lingue e gruppi da tutto il mondo. Tocca una regione per volarci dentro.",
+  "es": "Cuatro regiones, tres idiomas y grupos de todo el mundo. Toca una región para entrar volando."
+ },
+ "map2.drag": {
+  "en": "drag to move the map",
+  "it": "trascina per spostare la mappa",
+  "es": "arrastra para mover el mapa"
+ },
+ "stat.reg.l": {
+  "en": "regions where I have worked",
+  "it": "regioni dove ho lavorato",
+  "es": "regiones donde he trabajado"
+ },
+ "fly.h": {
+  "en": "Fly over my Italy",
+  "it": "Sorvola la mia Italia",
+  "es": "Sobrevuela mi Italia"
+ },
+ "fly.hint": {
+  "en": "scroll to take off",
+  "it": "scorri per decollare",
+  "es": "desliza para despegar"
+ },
+ "fly.end": {
+  "en": "Landing: let's plan your group together.",
+  "it": "Atterraggio: organizziamo insieme il tuo gruppo.",
+  "es": "Aterrizaje: organicemos juntos tu grupo."
+ },
+ "fly.tappa": {
+  "en": "Stop",
+  "it": "Tappa",
+  "es": "Parada"
+ },
+ "pae.h": {
+  "en": "The landscapes I walk through",
+  "it": "I paesaggi che attraverso",
+  "es": "Los paisajes que recorro"
+ },
+ "pae.hint": {
+  "en": "scroll to walk, tap what you see",
+  "it": "scorri per camminare, tocca quello che vedi",
+  "es": "desliza para caminar, toca lo que ves"
+ },
+ "pae.bus": {
+  "en": "The coach: the groups I lead",
+  "it": "Il pullman: i gruppi che accompagno",
+  "es": "El autobús: los grupos que acompaño"
+ },
+ "pae.bus.d": {
+  "en": "Groups of 20, 40, up to 80 people: transport, hotels and timetables are on me, so the group only has to enjoy the trip.",
+  "it": "Gruppi da 20, 40, fino a 80 persone: trasporti, hotel e orari li gestisco io, così il gruppo deve solo godersi il viaggio.",
+  "es": "Grupos de 20, 40, hasta 80 personas: transporte, hoteles y horarios los gestiono yo, así el grupo solo tiene que disfrutar del viaje."
+ },
+ "pae.faro": {
+  "en": "The lighthouse: write to me",
+  "it": "Il faro: scrivimi",
+  "es": "El faro: escríbeme"
+ },
+ "pie.h": {
+  "en": "A map that unfolds",
+  "it": "Una mappa che si apre",
+  "es": "Un mapa que se despliega"
+ },
+ "pie.cover": {
+  "en": "Road map of Italy · tour leader edition",
+  "it": "Carta stradale d'Italia · edizione tour leader",
+  "es": "Mapa de carreteras de Italia · edición tour leader"
+ },
+ "pie.open": {
+  "en": "Unfold the map",
+  "it": "Apri la mappa",
+  "es": "Despliega el mapa"
+ },
+ "pie.close": {
+  "en": "Fold it again",
+  "it": "Richiudi la mappa",
+  "es": "Volver a plegar"
+ },
+ "pie.legend": {
+  "en": "Legend",
+  "it": "Legenda",
+  "es": "Leyenda"
+ },
+ "pie.leg.1": {
+  "en": "where I have worked",
+  "it": "dove ho lavorato",
+  "es": "donde he trabajado"
+ },
+ "pie.leg.2": {
+  "en": "lately here",
+  "it": "ultimamente qui",
+  "es": "últimamente aquí"
+ },
+ "pie.leg.3": {
+  "en": "my home base",
+  "it": "la mia base",
+  "es": "mi base"
  }
 });
 

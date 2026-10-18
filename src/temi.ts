@@ -8,10 +8,10 @@ export const TEMI: Tema[] = [
   { id: 'verde', lettera: 'D', nome: 'Verde pieno', tipo: 'Classica', idea: 'Tutto su verde bosco come il logo, effetto poster, crema solo per testi e pulsanti.' },
   { id: 'percorso', lettera: 'E', nome: 'Il percorso', tipo: 'In movimento', idea: 'Scorrendo si disegna la linea del viaggio e Stefano la percorre: ogni tappa è un pezzo vero del suo curriculum.' },
   { id: 'cartoline', lettera: 'F', nome: 'Cartoline', tipo: 'In movimento', idea: 'Esperienze e recensioni come cartoline dai luoghi in cui ha lavorato: si girano per leggere il retro.' },
-  { id: 'paletta', lettera: 'G', nome: 'Segui la paletta', tipo: 'In movimento', idea: 'Come in un tour vero: Stefano alza la paletta e indica la tappa, la pagina lo segue sezione dopo sezione.' },
-  { id: 'mappa', lettera: 'H', nome: 'Mappa dell\'Italia', tipo: 'Interattiva', idea: 'L\'Italia disegnata con i punti dove ha lavorato: tocchi Firenze, Toscana, Sora… e leggi cosa ha fatto lì.' },
-  { id: 'kit', lettera: 'I', nome: 'Il kit del tour leader', tipo: 'Interattiva', idea: 'Una scrivania con gli oggetti del mestiere (paletta, radio, cartellina, taccuino, telefono) da cliccare.' },
-  { id: 'bacheca', lettera: 'J', nome: 'Bacheca recensioni', tipo: 'Interattiva', idea: 'Le recensioni come screenshot appesi a una bacheca, da spostare e ingrandire, con le stelle in primo piano.' },
+  { id: 'volo', lettera: 'G', nome: 'Volo sull\'Italia', tipo: 'In movimento', idea: 'Scorrendo, la telecamera vola sopra l\'Italia vista in prospettiva, da nord fino alla Puglia: a ogni tappa una scheda, poi si atterra sui contatti.' },
+  { id: 'mappa', lettera: 'H', nome: 'Mappa dell\'Italia', tipo: 'Interattiva', idea: 'L\'Italia si disegna da sola e si accende: tocchi una regione e la mappa ci vola dentro, il percorso si disegna e Stefano lo percorre. Puglia in primo piano.' },
+  { id: 'paesaggi', lettera: 'I', nome: 'Paesaggi', tipo: 'Interattiva', idea: 'Colline toscane, borghi del Lazio, trulli e mare della Puglia disegnati a strati: scorrendo Stefano ci cammina dentro, e tocchi quello che vedi.' },
+  { id: 'piegata', lettera: 'J', nome: 'La mappa piegata', tipo: 'Interattiva', idea: 'Il sito si apre come una vecchia carta stradale piegata: la tocchi e si spiega pannello dopo pannello, con dentro la mappa, Stefano, le recensioni e i contatti.' },
 ];
 
 export const temaDa = (id: string) => TEMI.find((x) => x.id === id)!;

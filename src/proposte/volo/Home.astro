@@ -1,0 +1,205 @@
+---
+// Proposta G: Volo sull'Italia. Lo scroll guida una "telecamera" che sorvola la mappa in prospettiva.
+import { TAPPE } from '../../data/curriculum';
+import { RECENSIONI, CITAZIONE } from '../../data/recensioni';
+import { ITALIA_PATH, ITALIA_W, ITALIA_H } from '../../data/italia';
+import { ZONE_MAPPA, NOMI, NOMI_KEY, xy, percorso, VIAGGIO } from '../../data/zone';
+import Testata from '../../components/Testata.astro';
+import Recensione from '../../components/Recensione.astro';
+import BottoniContatto from '../../components/BottoniContatto.astro';
+import T from '../../components/T.astro';
+const tappa = (n: number) => TAPPE.find((t) => t.n === n)!;
+const centro = (ids: string[]) => { const p = ids.map(xy); return [p.reduce((a, b) => a + b[0], 0) / p.length, p.reduce((a, b) => a + b[1], 0) / p.length]; };
+// fermate del volo: [x, y] nel disegno, s = zoom, rx = inclinazione
+const fermate = [
+  { id: 'inizio', c: [ITALIA_W / 2, ITALIA_H / 2], s: 0.42, rx: 28 },
+  ...ZONE_MAPPA.map((z) => ({ id: z.id, c: centro(z.punti), s: z.id === 'puglia' ? 1.25 : 1.1, rx: 56 })),
+  { id: 'fine', c: [ITALIA_W * 0.62, ITALIA_H * 0.5], s: 0.5, rx: 34 },
+];
+---
+<div class="p-volo">
+  <Testata />
+  <main id="contenuto">
+    <section class="vo-volo" style={`--n:${fermate.length}`} data-fermate={JSON.stringify(fermate)}>
+      <div class="vo-cielo">
+        <div class="vo-camera" aria-hidden="true">
+          <div class="vo-piano">
+            <svg viewBox={`0 0 ${ITALIA_W} ${ITALIA_H}`}>
+              <defs><pattern id="voGriglia" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#A9BFA3" stroke-width=".6" opacity=".55" /></pattern></defs>
+              <rect x="-600" y="-600" width="1800" height="1920" fill="url(#voGriglia)" />
+              <path class="vo-ombra" d={ITALIA_PATH} transform="translate(4 6)" />
+              <path class="vo-terra" d={ITALIA_PATH} />
+              <path class="vo-rotta-fondo" d={percorso(VIAGGIO)} />
+              <path class="vo-rotta" d={percorso(VIAGGIO)} />
+              {VIAGGIO.map((p) => { const [x, y] = xy(p); return (
+                <g transform={`translate(${x} ${y})`} class="vo-pin"><circle r="3.4" /><text x="6" y="2.4" data-i18n={NOMI_KEY[p]}>{NOMI_KEY[p] ? 'Florence' : NOMI[p]}</text></g>
+              ); })}
+            </svg>
+          </div>
+        </div>
+        <div class="vo-nuvole" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+        <div class="vo-aereo" aria-hidden="true"><img src="/img/stefano.webp" width="458" height="640" alt="" /></div>
+
+        <div class="vo-titolo">
+          <T as="p" class="vo-kicker" k="tag.role" />
+          <h1>Stefano In Italy</h1>
+          <T as="p" class="vo-hint hand" k="fly.hint" />
+        </div>
+
+        <ol class="vo-punti" aria-hidden="true">{fermate.map((_, i) => <li data-i={i}></li>)}</ol>
+
+        <div class="vo-schede">
+          <article class="vo-scheda" data-i="0">
+            <T as="h2" k="fly.h" />
+            <T as="p" k="hero.sub" />
+          </article>
+          {ZONE_MAPPA.map((z, i) => (
+            <article class="vo-scheda" data-i={i + 1}>
+              <p class="vo-num"><T k="fly.tappa" /> {i + 1}/{ZONE_MAPPA.length}{z.recente && <T class="vo-badge" k="z.recente" />}</p>
+              <T as="h2" k={z.k} />
+              <T as="p" k={z.d} />
+              <ul>{z.tappe.slice(0, 3).map((n) => <li><span>{tappa(n).anni}</span> <T k={`cv.${n}.h`} /></li>)}</ul>
+            </article>
+          ))}
+          <article class="vo-scheda vo-scheda-fine" data-i={fermate.length - 1} id="contatti">
+            <T as="h2" k="fly.end" />
+            <T as="p" k="col.p" />
+            <BottoniContatto email={false} />
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="vo-rec" id="recensioni">
+      <div class="wrap vo-rec-in">
+        <div>
+          <T as="h2" k="rev.h" />
+          <p class="vo-cit">“{CITAZIONE.testo}”</p>
+          <T as="p" class="vo-fonte" k="rev.quote.src" />
+          <BottoniContatto />
+        </div>
+        <div class="vo-recs">{RECENSIONI.slice(0, 2).map((r, i) => <Recensione r={r} i={i} />)}</div>
+      </div>
+    </section>
+  </main>
+  <footer class="vo-piede wrap"><span>SII!</span><T as="p" k="foot" /></footer>
+</div>
+
+<style is:global>
+.p-volo{overflow-x:clip}
+.vo-volo{height:calc(var(--n) * 110vh)}
+.vo-cielo{position:sticky;top:0;height:100dvh;overflow:hidden;background:linear-gradient(#FEF6EB 0%,#F7ECDA 45%,#EADFC8 100%)}
+.vo-camera{position:absolute;inset:0;perspective:900px;perspective-origin:50% 30%}
+.vo-piano{position:absolute;left:50%;top:58%;width:1800px;height:2160px;transform-origin:0 0;transform:rotateX(var(--rx,30deg)) scale(var(--s,.4)) translate(calc(var(--x,900) * -1px),calc(var(--y,1080) * -1px));will-change:transform}
+.vo-piano svg{width:100%;height:100%;display:block;overflow:visible}
+.vo-ombra{fill:rgba(0,35,15,.35);filter:blur(2px)}
+.vo-terra{fill:var(--verde);stroke:#0F5233;stroke-width:.8}
+.vo-rotta-fondo{fill:none;stroke:rgba(254,246,235,.25);stroke-width:2.2;stroke-linecap:round}
+.vo-rotta{fill:none;stroke:#E3B458;stroke-width:2.6;stroke-linecap:round;stroke-dasharray:var(--L,2000);stroke-dashoffset:calc(var(--L,2000) * (1 - var(--r,0)))}
+.vo-pin circle{fill:var(--crema);stroke:#E3B458;stroke-width:1.4}
+.vo-pin text{font:700 5.6px var(--f-sans);fill:var(--crema);paint-order:stroke;stroke:var(--verde);stroke-width:1.2px}
+.vo-nuvole span{position:absolute;width:420px;height:120px;border-radius:50%;background:radial-gradient(closest-side,rgba(255,255,255,.85),rgba(255,255,255,0));transform:translate3d(var(--cx,0),var(--cy,0),0);pointer-events:none}
+.vo-nuvole span:nth-child(1){left:-5%;top:18%}
+.vo-nuvole span:nth-child(2){left:60%;top:8%;width:520px}
+.vo-nuvole span:nth-child(3){left:30%;top:70%;width:360px}
+.vo-nuvole span:nth-child(4){left:80%;top:55%;width:300px}
+.vo-aereo{position:absolute;left:50%;top:58%;width:74px;height:74px;margin:-92px 0 0 -37px;border-radius:50%;background:var(--verde);border:4px solid var(--crema);box-shadow:0 14px 26px rgba(0,40,20,.35);overflow:hidden;display:grid;place-items:end center;z-index:3;animation:voFluttua 3s ease-in-out infinite}
+.vo-aereo::after{content:"";position:absolute;left:50%;bottom:-14px;width:0;height:0;border:9px solid transparent;border-top-color:var(--crema);transform:translateX(-50%)}
+.vo-aereo img{width:80%;height:auto;transition:transform .4s}
+.vo-aereo.destra img{transform:scaleX(-1)}
+@keyframes voFluttua{50%{translate:0 -6px}}
+.vo-titolo{position:absolute;left:var(--pad);top:clamp(16px,4vh,40px);z-index:4;opacity:calc(1 - var(--p,0) * 8)}
+.vo-kicker{margin:0 0 6px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;font-size:13px;color:var(--terracotta)}
+.p-volo h1{font-size:clamp(42px,6vw,84px)}
+.vo-hint{font-size:28px;color:var(--terracotta);margin:6px 0 0}
+.vo-punti{position:absolute;right:var(--pad);top:50%;transform:translateY(-50%);list-style:none;margin:0;padding:0;display:grid;gap:10px;z-index:4}
+.vo-punti li{width:10px;height:10px;border-radius:50%;border:2px solid var(--verde);transition:background-color .3s,transform .3s}
+.vo-punti li.on{background:var(--verde);transform:scale(1.3)}
+.vo-schede{position:absolute;left:var(--pad);bottom:calc(24px + env(safe-area-inset-bottom,0px));width:min(420px,calc(100% - 2 * var(--pad)));z-index:4}
+.vo-scheda{position:absolute;left:0;bottom:0;width:100%;background:rgba(255,255,255,.92);backdrop-filter:blur(6px);border-radius:20px;padding:20px 22px;box-shadow:0 18px 40px rgba(0,40,20,.15);opacity:0;transform:translateY(24px);pointer-events:none;transition:opacity .45s,transform .45s cubic-bezier(.2,.8,.2,1)}
+.vo-scheda.on{opacity:1;transform:none;pointer-events:auto}
+.vo-scheda h2{font-size:clamp(26px,3vw,36px);margin-bottom:6px}
+.vo-scheda p{margin:0 0 10px;color:var(--muted)}
+.vo-scheda ul{list-style:none;margin:0;padding:0;display:grid;gap:4px;font-size:15px}
+.vo-scheda ul span{font:600 18px/1 var(--f-hand);color:var(--terracotta)}
+.vo-num{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--terracotta)!important;margin:0 0 4px!important}
+.vo-badge{background:var(--terracotta);color:var(--crema);border-radius:999px;padding:4px 8px;font-size:10px}
+.vo-scheda-fine{background:var(--verde);color:var(--crema)}
+.vo-scheda-fine p{color:#DDE6D5}
+.vo-scheda-fine .btn-linea{color:var(--crema)}
+.vo-rec{background:var(--verde);color:var(--crema);padding:clamp(56px,8vw,96px) 0}
+.vo-rec-in{display:grid;grid-template-columns:1fr 1fr;gap:clamp(28px,5vw,64px);align-items:center}
+.vo-rec h2{font-size:clamp(34px,5vw,56px)}
+.vo-cit{font:italic 400 clamp(24px,3vw,36px)/1.2 var(--f-display);margin:18px 0 8px}
+.vo-fonte{color:#C9D6C6;font-weight:600;margin-bottom:24px}
+.vo-rec .btn-linea{color:var(--crema)}
+.vo-recs{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.vo-piede{display:flex;flex-wrap:wrap;align-items:center;gap:8px 24px;padding-top:24px;padding-bottom:110px;color:var(--muted)}
+.vo-piede span{font:400 32px/1 var(--f-display);color:var(--verde)}
+.vo-piede p{margin:0}
+@media (max-width:760px){
+  .vo-schede{bottom:calc(84px + env(safe-area-inset-bottom,0px))}
+  .vo-scheda{padding:16px 18px}
+  .vo-scheda ul{display:none}
+  .vo-scheda p{display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+  .vo-scheda-fine .contatti{flex-direction:column}
+  .vo-punti{top:auto;bottom:auto;top:110px;transform:none}
+  .vo-aereo{top:46%;width:60px;height:60px;margin:-76px 0 0 -30px}
+  .vo-piano{top:46%}
+  .vo-rec-in{grid-template-columns:1fr}
+}
+@media (prefers-reduced-motion:reduce){.vo-aereo{animation:none}}
+</style>
+
+<script>
+  const volo = document.querySelector<HTMLElement>('.p-volo .vo-volo');
+  if (volo) {
+    type F = { id: string; c: number[]; s: number; rx: number };
+    const F: F[] = JSON.parse(volo.dataset.fermate!);
+    const piano = volo.querySelector<HTMLElement>('.vo-piano')!;
+    const rotta = volo.querySelector<SVGPathElement>('.vo-rotta')!;
+    const schede = [...volo.querySelectorAll<HTMLElement>('.vo-scheda')];
+    const punti = [...volo.querySelectorAll<HTMLElement>('.vo-punti li')];
+    const aereo = volo.querySelector<HTMLElement>('.vo-aereo')!;
+    const nuvole = [...volo.querySelectorAll<HTMLElement>('.vo-nuvole span')];
+    const K = 1800 / 600; // pixel del piano per unità della mappa
+    const L = rotta.getTotalLength();
+    rotta.style.setProperty('--L', String(L));
+    // quanta rotta è percorsa a ogni fermata (punto della rotta più vicino al centro della zona)
+    const quota = F.map((f, i) => {
+      if (i === 0) return 0; if (i === F.length - 1) return 1;
+      let best = 0, d = 1e9;
+      for (let k = 0; k <= 200; k++) { const p = rotta.getPointAtLength((L * k) / 200); const dd = (p.x - f.c[0]) ** 2 + (p.y - f.c[1]) ** 2; if (dd < d) { d = dd; best = k / 200; } }
+      return best;
+    });
+    const ridotto = matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const liscia = (t: number) => t * t * (3 - 2 * t);
+    let pS = 0, ultimoX = 0, attiva = -1;
+    function tick() {
+      const r = volo!.getBoundingClientRect();
+      const tot = r.height - innerHeight;
+      const p = Math.min(1, Math.max(0, -r.top / Math.max(1, tot)));
+      pS = ridotto ? p : pS + (p - pS) * 0.09;
+      const seg = pS * (F.length - 1), i = Math.min(F.length - 2, Math.floor(seg));
+      // si resta un attimo sopra ogni fermata, poi si vola alla prossima
+      const t = liscia(Math.min(1, Math.max(0, (seg - i - 0.25) / 0.6)));
+      const a = F[i], b = F[i + 1];
+      const x = (a.c[0] + (b.c[0] - a.c[0]) * t) * K, y = (a.c[1] + (b.c[1] - a.c[1]) * t) * K;
+      // a metà volo si sale di quota
+      const fattore = Math.min(1, Math.max(0.5, innerWidth / 1100));
+      const s = (a.s + (b.s - a.s) * t - Math.sin(t * Math.PI) * 0.18) * (a.id === 'inizio' && t < 0.5 || b.id === 'fine' && t > 0.5 ? fattore : Math.max(fattore, 0.8));
+      const rx = a.rx + (b.rx - a.rx) * t;
+      piano.style.setProperty('--x', x.toFixed(1)); piano.style.setProperty('--y', y.toFixed(1));
+      piano.style.setProperty('--s', s.toFixed(3)); piano.style.setProperty('--rx', rx.toFixed(2) + 'deg');
+      rotta.style.setProperty('--r', (quota[i] + (quota[i + 1] - quota[i]) * t).toFixed(4));
+      volo!.style.setProperty('--p', pS.toFixed(4));
+      nuvole.forEach((n, k) => { n.style.setProperty('--cx', `${(-pS * (600 + k * 260)).toFixed(0)}px`); n.style.setProperty('--cy', `${(-pS * (300 + k * 120)).toFixed(0)}px`); });
+      if (Math.abs(x - ultimoX) > 0.3) aereo.classList.toggle('destra', x > ultimoX);
+      ultimoX = x;
+      const vicina = Math.round(seg);
+      if (vicina !== attiva) { attiva = vicina; schede.forEach((sc) => sc.classList.toggle('on', Number(sc.dataset.i) === vicina)); punti.forEach((pt, k) => pt.classList.toggle('on', k === vicina)); }
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+</script>

@@ -30,7 +30,11 @@ export function avviaLingue() {
   try {
     const q = new URLSearchParams(location.search).get('lang') as L;
     if (LINGUE.includes(q)) inizio = q;
-    else { const v = localStorage.getItem('sii-lang') as L; if (LINGUE.includes(v)) inizio = v; }
+    else {
+      const v = localStorage.getItem('sii-lang') as L;
+      const nav = (navigator.language || '').slice(0, 2) as L; // senza scelta salvata: la lingua del telefono/browser
+      if (LINGUE.includes(v)) inizio = v; else if (LINGUE.includes(nav)) inizio = nav;
+    }
   } catch {}
   applica(inizio, false);
 }

@@ -8,7 +8,8 @@ import { SITO } from '../config';
   <main id="contenuto" class="wip">
     <div class="wip-faccia" aria-hidden="true"><div class="wip-annuisce"><img id="wipStef" src="/img/stefano.webp" width="458" height="640" alt="" /></div></div>
     <h1 class="wip-brand" aria-label="Stefano In Italy"><span class="k">S</span><span class="c">tefano</span><span class="c">&nbsp;</span><span class="k">I</span><span class="c">n</span><span class="c">&nbsp;</span><span class="k">I</span><span class="c">taly</span><span class="bang">!</span></h1>
-    <p class="wip-stato"><T k="wip.kicker" /> · <a href={SITO.instagram} target="_blank" rel="noopener">{SITO.instagramHandle}</a></p>
+    <p class="wip-stato"><T k="wip.kicker" /></p>
+    <p class="wip-contatti"><a href={SITO.instagram} target="_blank" rel="noopener">{SITO.instagramHandle}</a><span>·</span><a class="js-wa" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener">+39 346 760 3667</a></p>
   </main>
 </Layout>
 
@@ -30,9 +31,10 @@ html:has(.wip) body{background:var(--verde);color:var(--crema)}
 .wip-brand .bang{display:inline-block;overflow:hidden;max-width:calc(.36em * var(--q));opacity:var(--q);transform:translateY(calc((1 - var(--q)) * -.4em)) rotate(calc((1 - var(--q)) * 30deg))}
 @keyframes morph{0%,30%{--q:0}48%,80%{--q:1}96%,100%{--q:0}}
 .wip-stato{margin:0;font-size:12px;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:rgba(254,246,235,.55)}
-.wip-stato a{color:inherit;text-decoration:none;text-transform:none;letter-spacing:.06em}
-.wip-stato a:hover{color:var(--crema)}
-@media (prefers-reduced-motion:reduce){.wip-brand,.wip-faccia,.wip-annuisce,.wip-stato{animation:none}}
+.wip-contatti{margin:-8px 0 0;display:flex;flex-wrap:wrap;justify-content:center;gap:4px 10px;font-size:14px;color:rgba(254,246,235,.45);animation:entra-testo .9s .7s cubic-bezier(.2,.8,.2,1) both}
+.wip-contatti a{color:rgba(254,246,235,.75);text-decoration:none}
+.wip-contatti a:hover{color:var(--crema);text-decoration:underline;text-underline-offset:3px}
+@media (prefers-reduced-motion:reduce){.wip-brand,.wip-faccia,.wip-annuisce,.wip-stato,.wip-contatti{animation:none}}
 </style>
 
 <script>
