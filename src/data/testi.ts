@@ -827,5 +827,139 @@ Object.assign(TESTI, {
  }
 });
 
+// Proposte sobrie (K-N)
+Object.assign(TESTI, {
+ "fid.h": {
+  "en": "Trusted by travellers and tour operators",
+  "it": "Scelto da viaggiatori e tour operator",
+  "es": "Elegido por viajeros y touroperadores"
+ },
+ "fid.p": {
+  "en": "Five-star reviews on Trustpilot, handwritten letters and messages from the groups I have accompanied.",
+  "it": "Recensioni a cinque stelle su Trustpilot, lettere scritte a mano e messaggi dei gruppi che ho accompagnato.",
+  "es": "Reseñas de cinco estrellas en Trustpilot, cartas escritas a mano y mensajes de los grupos que he acompañado."
+ },
+ "fid.lettera": {
+  "en": "Handwritten letter coming soon",
+  "it": "Lettera scritta a mano in arrivo",
+  "es": "Carta manuscrita próximamente"
+ },
+ "fid.lettere": {
+  "en": "Letters from my travellers",
+  "it": "Le lettere dei miei viaggiatori",
+  "es": "Las cartas de mis viajeros"
+ },
+ "fid.tutte": {
+  "en": "All reviews are original, unedited.",
+  "it": "Tutte le recensioni sono originali, senza modifiche.",
+  "es": "Todas las reseñas son originales, sin modificar."
+ },
+ "ct.h2": {
+  "en": "Let's talk about your group",
+  "it": "Parliamo del tuo gruppo",
+  "es": "Hablemos de tu grupo"
+ },
+ "ct.mail.l": {
+  "en": "Prefer email? Write to",
+  "it": "Preferisci l'email? Scrivi a",
+  "es": "¿Prefieres el email? Escribe a"
+ },
+ "ct.wa.l": {
+  "en": "or on WhatsApp",
+  "it": "oppure su WhatsApp",
+  "es": "o por WhatsApp"
+ },
+ "ct.risposta": {
+  "en": "I reply personally, usually within the day.",
+  "it": "Rispondo di persona, di solito in giornata.",
+  "es": "Respondo personalmente, normalmente en el día."
+ },
+ "porte.h": {
+  "en": "Who are you planning for?",
+  "it": "Per chi stai organizzando?",
+  "es": "¿Para quién organizas?"
+ },
+ "porte.ag": {
+  "en": "I'm a tour operator or travel agency",
+  "it": "Sono un tour operator o un'agenzia",
+  "es": "Soy un touroperador o una agencia"
+ },
+ "porte.ag.d": {
+  "en": "A reliable tour leader for your groups in Italy.",
+  "it": "Un tour leader affidabile per i tuoi gruppi in Italia.",
+  "es": "Un tour leader fiable para tus grupos en Italia."
+ },
+ "porte.pr": {
+  "en": "I'm organising a private group",
+  "it": "Organizzo un gruppo privato",
+  "es": "Organizo un grupo privado"
+ },
+ "porte.pr.d": {
+  "en": "Friends, family or an association travelling together.",
+  "it": "Amici, famiglia o un'associazione che viaggia insieme.",
+  "es": "Amigos, familia o una asociación que viaja junta."
+ },
+ "ag.h": {
+  "en": "For tour operators and agencies",
+  "it": "Per tour operator e agenzie",
+  "es": "Para touroperadores y agencias"
+ },
+ "ag.0": {
+  "en": "Logistics without hitches: transport, hotels and timetables under control",
+  "it": "Logistica senza intoppi: trasporti, hotel e orari sotto controllo",
+  "es": "Logística sin contratiempos: transporte, hoteles y horarios bajo control"
+ },
+ "ag.1": {
+  "en": "Groups led in English, Italian and Spanish",
+  "it": "Gruppi accompagnati in inglese, italiano e spagnolo",
+  "es": "Grupos acompañados en inglés, italiano y español"
+ },
+ "ag.2": {
+  "en": "Apulia, Lazio, Tuscany and the rest of Italy",
+  "it": "Puglia, Lazio, Toscana e il resto d'Italia",
+  "es": "Apulia, Lacio, Toscana y el resto de Italia"
+ },
+ "ag.3": {
+  "en": "The main contact for guests and local suppliers on the road",
+  "it": "Il punto di riferimento per ospiti e fornitori locali durante il viaggio",
+  "es": "El punto de referencia para huéspedes y proveedores locales durante el viaje"
+ },
+ "pr.h": {
+  "en": "For private groups",
+  "it": "Per i gruppi privati",
+  "es": "Para grupos privados"
+ },
+ "pr.0": {
+  "en": "Write to me: how many you are, when you would like to travel and what you dream of seeing.",
+  "it": "Scrivimi: quanti siete, quando vorreste partire e cosa sognate di vedere.",
+  "es": "Escríbeme: cuántos sois, cuándo queréis viajar y qué soñáis ver."
+ },
+ "pr.1": {
+  "en": "We talk it through calmly, in English, Italian or Spanish.",
+  "it": "Ne parliamo con calma, in inglese, italiano o spagnolo.",
+  "es": "Lo hablamos con calma, en inglés, italiano o español."
+ },
+ "pr.2": {
+  "en": "On the road I look after the group, so you only have to enjoy Italy.",
+  "it": "Durante il viaggio penso io al gruppo, voi dovete solo godervi l'Italia.",
+  "es": "Durante el viaje yo cuido del grupo, vosotros solo tenéis que disfrutar de Italia."
+ },
+ "pr.best": {
+  "en": "At my best with groups of 10 to 20 people.",
+  "it": "Do il meglio con gruppi da 10 a 20 persone.",
+  "es": "Doy lo mejor con grupos de 10 a 20 personas."
+ },
+ "mc.h": {
+  "en": "Where we will travel",
+  "it": "Dove viaggeremo",
+  "es": "Dónde viajaremos"
+ },
+ "mc.p": {
+  "en": "Tap a region to see where I have worked and the places I know best.",
+  "it": "Tocca una regione per vedere dove ho lavorato e i posti che conosco meglio.",
+  "es": "Toca una región para ver dónde he trabajado y los lugares que mejor conozco."
+ }
+});
+
 /** Testo in inglese (la lingua principale): il cambio lingua avviene nel browser. */
 export const t = (k: string): string => TESTI[k]?.en ?? (console.warn('Testo mancante: ' + k), k);

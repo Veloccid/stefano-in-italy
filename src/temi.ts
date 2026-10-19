@@ -12,6 +12,10 @@ export const TEMI: Tema[] = [
   { id: 'mappa', lettera: 'H', nome: 'Mappa dell\'Italia', tipo: 'Interattiva', idea: 'L\'Italia si disegna da sola e si accende: tocchi una regione e la mappa ci vola dentro, il percorso si disegna e Stefano lo percorre. Puglia in primo piano.' },
   { id: 'paesaggi', lettera: 'I', nome: 'Paesaggi', tipo: 'Interattiva', idea: 'Colline toscane, borghi del Lazio, trulli e mare della Puglia disegnati a strati: scorrendo Stefano ci cammina dentro, e tocchi quello che vedi.' },
   { id: 'piegata', lettera: 'J', nome: 'La mappa piegata', tipo: 'Interattiva', idea: 'Il sito si apre come una vecchia carta stradale piegata: la tocchi e si spiega pannello dopo pannello, con dentro la mappa, Stefano, le recensioni e i contatti.' },
+  { id: 'sobria', lettera: 'K', nome: 'SII! sobria', tipo: 'Dopo il questionario', idea: 'La A resa calma: "Stefano In Italy" diventa SII! una volta sola, testi grandi, recensioni subito sotto e email ben visibile.' },
+  { id: 'mappa-calma', lettera: 'L', nome: 'La mappa tranquilla', tipo: 'Dopo il questionario', idea: 'La H senza voli né effetti: una mappa elegante e ferma, tocchi una regione e leggi cosa ha fatto lì.' },
+  { id: 'lettere', lettera: 'M', nome: 'Le lettere dei viaggiatori', tipo: 'Dopo il questionario', idea: 'Il sito parte dalle recensioni e dalle lettere scritte a mano: la fiducia prima di tutto, poi il curriculum.' },
+  { id: 'porte', lettera: 'N', nome: 'Due porte', tipo: 'Dopo il questionario', idea: 'All\'apertura due scelte: agenzia o tour operator, oppure gruppo privato. Ognuno trova i contenuti pensati per lui.' },
 ];
 
 export const temaDa = (id: string) => TEMI.find((x) => x.id === id)!;

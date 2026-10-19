@@ -11,10 +11,14 @@ import Volo from '../../../proposte/volo/Home.astro';
 import Mappa from '../../../proposte/mappa/Home.astro';
 import Paesaggi from '../../../proposte/paesaggi/Home.astro';
 import Piegata from '../../../proposte/piegata/Home.astro';
+import Sobria from '../../../proposte/sobria/Home.astro';
+import MappaCalma from '../../../proposte/mappa-calma/Home.astro';
+import Lettere from '../../../proposte/lettere/Home.astro';
+import Porte from '../../../proposte/porte/Home.astro';
 
 export const getStaticPaths = percorsiTemi;
 const { tema } = Astro.props as { tema: Tema };
-const HOME = { cammino: Cammino, essenziale: Essenziale, rivista: Rivista, verde: Verde, percorso: Percorso, cartoline: Cartoline, volo: Volo, mappa: Mappa, paesaggi: Paesaggi, piegata: Piegata } as const;
+const HOME = { cammino: Cammino, essenziale: Essenziale, rivista: Rivista, verde: Verde, percorso: Percorso, cartoline: Cartoline, volo: Volo, mappa: Mappa, paesaggi: Paesaggi, piegata: Piegata, sobria: Sobria, 'mappa-calma': MappaCalma, lettere: Lettere, porte: Porte } as const;
 const Home = HOME[tema.id as keyof typeof HOME];
 ---
 <Layout tema={tema}>
