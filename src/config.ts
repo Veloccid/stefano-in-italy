@@ -5,7 +5,7 @@ export const SITO = {
   persona: 'Stefano Alonzi',
   url: 'https://www.stefanoinitaly.com',
   whatsapp: '393467603667', // solo cifre, con prefisso 39
-  email: 'alonzistefano@hotmail.it',
+  email: 'info@stefanoinitaly.com',
   instagram: 'https://www.instagram.com/stefanoinitaly/',
   instagramHandle: '@stefanoinitaly',
 };

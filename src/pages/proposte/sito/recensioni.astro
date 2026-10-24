@@ -1,0 +1,20 @@
+---
+// Proposta F · Recensioni: pagina dedicata.
+import SitoLayout from '../../../sito/SitoLayout.astro';
+import Fiducia from '../../../components/Fiducia.astro';
+import { pagina } from '../../../sito/menu';
+import T from '../../../components/T.astro';
+---
+<SitoLayout attiva="recensioni">
+  <div class="wrap sf-pagina">
+    <header class="sf-titolo"><T as="h1" k="r.h" /></header>
+    <Fiducia lettere={6} class="fr-fid" />
+    <p class="fr-lascia"><a class="btn btn-linea" href={pagina('contatti')}><T k="r.lascia" /> →</a></p>
+  </div>
+</SitoLayout>
+<style is:global>
+.fr-fid .fid-testa h2{font-size:clamp(26px,3vw,36px)}
+.fr-fid .fid-lettere{grid-template-columns:1fr 1fr}
+.fr-lascia{margin-top:32px}
+@media (max-width:600px){.fr-fid .fid-lettere{grid-template-columns:1fr}}
+</style>

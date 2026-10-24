@@ -3,8 +3,8 @@
 import { SITO } from '../config';
 import Icona from './Icona.astro';
 import T from './T.astro';
-interface Props { class?: string }
-const { class: cls } = Astro.props;
+interface Props { class?: string; cvHref?: string }
+const { class: cls, cvHref } = Astro.props;
 ---
 <div class:list={['cc', cls]}>
   <T as="h2" k="ct.h2" />
@@ -14,7 +14,7 @@ const { class: cls } = Astro.props;
     <p class="cc-mail"><T k="ct.mail.l" /><br /><a href={`mailto:${SITO.email}`}>{SITO.email}</a></p>
   </div>
   <T as="p" class="cc-nota" k="ct.risposta" />
-  <a class="cc-cv" href="#curriculum" data-cv-open><Icona nome="cv" /><T k="cv.open" /></a>
+  <a class="cc-cv" href={cvHref ?? '#curriculum'} data-cv-open={cvHref ? undefined : ''}><Icona nome="cv" /><T k="cv.open" /></a>
 </div>
 <style is:global>
 .cc{display:grid;gap:14px}

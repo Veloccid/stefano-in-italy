@@ -961,5 +961,304 @@ Object.assign(TESTI, {
  }
 });
 
+// Proposta F: sito con più pagine
+Object.assign(TESTI, {
+ "m.home": {
+  "en": "Home",
+  "it": "Home",
+  "es": "Inicio"
+ },
+ "m.servizi": {
+  "en": "Services",
+  "it": "Servizi",
+  "es": "Servicios"
+ },
+ "m.mappa": {
+  "en": "Where I work",
+  "it": "Dove lavoro",
+  "es": "Dónde trabajo"
+ },
+ "m.recensioni": {
+  "en": "Reviews",
+  "it": "Recensioni",
+  "es": "Reseñas"
+ },
+ "m.cv": {
+  "en": "Experience",
+  "it": "Curriculum",
+  "es": "Experiencia"
+ },
+ "m.contatti": {
+  "en": "Contact",
+  "it": "Contatti",
+  "es": "Contacto"
+ },
+ "m.menu": {
+  "en": "Menu",
+  "it": "Menu",
+  "es": "Menú"
+ },
+ "h.intro": {
+  "en": "I accompany groups across Italy for tour operators and agencies: I look after people, timetables and every detail, so the trip feels easy.",
+  "it": "Accompagno gruppi in tutta Italia per tour operator e agenzie: mi occupo delle persone, degli orari e di ogni dettaglio, perché il viaggio sia semplice.",
+  "es": "Acompaño grupos por toda Italia para touroperadores y agencias: me ocupo de las personas, los horarios y cada detalle, para que el viaje sea sencillo."
+ },
+ "h.scopri": {
+  "en": "Discover my path",
+  "it": "Scopri il mio percorso",
+  "es": "Descubre mi recorrido"
+ },
+ "h.porte": {
+  "en": "Get to know my work",
+  "it": "Conosci il mio lavoro",
+  "es": "Conoce mi trabajo"
+ },
+ "h.servizi.d": {
+  "en": "Tour leading for agencies and tailor-made itinerary ideas.",
+  "it": "Accompagnamento per agenzie e idee di itinerari su misura.",
+  "es": "Acompañamiento para agencias e ideas de itinerarios a medida."
+ },
+ "h.mappa.d": {
+  "en": "The map of the places I know and the tours I have led there.",
+  "it": "La mappa dei posti che conosco e dei tour che ci ho fatto.",
+  "es": "El mapa de los lugares que conozco y los tours que he hecho allí."
+ },
+ "h.rec.d": {
+  "en": "What travellers and groups say after the trip.",
+  "it": "Cosa dicono viaggiatori e gruppi dopo il viaggio.",
+  "es": "Lo que dicen viajeros y grupos después del viaje."
+ },
+ "h.apri": {
+  "en": "Open",
+  "it": "Apri",
+  "es": "Abrir"
+ },
+ "s.h": {
+  "en": "Services",
+  "it": "Servizi",
+  "es": "Servicios"
+ },
+ "s.intro": {
+  "en": "Two ways to work together, always clear about who does what.",
+  "it": "Due modi di lavorare insieme, sempre chiari su chi fa cosa.",
+  "es": "Dos formas de trabajar juntos, siempre claras sobre quién hace qué."
+ },
+ "s.1.h": {
+  "en": "Tour leader for tour operators and agencies",
+  "it": "Tour leader per tour operator e agenzie",
+  "es": "Tour leader para touroperadores y agencias"
+ },
+ "s.1.p": {
+  "en": "I accompany your groups on day tours and multi-day trips: logistics, hotels and transport, timetables, and the main contact for guests and local suppliers.",
+  "it": "Accompagno i tuoi gruppi in tour di giornata e viaggi di più giorni: logistica, hotel e trasporti, orari, e sono il punto di riferimento per ospiti e fornitori locali.",
+  "es": "Acompaño a tus grupos en tours de un día y viajes de varios días: logística, hoteles y transporte, horarios, y soy el punto de referencia para huéspedes y proveedores locales."
+ },
+ "s.2.h": {
+  "en": "Tailor-made itinerary ideas",
+  "it": "Idee di itinerario su misura",
+  "es": "Ideas de itinerario a medida"
+ },
+ "s.2.p": {
+  "en": "Do you have a group and a dream trip in Italy? I help you shape the idea: places, pace and experiences. The trip is then organised and sold by an authorised travel agency I work with.",
+  "it": "Hai un gruppo e un viaggio in Italia nel cuore? Ti aiuto a dare forma all'idea: luoghi, ritmo ed esperienze. Il viaggio poi lo organizza e lo vende un'agenzia di viaggi autorizzata con cui collaboro.",
+  "es": "¿Tienes un grupo y un viaje soñado por Italia? Te ayudo a dar forma a la idea: lugares, ritmo y experiencias. Después el viaje lo organiza y lo vende una agencia de viajes autorizada con la que colaboro."
+ },
+ "s.come": {
+  "en": "How it works",
+  "it": "Come funziona",
+  "es": "Cómo funciona"
+ },
+ "s.p1": {
+  "en": "Tell me about your group: how many you are, when, and what you would love to see.",
+  "it": "Mi racconti il tuo gruppo: quanti siete, quando, e cosa vi piacerebbe vedere.",
+  "es": "Me cuentas tu grupo: cuántos sois, cuándo y qué os gustaría ver."
+ },
+ "s.p2": {
+  "en": "Together we sketch the idea of the itinerary.",
+  "it": "Insieme disegniamo l'idea di itinerario.",
+  "es": "Juntos dibujamos la idea del itinerario."
+ },
+ "s.p3": {
+  "en": "I put you in touch with the partner agency, which prepares the quote, the contract and the whole trip.",
+  "it": "Ti metto in contatto con l'agenzia partner, che prepara preventivo, contratto e tutto il viaggio.",
+  "es": "Te pongo en contacto con la agencia colaboradora, que prepara el presupuesto, el contrato y todo el viaje."
+ },
+ "s.p4": {
+  "en": "With my partner code you get 5% off the price of the trip.",
+  "it": "Con il mio codice partner hai il 5% di sconto sul prezzo del viaggio.",
+  "es": "Con mi código de colaborador tienes un 5% de descuento en el precio del viaje."
+ },
+ "s.codice": {
+  "en": "Ask me for the partner code",
+  "it": "Chiedimi il codice partner",
+  "es": "Pídeme el código de colaborador"
+ },
+ "s.codice.wa": {
+  "en": "Hi Stefano, I have a group and an idea for a trip in Italy. Could you send me the partner code?",
+  "it": "Ciao Stefano, ho un gruppo e un'idea di viaggio in Italia. Mi mandi il codice partner?",
+  "es": "Hola Stefano, tengo un grupo y una idea de viaje por Italia. ¿Me envías el código de colaborador?"
+ },
+ "s.chiaro.h": {
+  "en": "To be clear",
+  "it": "Per essere chiari",
+  "es": "Para ser claros"
+ },
+ "s.chiaro.1": {
+  "en": "I am a certified tour leader, not a travel agency: I do not sell travel packages.",
+  "it": "Sono un tour leader certificato, non un'agenzia di viaggi: non vendo pacchetti turistici.",
+  "es": "Soy un tour leader certificado, no una agencia de viajes: no vendo paquetes turísticos."
+ },
+ "s.chiaro.2": {
+  "en": "Quote, contract, payments, insurance and guarantees are handled by the authorised partner agency.",
+  "it": "Preventivo, contratto, pagamenti, assicurazioni e garanzie sono a carico dell'agenzia partner autorizzata.",
+  "es": "El presupuesto, el contrato, los pagos, los seguros y las garantías corren a cargo de la agencia colaboradora autorizada."
+ },
+ "s.chiaro.3": {
+  "en": "The agency pays me a fee for recommending it. It does not increase the price for you.",
+  "it": "L'agenzia mi riconosce un compenso per la segnalazione. Il prezzo per te non aumenta.",
+  "es": "La agencia me reconoce una comisión por recomendarla. El precio para ti no aumenta."
+ },
+ "s.partner": {
+  "en": "Partner agency:",
+  "it": "Agenzia partner:",
+  "es": "Agencia colaboradora:"
+ },
+ "mp.h": {
+  "en": "Where I work",
+  "it": "Dove lavoro",
+  "es": "Dónde trabajo"
+ },
+ "mp.p": {
+  "en": "Drag the map, zoom in and tap a place to see the tours I have led there.",
+  "it": "Trascina la mappa, ingrandisci e tocca un posto per vedere i tour che ci ho fatto.",
+  "es": "Arrastra el mapa, amplía y toca un lugar para ver los tours que he hecho allí."
+ },
+ "mp.scegli": {
+  "en": "Tap a point on the map",
+  "it": "Tocca un punto sulla mappa",
+  "es": "Toca un punto del mapa"
+ },
+ "mp.tour": {
+  "en": "Tours here",
+  "it": "Tour qui",
+  "es": "Tours aquí"
+ },
+ "mp.formazione": {
+  "en": "Training",
+  "it": "Formazione",
+  "es": "Formación"
+ },
+ "mp.base": {
+  "en": "My home base",
+  "it": "La mia base",
+  "es": "Mi base"
+ },
+ "mp.cv": {
+  "en": "See the full experience",
+  "it": "Vedi il curriculum completo",
+  "es": "Ver la experiencia completa"
+ },
+ "mp.zoomin": {
+  "en": "Zoom in",
+  "it": "Ingrandisci",
+  "es": "Ampliar"
+ },
+ "mp.zoomout": {
+  "en": "Zoom out",
+  "it": "Riduci",
+  "es": "Reducir"
+ },
+ "mp.reset": {
+  "en": "Whole Italy",
+  "it": "Tutta Italia",
+  "es": "Toda Italia"
+ },
+ "t.food": {
+  "en": "Food and market tours",
+  "it": "Food tour e mercati",
+  "es": "Food tours y mercados"
+ },
+ "t.day": {
+  "en": "Day tours in Tuscany",
+  "it": "Tour di giornata in Toscana",
+  "es": "Tours de un día por la Toscana"
+ },
+ "t.private": {
+  "en": "Private and small-group tours",
+  "it": "Tour privati e per piccoli gruppi",
+  "es": "Tours privados y para grupos pequeños"
+ },
+ "t.students": {
+  "en": "Trips for international university students",
+  "it": "Viaggi per studenti universitari internazionali",
+  "es": "Viajes para estudiantes universitarios internacionales"
+ },
+ "t.welcome": {
+  "en": "Welcoming students on campus",
+  "it": "Accoglienza degli studenti al campus",
+  "es": "Acogida de estudiantes en el campus"
+ },
+ "t.puglia": {
+  "en": "Multi-day trips in Apulia",
+  "it": "Viaggi di più giorni in Puglia",
+  "es": "Viajes de varios días por Apulia"
+ },
+ "t.puglia.d": {
+  "en": "Groups travelling through Apulia: transport, hotels and timetables, and the reference point for guests and local suppliers.",
+  "it": "Gruppi in viaggio per la Puglia: trasporti, hotel e orari, e il punto di riferimento per ospiti e fornitori locali.",
+  "es": "Grupos de viaje por Apulia: transporte, hoteles y horarios, y el punto de referencia para huéspedes y proveedores locales."
+ },
+ "t.dmo": {
+  "en": "Tourism project for the Valle di Comino",
+  "it": "Progetto turistico per la Valle di Comino",
+  "es": "Proyecto turístico para el Valle di Comino"
+ },
+ "r.h": {
+  "en": "Reviews",
+  "it": "Recensioni",
+  "es": "Reseñas"
+ },
+ "r.lascia": {
+  "en": "Have you travelled with me? Leave a review",
+  "it": "Hai viaggiato con me? Lascia una recensione",
+  "es": "¿Has viajado conmigo? Deja una reseña"
+ },
+ "cv.page.h": {
+  "en": "Experience and training",
+  "it": "Esperienza e formazione",
+  "es": "Experiencia y formación"
+ },
+ "cv.esperienza": {
+  "en": "Work experience",
+  "it": "Esperienza",
+  "es": "Experiencia"
+ },
+ "cv.formazione": {
+  "en": "Training",
+  "it": "Formazione",
+  "es": "Formación"
+ },
+ "cv.pdf": {
+  "en": "Ask for my CV in PDF",
+  "it": "Chiedimi il CV in PDF",
+  "es": "Pídeme el CV en PDF"
+ },
+ "c.h": {
+  "en": "Contact",
+  "it": "Contatti",
+  "es": "Contacto"
+ },
+ "c.ig": {
+  "en": "Follow me on Instagram",
+  "it": "Seguimi su Instagram",
+  "es": "Sígueme en Instagram"
+ },
+ "foot.legale": {
+  "en": "Privacy and cookie policy: to be completed",
+  "it": "Privacy e cookie policy: da completare",
+  "es": "Privacidad y cookies: por completar"
+ }
+});
+
 /** Testo in inglese (la lingua principale): il cambio lingua avviene nel browser. */
 export const t = (k: string): string => TESTI[k]?.en ?? (console.warn('Testo mancante: ' + k), k);

@@ -1,0 +1,72 @@
+---
+// Proposta F · Servizi: tour leader per agenzie + idee di itinerario su misura con agenzia partner autorizzata.
+import SitoLayout from '../../../sito/SitoLayout.astro';
+import { SITO, linkWhatsApp } from '../../../config';
+import { TESTI } from '../../../data/testi';
+import { pagina } from '../../../sito/menu';
+import Icona from '../../../components/Icona.astro';
+import T from '../../../components/T.astro';
+---
+<SitoLayout attiva="servizi">
+  <div class="wrap sf-pagina">
+    <header class="sf-titolo"><T as="h1" k="s.h" /><T as="p" k="s.intro" /></header>
+
+    <section class="fs-blocco">
+      <span class="fs-n">1</span>
+      <div>
+        <T as="h2" k="s.1.h" />
+        <T as="p" k="s.1.p" />
+        <ul class="chips"><T as="li" k="f.spec.0" /><T as="li" k="f.spec.1" /><T as="li" k="f.spec.3" /><T as="li" k="f.lang.0" /><T as="li" k="f.lang.2" /></ul>
+        <a class="fs-link" href={pagina('curriculum')}><T k="mp.cv" /> →</a>
+      </div>
+    </section>
+
+    <section class="fs-blocco fs-blocco-2">
+      <span class="fs-n">2</span>
+      <div>
+        <T as="h2" k="s.2.h" />
+        <p class="sf-provv" lang="it">Testo provvisorio · da verificare con un commercialista o un avvocato</p>
+        <T as="p" k="s.2.p" />
+        <T as="h3" k="s.come" />
+        <ol class="fs-passi">{['s.p1', 's.p2', 's.p3', 's.p4'].map((k, i) => <li><span class="fs-pn">{i + 1}</span><T k={k} /></li>)}</ol>
+        <a class="btn btn-wa fs-codice" href={linkWhatsApp(TESTI['s.codice.wa'].en)} target="_blank" rel="noopener" data-wa-testo="s.codice.wa"><Icona nome="wa" /><T k="s.codice" /></a>
+      </div>
+    </section>
+
+    <aside class="fs-chiaro" aria-labelledby="fsChiaro">
+      <T as="h2" k="s.chiaro.h" id="fsChiaro" />
+      <ul>{['s.chiaro.1', 's.chiaro.2', 's.chiaro.3'].map((k) => <li><Icona nome="spunta" /><T k={k} /></li>)}</ul>
+      <p class="fs-partner"><T k="s.partner" /> <span lang="it">[nome dell'agenzia partner, licenza e contatti da inserire]</span></p>
+    </aside>
+  </div>
+</SitoLayout>
+<style is:global>
+.fs-blocco{display:grid;grid-template-columns:auto 1fr;gap:24px;padding:32px 0;border-top:2px solid var(--verde)}
+.fs-n{width:56px;height:56px;border-radius:50%;background:var(--verde);color:var(--crema);display:grid;place-items:center;font:400 28px/1 var(--f-display)}
+.fs-blocco h2{font-size:clamp(28px,3.6vw,42px);margin-bottom:10px}
+.fs-blocco h3{font-size:24px;margin:22px 0 10px}
+.fs-blocco p{max-width:62ch}
+.fs-blocco .chips{margin:14px 0}
+.fs-blocco .chips li{border-color:rgba(0,59,31,.3)}
+.fs-link{font-weight:700}
+.fs-passi{list-style:none;margin:0 0 22px;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+.fs-passi li{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid rgba(0,59,31,.12);border-radius:16px;padding:16px 18px}
+.fs-pn{flex:none;width:34px;height:34px;border-radius:50%;background:#E3B458;color:var(--verde);display:grid;place-items:center;font:400 18px/1 var(--f-display)}
+.fs-codice{font-size:18px;min-height:58px}
+.fs-chiaro{margin-top:24px;background:var(--carta);border-radius:20px;padding:clamp(22px,4vw,36px);display:grid;gap:12px}
+.fs-chiaro h2{font-size:clamp(26px,3vw,34px)}
+.fs-chiaro ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.fs-chiaro li{display:flex;gap:12px;align-items:flex-start}
+.fs-chiaro svg{width:24px;height:24px;flex:none;margin-top:3px}
+.fs-partner{margin:6px 0 0;font-weight:700}
+.fs-partner span{font-weight:400;background:rgba(201,142,43,.25);padding:2px 6px;border-radius:4px}
+@media (max-width:700px){.fs-blocco{grid-template-columns:1fr}.fs-passi{grid-template-columns:1fr}}
+</style>
+<script>
+  // il messaggio WhatsApp del codice partner segue la lingua scelta
+  import { tr } from '../../../scripts/lingue';
+  const a = document.querySelector<HTMLAnchorElement>('[data-wa-testo]');
+  const aggiorna = () => { const t = a ? tr(a.dataset.waTesto!) : ''; if (a && t) a.href = 'https://wa.me/393467603667?text=' + encodeURIComponent(t); };
+  document.addEventListener('sii:lingua', aggiorna);
+  setTimeout(aggiorna, 0);
+</script>
