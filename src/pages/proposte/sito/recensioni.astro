@@ -1,29 +1,29 @@
 ---
-// Proposta F · Recensioni: almeno 20 posti. La prima è vera; le altre aspettano gli screenshot di Stefano.
+// Proposta F · Recensioni: 24 posti. In cima una frase dalle recensioni vere che cambia ogni 4 secondi.
 import SitoLayout from '../../../sito/SitoLayout.astro';
 import CartaRec from '../../../sito/CartaRec.astro';
-import { RECENSIONI_SITO, CITAZIONE } from '../../../data/recensioni';
+import { RECENSIONI_SITO, CITAZIONI } from '../../../data/recensioni';
 import { pagina } from '../../../sito/menu';
 import Icona from '../../../components/Icona.astro';
 import T from '../../../components/T.astro';
-const filtri = [{ id: 'tutte', k: 'r.tutte' }, { id: 'online', k: 'r.online' }, { id: 'lettera', k: 'r.lettere' }];
-let n = 0;
 ---
 <SitoLayout attiva="recensioni">
   <div class="wrap sf-pagina">
-    <header class="sf-titolo fr-testa">
+    <header class="sf-titolo">
       <div class="fr-stelle" aria-label="5/5">{[1, 2, 3, 4, 5].map(() => <Icona nome="stella" />)}</div>
       <T as="h1" k="r.h" />
       <T as="p" k="r.p" />
     </header>
-    <figure class="fr-cit">
-      <blockquote>“{CITAZIONE.titolo} {CITAZIONE.testo}”</blockquote>
-      <figcaption><T k="rev.quote.src" /></figcaption>
-    </figure>
-    <div class="fr-filtri" role="group" aria-label="Filter">
-      {filtri.map((f, i) => <button type="button" data-filtro={f.id} aria-pressed={i === 0 ? 'true' : 'false'}><T k={f.k} /> <span class="fr-n">{f.id === 'tutte' ? RECENSIONI_SITO.length : RECENSIONI_SITO.filter((r) => r.tipo === f.id).length}</span></button>)}
+    <div class="fr-cit" aria-live="polite">
+      {CITAZIONI.map((c, i) => (
+        <figure class:list={['fr-frase', { on: i === 0 }]} aria-hidden={i === 0 ? undefined : 'true'}>
+          <blockquote>“{c.testo}”</blockquote>
+          <figcaption>{c.chi}</figcaption>
+        </figure>
+      ))}
+      <div class="fr-punti" aria-hidden="true">{CITAZIONI.map((_, i) => <span class:list={{ on: i === 0 }}></span>)}</div>
     </div>
-    <div class="fr-muro">{RECENSIONI_SITO.map((r) => <CartaRec r={r} n={r.tipo === 'online' ? ++n : 0} />)}</div>
+    <div class="fr-muro">{RECENSIONI_SITO.map((r, i) => <CartaRec r={r} n={i + 1} />)}</div>
     <T as="p" class="fr-nota" k="fid.tutte" />
     <p class="fr-lascia"><a class="btn btn-linea" href={pagina('contatti')}><T k="r.lascia" /> →</a></p>
   </div>
@@ -31,24 +31,30 @@ let n = 0;
 <style is:global>
 .fr-stelle{display:flex;gap:4px;color:var(--ocra)}
 .fr-stelle svg{width:28px;height:28px}
-.fr-cit{margin:0 0 32px;background:var(--verde);color:var(--crema);border-radius:22px;padding:clamp(24px,4vw,40px)}
-.fr-cit blockquote{margin:0 0 10px;font:400 clamp(24px,3vw,36px)/1.25 var(--f-display);max-width:32ch}
-.fr-cit figcaption{color:#C9D6C6;font-weight:600}
-.fr-filtri{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-.fr-filtri button{appearance:none;border:2px solid var(--verde);background:transparent;color:var(--verde);border-radius:999px;padding:10px 16px;font:600 16px/1 var(--f-sans);cursor:pointer;display:inline-flex;gap:8px;align-items:center}
-.fr-filtri button[aria-pressed="true"]{background:var(--verde);color:var(--crema)}
-.fr-n{font-size:13px;opacity:.75}
+.fr-cit{position:relative;display:grid;margin:0 0 36px;background:var(--verde);color:var(--crema);border-radius:22px;padding:clamp(26px,4vw,44px) clamp(24px,4vw,44px) 56px}
+.fr-frase{grid-area:1/1;margin:0;opacity:0;transform:translateY(10px);transition:opacity .7s ease,transform .7s ease;pointer-events:none}
+.fr-frase.on{opacity:1;transform:none}
+.fr-frase blockquote{margin:0 0 12px;font:400 clamp(26px,3.4vw,42px)/1.22 var(--f-display);max-width:30ch}
+.fr-frase figcaption{color:#C9D6C6;font-weight:600}
+.fr-punti{position:absolute;left:clamp(24px,4vw,44px);bottom:24px;display:flex;gap:8px}
+.fr-punti span{width:8px;height:8px;border-radius:50%;background:rgba(254,246,235,.35);transition:background-color .4s,width .4s}
+.fr-punti span.on{background:#E3B458;width:22px;border-radius:4px}
 .fr-muro{columns:4 230px;column-gap:20px}
 .fr-muro .cr{margin-bottom:20px}
-.fr-muro .cr[hidden]{display:none}
 .fr-nota{color:var(--muted);font-size:15px;margin:8px 0 0}
 .fr-lascia{margin-top:24px}
+@media (prefers-reduced-motion:reduce){.fr-frase{transition:none;transform:none}}
 </style>
 <script>
-  const bottoni = [...document.querySelectorAll<HTMLButtonElement>('[data-filtro]')];
-  const carte = [...document.querySelectorAll<HTMLElement>('.fr-muro .cr')];
-  bottoni.forEach((b) => b.addEventListener('click', () => {
-    bottoni.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
-    carte.forEach((c) => (c.hidden = b.dataset.filtro !== 'tutte' && c.dataset.tipo !== b.dataset.filtro));
-  }));
+  const frasi = [...document.querySelectorAll<HTMLElement>('.fr-frase')];
+  const punti = [...document.querySelectorAll<HTMLElement>('.fr-punti span')];
+  if (frasi.length > 1) {
+    let i = 0;
+    setInterval(() => {
+      if (document.hidden) return;
+      frasi[i].classList.remove('on'); frasi[i].setAttribute('aria-hidden', 'true'); punti[i].classList.remove('on');
+      i = (i + 1) % frasi.length;
+      frasi[i].classList.add('on'); frasi[i].removeAttribute('aria-hidden'); punti[i].classList.add('on');
+    }, 4000);
+  }
 </script>

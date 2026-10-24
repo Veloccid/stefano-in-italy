@@ -15,7 +15,7 @@ function applica(l: L, salva: boolean) {
   document.querySelectorAll<HTMLElement>('[data-i18n]').forEach((el) => (el.innerHTML = tr(el.dataset.i18n!, l)));
   document.querySelectorAll<HTMLElement>('[data-i18n-aria]').forEach((el) => el.setAttribute('aria-label', tr(el.dataset.i18nAria!, l)));
   document.querySelectorAll<HTMLElement>('.lingue button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
-  document.querySelectorAll<HTMLAnchorElement>('.js-wa').forEach((a) => (a.href = `https://wa.me/${WA}?text=${encodeURIComponent(tr('wa.text', l))}`));
+  document.querySelectorAll<HTMLAnchorElement>('.js-wa').forEach((a) => (a.href = `https://wa.me/${WA}?text=${encodeURIComponent(tr(a.dataset.waTesto || 'wa.text', l))}`));
   if (salva) {
     try { localStorage.setItem('sii-lang', l); } catch {}
     try { const u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u); } catch {}

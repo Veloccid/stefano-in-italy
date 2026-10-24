@@ -3,12 +3,12 @@
 import { SITO } from '../config';
 import Icona from './Icona.astro';
 import T from './T.astro';
-interface Props { class?: string; cvHref?: string }
-const { class: cls, cvHref } = Astro.props;
+interface Props { class?: string; cvHref?: string; hKey?: string; pKey?: string }
+const { class: cls, cvHref, hKey = 'ct.h2', pKey = 'col.p' } = Astro.props;
 ---
 <div class:list={['cc', cls]}>
-  <T as="h2" k="ct.h2" />
-  <T as="p" class="cc-p" k="col.p" />
+  <T as="h2" k={hKey} />
+  <T as="p" class="cc-p" k={pKey} />
   <div class="cc-righe">
     <a class="btn btn-wa cc-wa js-wa" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener"><Icona nome="wa" /><T k="wa.btn" /></a>
     <p class="cc-mail"><T k="ct.mail.l" /><br /><a href={`mailto:${SITO.email}`}>{SITO.email}</a></p>

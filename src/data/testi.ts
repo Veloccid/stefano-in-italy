@@ -1295,3 +1295,29 @@ Object.assign(TESTI, {
  "r.lettere": { en: "Handwritten letters", it: "Lettere scritte a mano", es: "Cartas manuscritas" },
  "r.vedi": { en: "Read all the reviews", it: "Leggi tutte le recensioni", es: "Lee todas las reseñas" },
 });
+
+// Proposta F, terza versione: messaggi WhatsApp espliciti, servizio 2 più vago, nuove città, contatti.
+Object.assign(TESTI, {
+ "cv.pdf.wa": { en: "Hi Stefano, I saw your website stefanoinitaly.com. Could you send me your CV in PDF?", it: "Ciao Stefano, ho visto il tuo sito stefanoinitaly.com. Mi puoi mandare il tuo curriculum in PDF?", es: "Hola Stefano, he visto tu web stefanoinitaly.com. ¿Me puedes enviar tu currículum en PDF?" },
+ "s.2.p": { en: "Thinking about a trip to Italy with a group? I'm happy to share a few ideas on places and experiences, and to point you to the authorised travel agency I work with.", it: "Stai pensando a un viaggio in Italia con un gruppo? Posso darti qualche idea su luoghi ed esperienze e indicarti l'agenzia di viaggi autorizzata con cui collaboro.", es: "¿Estás pensando en un viaje por Italia con un grupo? Puedo darte algunas ideas sobre lugares y experiencias e indicarte la agencia de viajes autorizada con la que colaboro." },
+ "s.2.p2": { en: "Write to me and I'll tell you more, including a reserved discount.", it: "Scrivimi e ti racconto di più, anche su uno sconto riservato.", es: "Escríbeme y te cuento más, también sobre un descuento reservado." },
+ "s.codice": { en: "Ask me for more", it: "Chiedimi di più", es: "Pídeme más información" },
+ "s.codice.wa": { en: "Hi Stefano, I saw your website. I'd like a few ideas for a trip to Italy with a group.", it: "Ciao Stefano, ho visto il tuo sito. Vorrei qualche idea per un viaggio in Italia con un gruppo.", es: "Hola Stefano, he visto tu web. Me gustaría alguna idea para un viaje por Italia con un grupo." },
+ "pl.venezia": { en: "Venice", it: "Venezia", es: "Venecia" },
+ "pl.torino": { en: "Turin", it: "Torino", es: "Turín" },
+ "mp.veneto": { en: "Veneto", it: "Veneto", es: "Véneto" },
+ "mp.piemonte": { en: "Piedmont", it: "Piemonte", es: "Piamonte" },
+ "mp.liguria": { en: "Liguria", it: "Liguria", es: "Liguria" },
+ "t.venezia": { en: "School trip to Venice", it: "Gita scolastica a Venezia", es: "Viaje escolar a Venecia" },
+ "t.venezia.d": { en: "Study trip with the SRISA art students.", it: "Viaggio d'istruzione con il gruppo d'arte della SRISA.", es: "Viaje de estudios con el grupo de arte de SRISA." },
+ "t.torino": { en: "Art students visiting Turin", it: "Studenti d'arte in visita a Torino", es: "Estudiantes de arte de visita en Turín" },
+ "t.torino.d": { en: "I accompanied the SRISA art students on their visit to Turin.", it: "Ho accompagnato gli studenti d'arte della SRISA nella visita di Torino.", es: "Acompañé a los estudiantes de arte de SRISA en su visita a Turín." },
+ "t.cinque": { en: "Day tour to the Cinque Terre", it: "Tour giornaliero alle Cinque Terre", es: "Tour de un día a Cinque Terre" },
+ "t.cinque.d": { en: "A full day among the five villages on the Ligurian coast.", it: "Una giornata intera tra i cinque borghi sulla costa ligure.", es: "Un día completo entre los cinco pueblos de la costa de Liguria." },
+ "r.n": { en: "Review", it: "Recensione", es: "Reseña" },
+ "c.p": { en: "Agencies, tour operators, DMCs, schools and universities: I am available for collaborations, in English, Italian and Spanish.", it: "Agenzie, tour operator, DMC, scuole e università: sono disponibile per collaborazioni, in italiano, inglese e spagnolo.", es: "Agencias, touroperadores, DMC, escuelas y universidades: estoy disponible para colaboraciones, en inglés, italiano y español." },
+ "c.h2": { en: "Available for collaborations", it: "Disponibile per collaborazioni", es: "Disponible para colaboraciones" },
+});
+Object.assign(TESTI, {
+ "mp.scegli.d": { en: "From Piedmont to Puglia: Tuscany, the Comino Valley where I live, and Puglia, where I have been working most recently.", it: "Dal Piemonte alla Puglia: la Toscana, la Valle di Comino dove vivo e la Puglia, dove lavoro di più ultimamente.", es: "Del Piamonte a Apulia: la Toscana, el Valle de Comino donde vivo y Apulia, donde trabajo más últimamente." },
+});

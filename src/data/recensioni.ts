@@ -17,12 +17,18 @@ export const CITAZIONE = {
   testo: 'His knowledge on all subjects was just fantastic. No question went unanswered.',
 };
 
-// Proposta F: pagina Recensioni con almeno 20 posti. La prima è vera, le altre aspettano gli screenshot di Stefano.
+// Proposta F: pagina Recensioni con 24 posti. La prima è vera, le altre aspettano gli screenshot o le foto delle lettere di Stefano.
 // Per aggiungerne una: sostituire il segnaposto con { img, w, h, fonte, tipo }.
 export type RecensioneSito = Recensione & { tipo: 'online' | 'lettera' };
-const FONTI = ['Google', 'TripAdvisor', 'GetYourGuide', 'Trustpilot'];
 export const RECENSIONI_SITO: RecensioneSito[] = [
   { ...RECENSIONI[0], tipo: 'online' },
-  ...Array.from({ length: 17 }, (_, i): RecensioneSito => ({ fonte: FONTI[i % FONTI.length], tipo: 'online' })),
-  ...Array.from({ length: 6 }, (): RecensioneSito => ({ fonte: 'Lettera', tipo: 'lettera' })),
+  ...Array.from({ length: 23 }, (): RecensioneSito => ({ fonte: '', tipo: 'online' })),
+];
+
+// Frasi che si alternano in cima alla pagina Recensioni (prese parola per parola dalle recensioni vere).
+export const CITAZIONI = [
+  { testo: 'Stefano an amazing tour guide.', chi: 'Bridget · Trustpilot' },
+  { testo: 'Our tour manager was Stefano & he was just amazing.', chi: 'Bridget · Trustpilot' },
+  { testo: 'His knowledge on all subjects was just fantastic. No question went unanswered.', chi: 'Bridget · Trustpilot' },
+  { testo: 'I would highly recommend this trip to anyone.', chi: 'Bridget · Trustpilot' },
 ];

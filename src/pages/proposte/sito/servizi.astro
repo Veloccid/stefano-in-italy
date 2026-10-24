@@ -1,8 +1,7 @@
 ---
 // Proposta F · Servizi: tour leader per agenzie + idee di itinerario su misura con agenzia partner autorizzata.
 import SitoLayout from '../../../sito/SitoLayout.astro';
-import { SITO, linkWhatsApp } from '../../../config';
-import { TESTI } from '../../../data/testi';
+import { SITO } from '../../../config';
 import { pagina } from '../../../sito/menu';
 import Icona from '../../../components/Icona.astro';
 import T from '../../../components/T.astro';
@@ -32,9 +31,8 @@ import T from '../../../components/T.astro';
         <T as="h2" k="s.2.h" />
         <p class="sf-provv" lang="it">Testo provvisorio · da verificare con un commercialista o un avvocato</p>
         <T as="p" k="s.2.p" />
-        <T as="h3" k="s.come" />
-        <ol class="fs-passi">{['s.p1', 's.p2', 's.p3', 's.p4'].map((k, i) => <li><span class="fs-pn">{i + 1}</span><T k={k} /></li>)}</ol>
-        <a class="btn btn-wa fs-codice" href={linkWhatsApp(TESTI['s.codice.wa'].en)} target="_blank" rel="noopener" data-wa-testo="s.codice.wa"><Icona nome="wa" /><T k="s.codice" /></a>
+        <T as="p" k="s.2.p2" />
+        <a class="btn btn-wa js-wa fs-codice" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener" data-wa-testo="s.codice.wa"><Icona nome="wa" /><T k="s.codice" /></a>
       </div>
     </section>
 
@@ -60,7 +58,7 @@ import T from '../../../components/T.astro';
 .fs-passi{list-style:none;margin:0 0 22px;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
 .fs-passi li{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid rgba(0,59,31,.12);border-radius:16px;padding:16px 18px}
 .fs-pn{flex:none;width:34px;height:34px;border-radius:50%;background:#E3B458;color:var(--verde);display:grid;place-items:center;font:400 18px/1 var(--f-display)}
-.fs-codice{font-size:18px;min-height:58px}
+.fs-codice{font-size:18px;min-height:58px;margin-top:8px}
 .fs-chiaro{margin-top:24px;background:var(--carta);border-radius:20px;padding:clamp(22px,4vw,36px);display:grid;gap:12px}
 .fs-chiaro h2{font-size:clamp(26px,3vw,34px)}
 .fs-chiaro ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
@@ -70,11 +68,3 @@ import T from '../../../components/T.astro';
 .fs-partner span{font-weight:400;background:rgba(201,142,43,.25);padding:2px 6px;border-radius:4px}
 @media (max-width:700px){.fs-blocco{grid-template-columns:1fr}.fs-passi,.fs-cosa{grid-template-columns:1fr}}
 </style>
-<script>
-  // il messaggio WhatsApp del codice partner segue la lingua scelta
-  import { tr } from '../../../scripts/lingue';
-  const a = document.querySelector<HTMLAnchorElement>('[data-wa-testo]');
-  const aggiorna = () => { const t = a ? tr(a.dataset.waTesto!) : ''; if (a && t) a.href = 'https://wa.me/393467603667?text=' + encodeURIComponent(t); };
-  document.addEventListener('sii:lingua', aggiorna);
-  setTimeout(aggiorna, 0);
-</script>

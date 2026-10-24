@@ -13,8 +13,9 @@ export const ZONE_MAPPA: Zona[] = [
 export const NOMI: Record<string, string> = {
   parma: 'Parma', ferrara: 'Ferrara', firenze: 'Firenze', siena: 'Siena', sora: 'Sora',
   bari: 'Bari', polignano: 'Polignano a Mare', alberobello: 'Alberobello', ostuni: 'Ostuni', lecce: 'Lecce',
+  venezia: 'Venezia', torino: 'Torino', cinqueterre: 'Cinque Terre',
 };
-export const NOMI_KEY: Record<string, string> = { firenze: 'pl.firenze' };
+export const NOMI_KEY: Record<string, string> = { firenze: 'pl.firenze', venezia: 'pl.venezia', torino: 'pl.torino' };
 
 import { ITALIA_W, ITALIA_H, PUNTI } from './italia';
 /** Coordinate di un posto nel disegno della mappa (unità SVG). */

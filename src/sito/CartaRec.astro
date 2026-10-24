@@ -10,12 +10,9 @@ const { r, n } = Astro.props;
   {r.img ? (
     <a class="cr-shot" href={r.img} target="_blank" rel="noopener"><img src={r.img} width={r.w} height={r.h} loading="lazy" decoding="async" alt={`Review on ${r.fonte}`} /></a>
   ) : (
-    <div class="cr-shot"><span>{r.tipo === 'lettera' ? <T k="fid.lettera" /> : <><T k="rev.ph" /> {n}</>}</span><small lang="it">da inserire</small></div>
+    <div class="cr-shot"><span><T k="r.n" /> {n}</span><small lang="it">da inserire</small></div>
   )}
-  <figcaption>
-    {r.img && <span class="cr-ok"><Icona nome="spunta" /><T k="rev.badge" /></span>}
-    <span class="cr-fonte">{r.tipo === 'lettera' ? <T k="r.lettere" /> : r.fonte}</span>
-  </figcaption>
+  {r.img && <figcaption><span class="cr-ok"><Icona nome="spunta" /><T k="rev.badge" /></span><span class="cr-fonte">{r.fonte}</span></figcaption>}
 </figure>
 <style is:global>
 .cr{margin:0;display:grid;gap:8px;break-inside:avoid}

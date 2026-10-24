@@ -29,7 +29,7 @@ const formazione = TAPPE.filter((t) => t.n >= 8);
         <T as="h3" k="f.lang" /><ul class="chips">{LINGUE_PARLATE.map((k) => <T as="li" k={k} />)}</ul>
         <T as="h3" k="f.spec" /><ul class="chips">{SPECIALITA.map((k) => <T as="li" k={k} />)}</ul>
         <T as="h3" k="f.where" /><ul class="chips">{ZONE.map((k) => <T as="li" k={k} />)}</ul>
-        <a class="btn btn-wa js-wa fc-pdf" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener"><Icona nome="cv" /><T k="cv.pdf" /></a>
+        <a class="btn btn-wa js-wa fc-pdf" data-wa-testo="cv.pdf.wa" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener"><Icona nome="cv" /><T k="cv.pdf" /></a>
       </aside>
     </div>
   </div>

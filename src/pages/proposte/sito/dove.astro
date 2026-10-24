@@ -5,14 +5,13 @@ import SitoLayout from '../../../sito/SitoLayout.astro';
 import { ITALIA_PATH } from '../../../data/italia';
 import { NOMI, NOMI_KEY, xy } from '../../../data/zone';
 import { PUNTI_MAPPA, INQUADRA as Q } from '../../../data/tour';
-import { linkWhatsApp } from '../../../config';
+import { SITO } from '../../../config';
 import { TESTI } from '../../../data/testi';
-import { pagina } from '../../../sito/menu';
 import Icona from '../../../components/Icona.astro';
 import T from '../../../components/T.astro';
-const nome = (id: string) => (NOMI_KEY[id] ? 'Florence' : NOMI[id]);
+const nome = (id: string) => (NOMI_KEY[id] ? TESTI[NOMI_KEY[id]].en : NOMI[id]);
 const pc = (x: number, y: number) => `left:${(((x - Q.x) / Q.w) * 100).toFixed(2)}%;top:${(((y - Q.y) / Q.h) * 100).toFixed(2)}%`;
-const regioneK = { toscana: 'mp.toscana', lazio: 'mp.lazio', puglia: 'mp.puglia' } as const;
+const regioneK = { toscana: 'mp.toscana', lazio: 'mp.lazio', puglia: 'mp.puglia', veneto: 'mp.veneto', piemonte: 'mp.piemonte', liguria: 'mp.liguria' } as const;
 const [sx, sy] = xy('sora');
 ---
 <SitoLayout attiva="mappa">
@@ -20,7 +19,7 @@ const [sx, sy] = xy('sora');
     <header class="sf-titolo"><T as="h1" k="mp.h" /><T as="p" k="mp.p" /></header>
     <div class="m3">
       <div class="m3-palco">
-        <div class="m3-inclina" id="m3Inclina">
+        <div class="m3-inclina" id="m3Inclina" data-q={JSON.stringify(Q)}>
           <svg class="m3-svg" viewBox={`${Q.x} ${Q.y} ${Q.w} ${Q.h}`} aria-hidden="true">
             <defs>
               <pattern id="m3Onde" width="22" height="12" patternUnits="userSpaceOnUse"><path d="M0 8 Q5.5 4 11 8 T22 8" fill="none" stroke="#B9CDBB" stroke-width=".8" /></pattern>
@@ -28,8 +27,8 @@ const [sx, sy] = xy('sora');
             </defs>
             <rect x={Q.x - 50} y={Q.y - 50} width={Q.w + 100} height={Q.h + 100} class="m3-mare" />
             <rect x={Q.x - 50} y={Q.y - 50} width={Q.w + 100} height={Q.h + 100} fill="url(#m3Onde)" opacity=".7" />
-            <text class="m3-mar" x="214" y="452">Mar Tirreno</text>
-            <text class="m3-mar" x="452" y="196">Mar Adriatico</text>
+            <text class="m3-mar" x="150" y="330">Mar Tirreno</text>
+            <text class="m3-mar" x="400" y="200">Mar Adriatico</text>
             <path class="m3-spessore" d={ITALIA_PATH} transform="translate(1.5 3)" />
             <path class="m3-terra" d={ITALIA_PATH} pathLength="1" />
             {PUNTI_MAPPA.map((p) => { const [x, y] = xy(p.id); return <line class="m3-filo" data-filo={p.id} x1={x} y1={y} x2={p.et[0]} y2={p.et[1]} />; })}
@@ -42,7 +41,7 @@ const [sx, sy] = xy('sora');
               </g>
             ); })}
           </svg>
-          <p class="m3-gruppo" style={pc(566, 140)}><T k="mp.puglia" /> <T class="m3-badge" k="mp.recente" /></p>
+          <p class="m3-gruppo" style={pc(566, 128)}><T k="mp.puglia" /> <T class="m3-badge" k="mp.recente" /></p>
           {PUNTI_MAPPA.map((p, i) => (
             <button type="button" class:list={['m3-et', `m3-et-${p.tipo}`, `m3-et-${p.regione}`]} data-punto={p.id} style={`${pc(p.et[0], p.et[1])};--d:${1.7 + i * 0.1}s`} aria-pressed="false">
               {p.casa && <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z" /></svg>}
@@ -77,9 +76,7 @@ const [sx, sy] = xy('sora');
                 </li>
               ))}
             </ul>
-            {p.casa
-              ? <a class="btn btn-wa m3-chiedi" href={linkWhatsApp(TESTI['mp.chiedi.wa'].en)} target="_blank" rel="noopener" data-wa-testo="mp.chiedi.wa"><Icona nome="wa" /><T k="mp.chiedi" /></a>
-              : <a class="m3-cv" href={pagina('curriculum')}><T k="mp.cv" /> →</a>}
+            {p.casa && <a class="btn btn-wa js-wa m3-chiedi" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener" data-wa-testo="mp.chiedi.wa"><Icona nome="wa" /><T k="mp.chiedi" /></a>}
           </div>
         ))}
       </aside>
@@ -89,7 +86,7 @@ const [sx, sy] = xy('sora');
 <style is:global>
 .m3{display:grid;grid-template-columns:1.45fr .85fr;gap:clamp(20px,3vw,40px);align-items:start}
 .m3-palco{perspective:1300px;perspective-origin:50% 0%;padding:8px 0 24px}
-.m3-inclina{position:relative;aspect-ratio:460/340;border-radius:24px;transform-style:preserve-3d;transform:rotateX(var(--rx,24deg)) rotateY(var(--ry,0deg)) rotateZ(-1.5deg);transform-origin:50% 60%;transition:transform .9s cubic-bezier(.2,.8,.2,1);box-shadow:0 2px 0 #0B4A2B,0 4px 0 #0B4A2B,0 6px 0 #0B4A2B,0 8px 0 #0B4A2B,0 40px 50px -10px rgba(0,40,20,.35);animation:m3Arriva 1.4s cubic-bezier(.2,.8,.2,1) backwards}
+.m3-inclina{position:relative;aspect-ratio:600/400;border-radius:24px;transform-style:preserve-3d;transform:rotateX(var(--rx,24deg)) rotateY(var(--ry,0deg)) rotateZ(-1.5deg);transform-origin:50% 60%;transition:transform .9s cubic-bezier(.2,.8,.2,1);box-shadow:0 2px 0 #0B4A2B,0 4px 0 #0B4A2B,0 6px 0 #0B4A2B,0 8px 0 #0B4A2B,0 40px 50px -10px rgba(0,40,20,.35);animation:m3Arriva 1.4s cubic-bezier(.2,.8,.2,1) backwards}
 @keyframes m3Arriva{from{transform:rotateX(60deg) rotateZ(-8deg) translateY(40px);opacity:0}}
 .m3-svg{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:24px;overflow:hidden}
 .m3-mare{fill:#DCE8DE}
@@ -122,11 +119,11 @@ const [sx, sy] = xy('sora');
 .m3-et-base[aria-pressed="true"]{background:var(--terracotta);border-color:var(--terracotta)}
 .m3-stef{position:absolute;width:0;height:0;pointer-events:none;transition:left .9s cubic-bezier(.45,0,.3,1),top .9s cubic-bezier(.45,0,.3,1);z-index:2}
 .m3-stef-salto{position:absolute;left:-23px;bottom:10px;width:46px;height:46px;border-radius:50%;background:var(--crema);border:3px solid var(--verde);transform-origin:50% 130%;box-shadow:0 6px 10px rgba(0,30,15,.3)}
-.m3-stef-salto::after{content:"";position:absolute;left:50%;bottom:-10px;margin-left:-7px;border:7px solid transparent;border-top:9px solid var(--verde);border-bottom:0}
+.m3-stef-salto::after{content:"";position:absolute;left:50%;bottom:-11px;margin-left:-7px;width:14px;height:10px;background:var(--verde);clip-path:polygon(0 0,100% 0,50% 100%)}
 .m3-stef img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 4%;border-radius:50%}
 .m3-ombra{position:absolute;left:-12px;top:-3px;width:24px;height:6px;border-radius:50%;background:rgba(0,30,15,.3)}
-.m3-stef.salta .m3-stef-salto{animation:m3Salto .9s cubic-bezier(.45,0,.3,1)}
-.m3-stef.salta .m3-ombra{animation:m3Ombra .9s cubic-bezier(.45,0,.3,1)}
+.m3-stef.hop .m3-stef-salto{animation:m3Salto .9s cubic-bezier(.45,0,.3,1)}
+.m3-stef.hop .m3-ombra{animation:m3Ombra .9s cubic-bezier(.45,0,.3,1)}
 @keyframes m3Salto{0%{transform:translateY(0) scale(1,1)}10%{transform:translateY(0) scale(1.1,.85)}50%{transform:translateY(-70px) scale(.95,1.05)}90%{transform:translateY(0) scale(1.1,.88)}100%{transform:translateY(0) scale(1,1)}}
 @keyframes m3Ombra{50%{transform:scale(.5);opacity:.4}}
 .m3-pannello{scroll-margin-top:84px;background:#fff;border:1px solid rgba(0,59,31,.14);border-radius:22px;padding:clamp(20px,2.4vw,28px);box-shadow:0 14px 34px rgba(0,40,20,.08);position:sticky;top:96px}
@@ -161,14 +158,13 @@ const [sx, sy] = xy('sora');
   .m3-inclina,.m3-terra,.m3-spessore,.m3-pin,.m3-et,.m3-filo{animation:none;opacity:1;fill-opacity:1;stroke-dashoffset:0}
   .m3-inclina{transition:none}
   .m3-stef{transition:none}
-  .m3-stef.salta .m3-stef-salto,.m3-stef.salta .m3-ombra{animation:none}
+  .m3-stef.hop .m3-stef-salto,.m3-stef.hop .m3-ombra{animation:none}
 }
 </style>
 <script>
-  import { tr } from '../../../scripts/lingue';
   const inc = document.getElementById('m3Inclina');
   if (inc) {
-    const Q = { x: 180, y: 128, w: 460, h: 340 };
+    const Q = JSON.parse(inc.dataset.q!);
     const stef = document.getElementById('m3Stef')!;
     const pins = [...inc.querySelectorAll<SVGGElement>('.m3-pin')];
     const etichette = [...inc.querySelectorAll<HTMLButtonElement>('.m3-et')];
@@ -189,7 +185,7 @@ const [sx, sy] = xy('sora');
       // Stefano salta sulla città scelta e la mappa si gira un po' verso di lei
       const [x, y] = pos(id);
       stef.style.left = (x * 100).toFixed(2) + '%'; stef.style.top = (y * 100).toFixed(2) + '%';
-      stef.classList.remove('salta'); void stef.offsetWidth; stef.classList.add('salta');
+      stef.classList.remove('hop'); void stef.offsetWidth; stef.classList.add('hop');
       if (!ridotto) { inc.style.setProperty('--ry', ((0.5 - x) * 14).toFixed(1) + 'deg'); inc.style.setProperty('--rx', (base() + (y - 0.5) * 8).toFixed(1) + 'deg'); }
       if (innerWidth <= 980 && daMappa) setTimeout(() => pannello.scrollIntoView({ behavior: ridotto ? 'auto' : 'smooth', block: 'start' }), 650);
     };
@@ -213,9 +209,5 @@ const [sx, sy] = xy('sora');
       });
       palco.addEventListener('pointerleave', () => { if (!attuale) { inc.style.setProperty('--ry', '0deg'); inc.style.setProperty('--rx', base() + 'deg'); } });
     }
-    // il messaggio WhatsApp segue la lingua
-    const a = document.querySelector<HTMLAnchorElement>('[data-wa-testo]');
-    const aggiorna = () => { const t = a ? tr(a.dataset.waTesto!) : ''; if (a && t) a.href = 'https://wa.me/393467603667?text=' + encodeURIComponent(t); };
-    document.addEventListener('sii:lingua', aggiorna); setTimeout(aggiorna, 0);
   }
 </script>
