@@ -1,20 +1,54 @@
 ---
-// Proposta F · Recensioni: pagina dedicata.
+// Proposta F · Recensioni: almeno 20 posti. La prima è vera; le altre aspettano gli screenshot di Stefano.
 import SitoLayout from '../../../sito/SitoLayout.astro';
-import Fiducia from '../../../components/Fiducia.astro';
+import CartaRec from '../../../sito/CartaRec.astro';
+import { RECENSIONI_SITO, CITAZIONE } from '../../../data/recensioni';
 import { pagina } from '../../../sito/menu';
+import Icona from '../../../components/Icona.astro';
 import T from '../../../components/T.astro';
+const filtri = [{ id: 'tutte', k: 'r.tutte' }, { id: 'online', k: 'r.online' }, { id: 'lettera', k: 'r.lettere' }];
+let n = 0;
 ---
 <SitoLayout attiva="recensioni">
   <div class="wrap sf-pagina">
-    <header class="sf-titolo"><T as="h1" k="r.h" /></header>
-    <Fiducia lettere={6} class="fr-fid" />
+    <header class="sf-titolo fr-testa">
+      <div class="fr-stelle" aria-label="5/5">{[1, 2, 3, 4, 5].map(() => <Icona nome="stella" />)}</div>
+      <T as="h1" k="r.h" />
+      <T as="p" k="r.p" />
+    </header>
+    <figure class="fr-cit">
+      <blockquote>“{CITAZIONE.titolo} {CITAZIONE.testo}”</blockquote>
+      <figcaption><T k="rev.quote.src" /></figcaption>
+    </figure>
+    <div class="fr-filtri" role="group" aria-label="Filter">
+      {filtri.map((f, i) => <button type="button" data-filtro={f.id} aria-pressed={i === 0 ? 'true' : 'false'}><T k={f.k} /> <span class="fr-n">{f.id === 'tutte' ? RECENSIONI_SITO.length : RECENSIONI_SITO.filter((r) => r.tipo === f.id).length}</span></button>)}
+    </div>
+    <div class="fr-muro">{RECENSIONI_SITO.map((r) => <CartaRec r={r} n={r.tipo === 'online' ? ++n : 0} />)}</div>
+    <T as="p" class="fr-nota" k="fid.tutte" />
     <p class="fr-lascia"><a class="btn btn-linea" href={pagina('contatti')}><T k="r.lascia" /> →</a></p>
   </div>
 </SitoLayout>
 <style is:global>
-.fr-fid .fid-testa h2{font-size:clamp(26px,3vw,36px)}
-.fr-fid .fid-lettere{grid-template-columns:1fr 1fr}
-.fr-lascia{margin-top:32px}
-@media (max-width:600px){.fr-fid .fid-lettere{grid-template-columns:1fr}}
+.fr-stelle{display:flex;gap:4px;color:var(--ocra)}
+.fr-stelle svg{width:28px;height:28px}
+.fr-cit{margin:0 0 32px;background:var(--verde);color:var(--crema);border-radius:22px;padding:clamp(24px,4vw,40px)}
+.fr-cit blockquote{margin:0 0 10px;font:400 clamp(24px,3vw,36px)/1.25 var(--f-display);max-width:32ch}
+.fr-cit figcaption{color:#C9D6C6;font-weight:600}
+.fr-filtri{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.fr-filtri button{appearance:none;border:2px solid var(--verde);background:transparent;color:var(--verde);border-radius:999px;padding:10px 16px;font:600 16px/1 var(--f-sans);cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.fr-filtri button[aria-pressed="true"]{background:var(--verde);color:var(--crema)}
+.fr-n{font-size:13px;opacity:.75}
+.fr-muro{columns:4 230px;column-gap:20px}
+.fr-muro .cr{margin-bottom:20px}
+.fr-muro .cr[hidden]{display:none}
+.fr-nota{color:var(--muted);font-size:15px;margin:8px 0 0}
+.fr-lascia{margin-top:24px}
 </style>
+<script>
+  const bottoni = [...document.querySelectorAll<HTMLButtonElement>('[data-filtro]')];
+  const carte = [...document.querySelectorAll<HTMLElement>('.fr-muro .cr')];
+  bottoni.forEach((b) => b.addEventListener('click', () => {
+    bottoni.forEach((x) => x.setAttribute('aria-pressed', String(x === b)));
+    carte.forEach((c) => (c.hidden = b.dataset.filtro !== 'tutte' && c.dataset.tipo !== b.dataset.filtro));
+  }));
+</script>

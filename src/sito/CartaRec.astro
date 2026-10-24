@@ -1,0 +1,30 @@
+---
+// Una recensione della proposta F: screenshot vero, oppure segnaposto chiaramente "da inserire".
+import type { RecensioneSito } from '../data/recensioni';
+import Icona from '../components/Icona.astro';
+import T from '../components/T.astro';
+interface Props { r: RecensioneSito; n: number }
+const { r, n } = Astro.props;
+---
+<figure class:list={['cr', { 'cr-vuota': !r.img, 'cr-lettera': r.tipo === 'lettera' }]} data-tipo={r.tipo}>
+  {r.img ? (
+    <a class="cr-shot" href={r.img} target="_blank" rel="noopener"><img src={r.img} width={r.w} height={r.h} loading="lazy" decoding="async" alt={`Review on ${r.fonte}`} /></a>
+  ) : (
+    <div class="cr-shot"><span>{r.tipo === 'lettera' ? <T k="fid.lettera" /> : <><T k="rev.ph" /> {n}</>}</span><small lang="it">da inserire</small></div>
+  )}
+  <figcaption>
+    {r.img && <span class="cr-ok"><Icona nome="spunta" /><T k="rev.badge" /></span>}
+    <span class="cr-fonte">{r.tipo === 'lettera' ? <T k="r.lettere" /> : r.fonte}</span>
+  </figcaption>
+</figure>
+<style is:global>
+.cr{margin:0;display:grid;gap:8px;break-inside:avoid}
+.cr-shot{display:block;border-radius:14px;overflow:hidden;border:1px solid rgba(0,59,31,.14);background:#fff;box-shadow:0 8px 22px rgba(0,40,20,.07)}
+.cr-shot img{display:block;width:100%;height:auto}
+.cr-vuota .cr-shot{aspect-ratio:4/5;display:grid;place-content:center;gap:6px;text-align:center;padding:16px;background:#FBF3E4;border:1.5px dashed rgba(0,59,31,.25);box-shadow:none;color:var(--muted);font-size:16px}
+.cr-vuota.cr-lettera .cr-shot{aspect-ratio:3/4;background:#FFFDF8}
+.cr-vuota small{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--terracotta)}
+.cr figcaption{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:14px;font-weight:600;color:var(--muted)}
+.cr-ok{display:inline-flex;align-items:center;gap:5px;color:#1F7A4A}
+.cr-ok svg{width:18px;height:18px}
+</style>

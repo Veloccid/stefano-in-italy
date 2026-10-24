@@ -16,7 +16,12 @@ import T from '../../../components/T.astro';
       <div>
         <T as="h2" k="s.1.h" />
         <T as="p" k="s.1.p" />
-        <ul class="chips"><T as="li" k="f.spec.0" /><T as="li" k="f.spec.1" /><T as="li" k="f.spec.3" /><T as="li" k="f.lang.0" /><T as="li" k="f.lang.2" /></ul>
+        <T as="h3" k="s.1.cosa" />
+        <dl class="fs-cosa">
+          {['a', 'b', 'c', 'd'].map((x) => (
+            <div><dt><Icona nome="spunta" /><T k={`s.1.${x}.h`} /></dt><T as="dd" k={`s.1.${x}.p`} /></div>
+          ))}
+        </dl>
         <a class="fs-link" href={pagina('curriculum')}><T k="mp.cv" /> →</a>
       </div>
     </section>
@@ -46,8 +51,11 @@ import T from '../../../components/T.astro';
 .fs-blocco h2{font-size:clamp(28px,3.6vw,42px);margin-bottom:10px}
 .fs-blocco h3{font-size:24px;margin:22px 0 10px}
 .fs-blocco p{max-width:62ch}
-.fs-blocco .chips{margin:14px 0}
-.fs-blocco .chips li{border-color:rgba(0,59,31,.3)}
+.fs-cosa{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 32px;margin:0 0 20px}
+.fs-cosa div{border-left:3px solid #E3B458;padding:2px 0 2px 16px}
+.fs-cosa dt{display:flex;align-items:center;gap:10px;font:400 22px/1.2 var(--f-display);color:var(--verde)}
+.fs-cosa dt svg{width:22px;height:22px;flex:none}
+.fs-cosa dd{margin:6px 0 0;font-size:17px;color:var(--ink)}
 .fs-link{font-weight:700}
 .fs-passi{list-style:none;margin:0 0 22px;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
 .fs-passi li{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid rgba(0,59,31,.12);border-radius:16px;padding:16px 18px}
@@ -60,7 +68,7 @@ import T from '../../../components/T.astro';
 .fs-chiaro svg{width:24px;height:24px;flex:none;margin-top:3px}
 .fs-partner{margin:6px 0 0;font-weight:700}
 .fs-partner span{font-weight:400;background:rgba(201,142,43,.25);padding:2px 6px;border-radius:4px}
-@media (max-width:700px){.fs-blocco{grid-template-columns:1fr}.fs-passi{grid-template-columns:1fr}}
+@media (max-width:700px){.fs-blocco{grid-template-columns:1fr}.fs-passi,.fs-cosa{grid-template-columns:1fr}}
 </style>
 <script>
   // il messaggio WhatsApp del codice partner segue la lingua scelta

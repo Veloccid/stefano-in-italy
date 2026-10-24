@@ -1262,3 +1262,36 @@ Object.assign(TESTI, {
 
 /** Testo in inglese (la lingua principale): il cambio lingua avviene nel browser. */
 export const t = (k: string): string => TESTI[k]?.en ?? (console.warn('Testo mancante: ' + k), k);
+
+// Proposta F, seconda versione: Servizi descrittivi, mappa 3D con i soli posti attivi, recensioni.
+Object.assign(TESTI, {
+ "s.1.cosa": { en: "What I do for your groups", it: "Cosa faccio per i vostri gruppi", es: "Qué hago por vuestros grupos" },
+ "s.1.a.h": { en: "Day tours and multi-day trips", it: "Tour di giornata e viaggi di più giorni", es: "Tours de un día y viajes de varios días" },
+ "s.1.a.p": { en: "From a single day out to a week-long trip, I follow the programme you have sold, stop by stop.", it: "Dalla gita di un giorno al viaggio di una settimana, seguo il programma che avete venduto, tappa per tappa.", es: "De una excursión de un día a un viaje de una semana, sigo el programa que habéis vendido, parada a parada." },
+ "s.1.b.h": { en: "Small and large groups", it: "Gruppi piccoli e grandi", es: "Grupos pequeños y grandes" },
+ "s.1.b.p": { en: "I have led groups of up to 80 people, with the same care I give to a group of ten.", it: "Ho accompagnato gruppi fino a 80 persone, con la stessa cura che metto in un gruppo di dieci.", es: "He acompañado grupos de hasta 80 personas, con el mismo cuidado que pongo en un grupo de diez." },
+ "s.1.c.h": { en: "Three languages", it: "Tre lingue", es: "Tres idiomas" },
+ "s.1.c.p": { en: "English (C1), Spanish (C2) and Italian: I speak with guests, drivers, hotels and restaurants without go-betweens.", it: "Inglese (C1), spagnolo (C2) e italiano: parlo con ospiti, autisti, hotel e ristoranti senza intermediari.", es: "Inglés (C1), español (C2) e italiano: hablo con huéspedes, conductores, hoteles y restaurantes sin intermediarios." },
+ "s.1.d.h": { en: "One point of contact", it: "Un solo punto di riferimento", es: "Un único punto de referencia" },
+ "s.1.d.p": { en: "Timetables, hotels, transport and local suppliers: if something changes, I sort it out on the spot and keep you informed.", it: "Orari, hotel, trasporti e fornitori locali: se qualcosa cambia, lo risolvo sul posto e vi tengo informati.", es: "Horarios, hoteles, transporte y proveedores locales: si algo cambia, lo resuelvo allí mismo y os mantengo informados." },
+ "mp.p": { en: "These are the places where I lead tours today. Tap a city to see what I do there.", it: "Sono i posti dove faccio tour oggi. Tocca una città per vedere cosa faccio lì.", es: "Son los lugares donde hago tours hoy. Toca una ciudad para ver qué hago allí." },
+ "mp.scegli": { en: "Tap a city on the map", it: "Tocca una città sulla mappa", es: "Toca una ciudad en el mapa" },
+ "mp.scegli.d": { en: "Tuscany, the Comino Valley where I live, and Puglia, where I have been working most recently.", it: "Toscana, la Valle di Comino dove vivo, e la Puglia, dove lavoro di più ultimamente.", es: "Toscana, el Valle de Comino donde vivo, y Apulia, donde trabajo más últimamente." },
+ "mp.base": { en: "My home", it: "Casa mia", es: "Mi casa" },
+ "mp.recente": { en: "Most recent", it: "Il più recente", es: "Lo más reciente" },
+ "mp.toscana": { en: "Tuscany", it: "Toscana", es: "Toscana" },
+ "mp.lazio": { en: "Comino Valley", it: "Valle di Comino", es: "Valle de Comino" },
+ "mp.puglia": { en: "Puglia", it: "Puglia", es: "Apulia" },
+ "t.wine": { en: "Wine tour in the Comino Valley wineries", it: "Wine tour nelle aziende vinicole della Valle di Comino", es: "Wine tour en las bodegas del Valle de Comino" },
+ "t.wine.d": { en: "Visits and tastings at the local wineries, from the vineyard to the cellar.", it: "Visite e degustazioni nelle aziende vinicole della valle, dalla vigna alla cantina.", es: "Visitas y catas en las bodegas del valle, de la viña a la bodega." },
+ "t.cheese": { en: "Cheese tour in the Comino Valley", it: "Cheese tour nella Valle di Comino", es: "Cheese tour en el Valle de Comino" },
+ "t.cheese.d": { en: "The valley's dairies and cheese makers, with tastings of local cheeses.", it: "I caseifici e i produttori della valle, con assaggi dei formaggi locali.", es: "Las queserías y productores del valle, con degustación de quesos locales." },
+ "mp.casa": { en: "This is my home and I know it like the back of my hand: ask me anything about this area.", it: "È casa mia, la conosco come le mie tasche: chiedimi qualsiasi cosa su questa zona.", es: "Es mi casa y la conozco como la palma de mi mano: pregúntame lo que quieras sobre esta zona." },
+ "mp.chiedi": { en: "Ask me about the Comino Valley", it: "Chiedimi della Valle di Comino", es: "Pregúntame por el Valle de Comino" },
+ "mp.chiedi.wa": { en: "Hi Stefano, I saw your website. I have a question about the Comino Valley:", it: "Ciao Stefano, ho visto il tuo sito. Ho una domanda sulla Valle di Comino:", es: "Hola Stefano, he visto tu web. Tengo una pregunta sobre el Valle de Comino:" },
+ "r.p": { en: "Original screenshots of reviews and handwritten letters from the groups I have accompanied, unedited.", it: "Screenshot originali delle recensioni e lettere scritte a mano dei gruppi che ho accompagnato, senza modifiche.", es: "Capturas originales de reseñas y cartas manuscritas de los grupos que he acompañado, sin modificar." },
+ "r.tutte": { en: "All", it: "Tutte", es: "Todas" },
+ "r.online": { en: "Online reviews", it: "Recensioni online", es: "Reseñas online" },
+ "r.lettere": { en: "Handwritten letters", it: "Lettere scritte a mano", es: "Cartas manuscritas" },
+ "r.vedi": { en: "Read all the reviews", it: "Leggi tutte le recensioni", es: "Lee todas las reseñas" },
+});

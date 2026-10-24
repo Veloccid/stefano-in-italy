@@ -7,12 +7,12 @@ import T from '../components/T.astro';
 import { SITO } from '../config';
 import { temaDa } from '../temi';
 import { MENU, pagina } from './menu';
-interface Props { attiva: string; titoloKey?: string }
-const { attiva, titoloKey } = Astro.props;
+interface Props { attiva: string; titoloKey?: string; home?: boolean }
+const { attiva, titoloKey, home = false } = Astro.props;
 const tema = temaDa('sito');
 ---
 <Layout tema={tema} titoloKey={titoloKey} contatti={false}>
-  <div class="sf">
+  <div class:list={['sf', { 'sf-home': home }]}>
     <header class="sf-testa">
       <a class="sf-logo" href={pagina('')} aria-label="Stefano In Italy, home">SII!</a>
       <nav class="sf-nav" aria-label="Menu" data-i18n-aria="m.menu">
@@ -79,6 +79,10 @@ const tema = temaDa('sito');
 .sf-titolo h1{font-size:clamp(40px,6vw,72px)}
 .sf-titolo p{margin:0;color:var(--muted);max-width:60ch;font-size:1.08em}
 .sf-provv{display:inline-block;font-size:13px;font-weight:700;background:rgba(201,142,43,.25);padding:3px 8px;border-radius:4px;color:var(--verde)}
+/* in home la testata è trasparente sopra il verde: il logo è la scritta grande che vola in alto */
+.sf-home .sf-testa{position:fixed;left:0;right:0;top:0;background:rgba(0,59,31,var(--p,0));padding-top:calc(12px + env(safe-area-inset-top,0px))}
+.sf-home .sf-logo{visibility:hidden}
+.sf-home:has(.sf-menu-mob[open]) #stef{opacity:0}
 @media (max-width:980px){.sf-nav{display:none}.sf-menu-mob{display:block}}
 @media (max-width:760px){.sf-piede-in{grid-template-columns:1fr}}
 </style>
