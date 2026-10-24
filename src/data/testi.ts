@@ -1380,3 +1380,12 @@ Object.assign(TESTI, {
  "t.parco": { en: "Food tour in the Abruzzo, Lazio and Molise National Park", it: "Tour gastronomico nel Parco Nazionale d'Abruzzo, Lazio e Molise", es: "Tour gastronómico en el Parque Nacional de los Abruzos, Lacio y Molise" },
  "t.parco.d": { en: "Local food and producers in the heart of the park.", it: "Sapori e produttori locali nel cuore del parco.", es: "Sabores y productores locales en el corazón del parque." },
 });
+
+Object.assign(TESTI, {
+ "mp.sicilia": { en: "Sicily", it: "Sicilia", es: "Sicilia" },
+ "mp.scegli.d": { en: "Nine regions, from Piedmont to Sicily. Tap one on the map or here below.", it: "Nove regioni, dal Piemonte alla Sicilia. Toccane una sulla mappa o qui sotto.", es: "Nueve regiones, del Piamonte a Sicilia. Toca una en el mapa o aquí abajo." },
+ "t.sicilia": { en: "Multi-day tour in Sicily", it: "Tour di più giorni in Sicilia", es: "Tour de varios días por Sicilia" },
+ "t.sicilia.d": { en: "Palermo, Agrigento and Taormina, over several days.", it: "Palermo, Agrigento e Taormina, in più giorni.", es: "Palermo, Agrigento y Taormina, en varios días." },
+ "sv.to.wa": { en: "Hi Stefano, I saw your website. I'm writing from [agency / tour operator name] about working with you as a tour leader. Group: [number of people], dates: [dates], destination: [area].", it: "Ciao Stefano, ho visto il tuo sito. Ti scrivo da [nome agenzia / tour operator] per una collaborazione come tour leader. Gruppo: [numero di persone], date: [date], destinazione: [zona].", es: "Hola Stefano, he visto tu web. Te escribo desde [nombre de la agencia / touroperador] para una colaboración como tour leader. Grupo: [número de personas], fechas: [fechas], destino: [zona]." },
+ "sv.to.btn": { en: "Write to me as an agency", it: "Scrivimi come agenzia", es: "Escríbeme como agencia" },
+});

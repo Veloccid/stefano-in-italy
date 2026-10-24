@@ -102,7 +102,7 @@ const mari = [
 <style is:global>
 .m3{display:grid;grid-template-columns:1.45fr .85fr;gap:clamp(20px,3vw,40px);align-items:start}
 .m3-palco{perspective:1300px;perspective-origin:50% 0%;padding:8px 0 0;min-width:0}
-.m3-inclina{position:relative;aspect-ratio:3/2;border-radius:24px;overflow:hidden;transform-style:preserve-3d;transform:rotateX(var(--rx,24deg)) rotateY(var(--ry,0deg)) rotateZ(-1.5deg);transform-origin:50% 60%;transition:transform .9s cubic-bezier(.2,.8,.2,1);box-shadow:0 2px 0 #0B4A2B,0 4px 0 #0B4A2B,0 6px 0 #0B4A2B,0 8px 0 #0B4A2B,0 40px 50px -10px rgba(0,40,20,.35);animation:m3Arriva 1.4s cubic-bezier(.2,.8,.2,1) backwards}
+.m3-inclina{position:relative;aspect-ratio:5/4;border-radius:24px;overflow:hidden;transform-style:preserve-3d;transform:rotateX(var(--rx,24deg)) rotateY(var(--ry,0deg)) rotateZ(-1.5deg);transform-origin:50% 60%;transition:transform .9s cubic-bezier(.2,.8,.2,1);box-shadow:0 2px 0 #0B4A2B,0 4px 0 #0B4A2B,0 6px 0 #0B4A2B,0 8px 0 #0B4A2B,0 40px 50px -10px rgba(0,40,20,.35);animation:m3Arriva 1.4s cubic-bezier(.2,.8,.2,1) backwards}
 @keyframes m3Arriva{from{transform:rotateX(60deg) rotateZ(-8deg) translateY(40px);opacity:0}}
 .m3-svg,.m3-fili{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:24px;overflow:hidden}
 .m3-svg{--k:1}
@@ -221,7 +221,7 @@ const mari = [
       return [cx - w / 2, cy - h / 2, w, h];
     };
     const unione = (bs: Box[]): Box => [Math.min(...bs.map((b) => b[0])), Math.min(...bs.map((b) => b[1])), Math.max(...bs.map((b) => b[2])), Math.max(...bs.map((b) => b[3]))];
-    const vistaItalia = () => adatta(unione(D.regioni.map((r) => D.box[r.id])), 1.06, 1.06, 100);
+    const vistaItalia = () => adatta(unione(D.regioni.map((r) => D.box[r.id])), 1.0, 1.02, 100);
     const vistaRegione = (id: string) => {
       const r = D.regioni.find((x) => x.id === id)!;
       if (r.citta.length < 3) return adatta(D.box[id], 1.25, 1.25, 90);

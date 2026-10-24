@@ -11,6 +11,7 @@ const WALK = 'Walkabout Florence';
 const giornata = (d: string): Esperienza => ({ t: 't.giornata', d });
 const PUGLIA: Esperienza = { t: 't.puglia', d: 't.puglia.d', con: 'Michelangelo International', daCompletare: true };
 const COSTIERA: Esperienza = { t: 't.costiera', d: 't.costiera.d', daCompletare: true };
+const SICILIA: Esperienza = { t: 't.sicilia', d: 't.sicilia.d', daCompletare: true };
 const LIGURIA: Esperienza = { t: 't.giornata', d: 't.liguria.d', con: WALK, daCompletare: true };
 
 export const REGIONI_TOUR: Regione[] = [
@@ -54,6 +55,11 @@ export const REGIONI_TOUR: Regione[] = [
     { id: 'amalfi', nome: 'Amalfi', lon: 14.6027, lat: 40.6340, lato: 'r', esp: [COSTIERA] },
     { id: 'ravello', nome: 'Ravello', lon: 14.6119, lat: 40.6491, lato: 'r', esp: [COSTIERA] },
     { id: 'maiori', nome: 'Maiori', lon: 14.6406, lat: 40.6503, lato: 'r', esp: [COSTIERA] },
+  ] },
+  { id: 'sicily', k: 'mp.sicilia', citta: [
+    { id: 'palermo', nome: 'Palermo', lon: 13.3615, lat: 38.1157, lato: 'l', esp: [SICILIA] },
+    { id: 'agrigento', nome: 'Agrigento', lon: 13.5765, lat: 37.3111, lato: 'l', esp: [SICILIA] },
+    { id: 'taormina', nome: 'Taormina', lon: 15.2866, lat: 37.8516, lato: 'r', esp: [SICILIA] },
   ] },
   { id: 'apulia', k: 'mp.puglia', recente: true, citta: [
     { id: 'bari', nome: 'Bari', lon: 16.8719, lat: 41.1171, lato: 'l', esp: [PUGLIA] },
