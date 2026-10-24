@@ -1,70 +1,37 @@
 ---
-// Proposta F · Servizi: tour leader per agenzie + idee di itinerario su misura con agenzia partner autorizzata.
+// Proposta F · Servizi: si sceglie subito la strada giusta, agenzie e tour operator oppure privati, gruppi, scuole ed enti.
 import SitoLayout from '../../../sito/SitoLayout.astro';
-import { SITO } from '../../../config';
 import { pagina } from '../../../sito/menu';
-import Icona from '../../../components/Icona.astro';
 import T from '../../../components/T.astro';
+const strade = [
+  { p: 'servizi/tour-operator', n: 'A', tab: 'sv.to.tab', q: 'sv.to.q', d: 'sv.to.d', scura: true },
+  { p: 'servizi/gruppi', n: 'B', tab: 'sv.pr.tab', q: 'sv.pr.q', d: 'sv.pr.d', scura: false },
+];
 ---
 <SitoLayout attiva="servizi">
   <div class="wrap sf-pagina">
     <header class="sf-titolo"><T as="h1" k="s.h" /><T as="p" k="s.intro" /></header>
-
-    <section class="fs-blocco">
-      <span class="fs-n">1</span>
-      <div>
-        <T as="h2" k="s.1.h" />
-        <T as="p" k="s.1.p" />
-        <T as="h3" k="s.1.cosa" />
-        <dl class="fs-cosa">
-          {['a', 'b', 'c', 'd'].map((x) => (
-            <div><dt><Icona nome="spunta" /><T k={`s.1.${x}.h`} /></dt><T as="dd" k={`s.1.${x}.p`} /></div>
-          ))}
-        </dl>
-        <a class="fs-link" href={pagina('curriculum')}><T k="mp.cv" /> →</a>
-      </div>
-    </section>
-
-    <section class="fs-blocco fs-blocco-2">
-      <span class="fs-n">2</span>
-      <div>
-        <T as="h2" k="s.2.h" />
-        <p class="sf-provv" lang="it">Testo provvisorio · da verificare con un commercialista o un avvocato</p>
-        <T as="p" k="s.2.p" />
-        <T as="p" k="s.2.p2" />
-        <a class="btn btn-wa js-wa fs-codice" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener" data-wa-testo="s.codice.wa"><Icona nome="wa" /><T k="s.codice" /></a>
-      </div>
-    </section>
-
-    <aside class="fs-chiaro" aria-labelledby="fsChiaro">
-      <T as="h2" k="s.chiaro.h" id="fsChiaro" />
-      <ul>{['s.chiaro.1', 's.chiaro.2', 's.chiaro.3'].map((k) => <li><Icona nome="spunta" /><T k={k} /></li>)}</ul>
-      <p class="fs-partner"><T k="s.partner" /> <span lang="it">[nome dell'agenzia partner, licenza e contatti da inserire]</span></p>
-    </aside>
+    <div class="sv-strade">
+      {strade.map((s) => (
+        <a class:list={['sv-strada', { scura: s.scura }]} href={pagina(s.p)}>
+          <span class="sv-tab"><span class="sv-sn">{s.n}</span><T k={s.tab} /></span>
+          <T as="strong" k={s.q} />
+          <T as="span" class="sv-d" k={s.d} />
+          <span class="sv-vai"><T k="sv.apri" /> →</span>
+        </a>
+      ))}
+    </div>
   </div>
 </SitoLayout>
 <style is:global>
-.fs-blocco{display:grid;grid-template-columns:auto 1fr;gap:24px;padding:32px 0;border-top:2px solid var(--verde)}
-.fs-n{width:56px;height:56px;border-radius:50%;background:var(--verde);color:var(--crema);display:grid;place-items:center;font:400 28px/1 var(--f-display)}
-.fs-blocco h2{font-size:clamp(28px,3.6vw,42px);margin-bottom:10px}
-.fs-blocco h3{font-size:24px;margin:22px 0 10px}
-.fs-blocco p{max-width:62ch}
-.fs-cosa{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 32px;margin:0 0 20px}
-.fs-cosa div{border-left:3px solid #E3B458;padding:2px 0 2px 16px}
-.fs-cosa dt{display:flex;align-items:center;gap:10px;font:400 22px/1.2 var(--f-display);color:var(--verde)}
-.fs-cosa dt svg{width:22px;height:22px;flex:none}
-.fs-cosa dd{margin:6px 0 0;font-size:17px;color:var(--ink)}
-.fs-link{font-weight:700}
-.fs-passi{list-style:none;margin:0 0 22px;padding:0;display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.fs-passi li{display:flex;gap:14px;align-items:flex-start;background:#fff;border:1px solid rgba(0,59,31,.12);border-radius:16px;padding:16px 18px}
-.fs-pn{flex:none;width:34px;height:34px;border-radius:50%;background:#E3B458;color:var(--verde);display:grid;place-items:center;font:400 18px/1 var(--f-display)}
-.fs-codice{font-size:18px;min-height:58px;margin-top:8px}
-.fs-chiaro{margin-top:24px;background:var(--carta);border-radius:20px;padding:clamp(22px,4vw,36px);display:grid;gap:12px}
-.fs-chiaro h2{font-size:clamp(26px,3vw,34px)}
-.fs-chiaro ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
-.fs-chiaro li{display:flex;gap:12px;align-items:flex-start}
-.fs-chiaro svg{width:24px;height:24px;flex:none;margin-top:3px}
-.fs-partner{margin:6px 0 0;font-weight:700}
-.fs-partner span{font-weight:400;background:rgba(201,142,43,.25);padding:2px 6px;border-radius:4px}
-@media (max-width:700px){.fs-blocco{grid-template-columns:1fr}.fs-passi,.fs-cosa{grid-template-columns:1fr}}
+.sv-strade{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.sv-strada{display:grid;gap:14px;align-content:start;min-height:360px;padding:clamp(24px,3vw,40px);border-radius:24px;text-decoration:none;background:#fff;border:2px solid rgba(0,59,31,.15);color:var(--verde);transition:transform .25s,box-shadow .25s}
+.sv-strada.scura{background:var(--verde);color:var(--crema);border-color:var(--verde)}
+.sv-strada:hover,.sv-strada:focus-visible{transform:translateY(-4px);box-shadow:0 20px 40px rgba(0,40,20,.16)}
+.sv-tab{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;letter-spacing:.1em;text-transform:uppercase}
+.sv-strada strong{font:400 clamp(30px,3.4vw,44px)/1.1 var(--f-display)}
+.sv-d{font-size:17px;opacity:.85}
+.sv-vai{margin-top:auto;font-weight:700;color:var(--terracotta)}
+.sv-strada.scura .sv-vai{color:#E3B458}
+@media (max-width:760px){.sv-strade{grid-template-columns:1fr}.sv-strada{min-height:0}}
 </style>

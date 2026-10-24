@@ -1,0 +1,27 @@
+---
+// Proposta F · Servizi: le due macro sezioni, sempre a portata come schede.
+import { pagina } from './menu';
+import T from '../components/T.astro';
+interface Props { attiva: 'to' | 'pr' }
+const { attiva } = Astro.props;
+---
+<nav class="sv-schede" aria-label="Services">
+  <a href={pagina('servizi/tour-operator')} aria-current={attiva === 'to' ? 'page' : undefined}><span class="sv-sn">A</span><T k="sv.to.tab" /></a>
+  <a href={pagina('servizi/gruppi')} aria-current={attiva === 'pr' ? 'page' : undefined}><span class="sv-sn">B</span><T k="sv.pr.tab" /></a>
+</nav>
+<style is:global>
+.sv-schede{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:6px;border-radius:20px;background:var(--carta);margin-bottom:clamp(28px,4vw,44px)}
+.sv-schede a{display:flex;align-items:center;gap:12px;padding:14px 18px;border-radius:15px;text-decoration:none;font-weight:700;font-size:17px;line-height:1.25;color:var(--verde);transition:background-color .2s}
+.sv-schede a:hover{background:rgba(255,255,255,.6)}
+.sv-schede a[aria-current="page"]{background:var(--verde);color:var(--crema);box-shadow:0 8px 20px rgba(0,40,20,.18)}
+.sv-sn{flex:none;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;font:400 18px/1 var(--f-display);background:#E3B458;color:var(--verde)}
+.sv-domanda{font-size:clamp(34px,5vw,60px);line-height:1.08;max-width:22ch;margin:0 0 14px}
+.sv-sotto{margin:0 0 28px;color:var(--muted);font-size:1.1em;max-width:60ch}
+.fs-cosa{display:grid;grid-template-columns:repeat(2,1fr);gap:18px 32px;margin:0 0 24px}
+.fs-cosa div{border-left:3px solid #E3B458;padding:2px 0 2px 16px}
+.fs-cosa dt{display:flex;align-items:center;gap:10px;font:400 22px/1.2 var(--f-display);color:var(--verde)}
+.fs-cosa dt svg{width:22px;height:22px;flex:none}
+.fs-cosa dd{margin:6px 0 0;font-size:17px;color:var(--ink)}
+.sv-h3{font-size:26px;margin:28px 0 14px}
+@media (max-width:700px){.sv-schede{grid-template-columns:1fr}.fs-cosa{grid-template-columns:1fr}}
+</style>

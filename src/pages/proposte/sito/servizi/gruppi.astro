@@ -1,0 +1,40 @@
+---
+// Proposta F · Servizi B: privati, gruppi, scuole, enti e comuni. Testo volutamente vago: il viaggio lo vende l'agenzia partner.
+import SitoLayout from '../../../../sito/SitoLayout.astro';
+import ServiziSchede from '../../../../sito/ServiziSchede.astro';
+import { SITO } from '../../../../config';
+import Icona from '../../../../components/Icona.astro';
+import T from '../../../../components/T.astro';
+---
+<SitoLayout attiva="servizi">
+  <div class="wrap sf-pagina">
+    <ServiziSchede attiva="pr" />
+    <T as="h1" class="sv-domanda" k="sv.pr.q" />
+    <p class="sf-provv" lang="it">Testo provvisorio · da verificare con un commercialista o un avvocato</p>
+    <T as="p" class="sv-sotto" k="s.2.p" />
+    <T as="h2" class="sv-h3" k="sv.per" />
+    <dl class="fs-cosa">
+      {['a', 'b', 'c', 'd'].map((x) => (
+        <div><dt><Icona nome="spunta" /><T k={`sv.pr.${x}.h`} /></dt><T as="dd" k={`sv.pr.${x}.p`} /></div>
+      ))}
+    </dl>
+    <T as="p" k="s.2.p2" />
+    <a class="btn btn-wa js-wa sv-wa" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener" data-wa-testo="s.codice.wa"><Icona nome="wa" /><T k="s.codice" /></a>
+
+    <aside class="fs-chiaro" aria-labelledby="fsChiaro">
+      <T as="h2" k="s.chiaro.h" id="fsChiaro" />
+      <ul>{['s.chiaro.1', 's.chiaro.2', 's.chiaro.3'].map((k) => <li><Icona nome="spunta" /><T k={k} /></li>)}</ul>
+      <p class="fs-partner"><T k="s.partner" /> <span lang="it">[nome dell'agenzia partner, licenza e contatti da inserire]</span></p>
+    </aside>
+  </div>
+</SitoLayout>
+<style is:global>
+.sv-wa{font-size:18px;min-height:58px}
+.fs-chiaro{margin-top:40px;background:var(--carta);border-radius:20px;padding:clamp(22px,4vw,36px);display:grid;gap:12px}
+.fs-chiaro h2{font-size:clamp(26px,3vw,34px)}
+.fs-chiaro ul{list-style:none;margin:0;padding:0;display:grid;gap:10px}
+.fs-chiaro li{display:flex;gap:12px;align-items:flex-start}
+.fs-chiaro svg{width:24px;height:24px;flex:none;margin-top:3px}
+.fs-partner{margin:6px 0 0;font-weight:700}
+.fs-partner span{font-weight:400;background:rgba(201,142,43,.25);padding:2px 6px;border-radius:4px}
+</style>

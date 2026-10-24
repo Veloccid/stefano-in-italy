@@ -1,213 +1,367 @@
 ---
-// Proposta F · Dove lavoro: mappa in 3D (si inclina, si disegna da sola), niente zoom.
-// Ogni città ha un'etichetta grande da toccare; Stefano "salta" sulla città scelta e a fianco compaiono i tour.
+// Proposta F · Dove lavoro: la stessa mappa in 3D, divisa per regioni.
+// Si tocca una regione, la mappa ci vola sopra; poi si tocca la città e a fianco compaiono le esperienze.
 import SitoLayout from '../../../sito/SitoLayout.astro';
-import { ITALIA_PATH } from '../../../data/italia';
-import { NOMI, NOMI_KEY, xy } from '../../../data/zone';
-import { PUNTI_MAPPA, INQUADRA as Q } from '../../../data/tour';
+import { REGIONI, REGIONI_BOX, REG_W, REG_H, proietta } from '../../../data/regioni';
+import { REGIONI_TOUR, posCitta } from '../../../data/tour';
 import { SITO } from '../../../config';
 import { TESTI } from '../../../data/testi';
 import Icona from '../../../components/Icona.astro';
 import T from '../../../components/T.astro';
-const nome = (id: string) => (NOMI_KEY[id] ? TESTI[NOMI_KEY[id]].en : NOMI[id]);
-const pc = (x: number, y: number) => `left:${(((x - Q.x) / Q.w) * 100).toFixed(2)}%;top:${(((y - Q.y) / Q.h) * 100).toFixed(2)}%`;
-const regioneK = { toscana: 'mp.toscana', lazio: 'mp.lazio', puglia: 'mp.puglia', veneto: 'mp.veneto', piemonte: 'mp.piemonte', liguria: 'mp.liguria' } as const;
-const [sx, sy] = xy('sora');
+const nome = (c: { nome: string; nomeK?: string }) => (c.nomeK ? TESTI[c.nomeK].en : c.nome);
+const attive = new Set(REGIONI_TOUR.map((r) => r.id));
+const tutte = Object.values(REGIONI).join(' ');
+const dati = {
+  box: REGIONI_BOX,
+  regioni: REGIONI_TOUR.map((r) => ({ id: r.id, citta: r.citta.map((c) => ({ id: c.id, xy: posCitta(c), lato: c.lato ?? 'r' })) })),
+  casa: posCitta(REGIONI_TOUR.find((r) => r.id === 'lazio')!.citta[0]),
+};
+const mari = [
+  { t: 'Mar Ligure', p: proietta(8.6, 43.85) },
+  { t: 'Mar Tirreno', p: proietta(11.3, 40.6) },
+  { t: 'Mar Adriatico', p: proietta(15.0, 43.0) },
+];
 ---
 <SitoLayout attiva="mappa">
   <div class="wrap sf-pagina">
     <header class="sf-titolo"><T as="h1" k="mp.h" /><T as="p" k="mp.p" /></header>
     <div class="m3">
       <div class="m3-palco">
-        <div class="m3-inclina" id="m3Inclina" data-q={JSON.stringify(Q)}>
-          <svg class="m3-svg" viewBox={`${Q.x} ${Q.y} ${Q.w} ${Q.h}`} aria-hidden="true">
+        <div class="m3-inclina" id="m3Inclina" data-mappa={JSON.stringify(dati)}>
+          <svg class="m3-svg" id="m3Svg" viewBox={`0 0 ${REG_W} ${REG_H}`} aria-hidden="true">
             <defs>
               <pattern id="m3Onde" width="22" height="12" patternUnits="userSpaceOnUse"><path d="M0 8 Q5.5 4 11 8 T22 8" fill="none" stroke="#B9CDBB" stroke-width=".8" /></pattern>
               <radialGradient id="m3Luce"><stop offset="0" stop-color="#E3B458" stop-opacity=".7" /><stop offset="1" stop-color="#E3B458" stop-opacity="0" /></radialGradient>
             </defs>
-            <rect x={Q.x - 50} y={Q.y - 50} width={Q.w + 100} height={Q.h + 100} class="m3-mare" />
-            <rect x={Q.x - 50} y={Q.y - 50} width={Q.w + 100} height={Q.h + 100} fill="url(#m3Onde)" opacity=".7" />
-            <text class="m3-mar" x="150" y="330">Mar Tirreno</text>
-            <text class="m3-mar" x="400" y="200">Mar Adriatico</text>
-            <path class="m3-spessore" d={ITALIA_PATH} transform="translate(1.5 3)" />
-            <path class="m3-terra" d={ITALIA_PATH} pathLength="1" />
-            {PUNTI_MAPPA.map((p) => { const [x, y] = xy(p.id); return <line class="m3-filo" data-filo={p.id} x1={x} y1={y} x2={p.et[0]} y2={p.et[1]} />; })}
-            {PUNTI_MAPPA.map((p, i) => { const [x, y] = xy(p.id); return (
-              <g class:list={['m3-pin', `m3-${p.tipo}`, `m3-r-${p.regione}`]} data-punto={p.id} transform={`translate(${x} ${y})`} style={`--d:${1.5 + i * 0.1}s`}>
-                <circle class="m3-luce" r="26" fill="url(#m3Luce)" />
-                <circle class="m3-onda" r="6" />
-                <circle class="m3-c" r="5" />
-                <circle class="m3-tocco" r="14" />
+            <rect x="-400" y="-400" width={REG_W + 800} height={REG_H + 800} class="m3-mare" />
+            <rect x="-400" y="-400" width={REG_W + 800} height={REG_H + 800} fill="url(#m3Onde)" opacity=".7" />
+            {mari.map((m) => <text class="m3-mar" x={m.p[0]} y={m.p[1]}>{m.t}</text>)}
+            <path class="m3-spessore" id="m3Spessore" d={tutte} transform="translate(1 2.5)" />
+            {Object.entries(REGIONI).map(([id, d]) => <path class:list={['m3-reg', { attiva: attive.has(id) }]} data-reg={attive.has(id) ? id : undefined} d={d} pathLength="1" />)}
+            {REGIONI_TOUR.map((r) => r.citta.map((c, i) => { const [x, y] = posCitta(c); return (
+              <g class:list={['m3-pin', { 'm3-casa': c.casa, 'm3-recente': r.recente }]} data-citta={c.id} data-reg={r.id} transform={`translate(${x.toFixed(1)} ${y.toFixed(1)})`} style={`--d:${1.4 + i * 0.05}s`}>
+                <g class="m3-pin-s"><circle class="m3-luce" r="22" fill="url(#m3Luce)" /><circle class="m3-onda" r="5" /><circle class="m3-c" r="4.5" /><circle class="m3-tocco" r="12" /></g>
               </g>
-            ); })}
+            ); }))}
           </svg>
-          <p class="m3-gruppo" style={pc(566, 128)}><T k="mp.puglia" /> <T class="m3-badge" k="mp.recente" /></p>
-          {PUNTI_MAPPA.map((p, i) => (
-            <button type="button" class:list={['m3-et', `m3-et-${p.tipo}`, `m3-et-${p.regione}`]} data-punto={p.id} style={`${pc(p.et[0], p.et[1])};--d:${1.7 + i * 0.1}s`} aria-pressed="false">
-              {p.casa && <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z" /></svg>}
-              <span data-i18n={NOMI_KEY[p.id]}>{nome(p.id)}</span>
+          <svg class="m3-fili" id="m3Fili" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true"></svg>
+          {REGIONI_TOUR.map((r) => (
+            <button type="button" class:list={['m3-rp', { 'm3-rp-recente': r.recente }]} data-reg={r.id}>
+              <T k={r.k} /><span class="m3-rp-n">{r.citta.length}</span>
             </button>
           ))}
-          <div class="m3-stef" id="m3Stef" style={pc(sx, sy)} aria-hidden="true"><div class="m3-stef-salto"><img src="/img/stefano.webp" alt="" width="458" height="640" /></div><span class="m3-ombra"></span></div>
+          {REGIONI_TOUR.map((r) => r.citta.map((c) => (
+            <button type="button" class:list={['m3-et', { 'm3-et-casa': c.casa }]} data-citta={c.id} data-reg={r.id} aria-pressed="false" hidden>
+              {c.casa && <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z" /></svg>}
+              <span data-i18n={c.nomeK}>{nome(c)}</span>
+            </button>
+          )))}
+          <button type="button" class="m3-tutta" id="m3Tutta" hidden><span aria-hidden="true">←</span> <T k="mp.tutta" /></button>
+          <div class="m3-stef" id="m3Stef" aria-hidden="true"><div class="m3-stef-salto"><img src="/img/stefano.webp" alt="" width="458" height="640" /></div><span class="m3-ombra"></span></div>
         </div>
+        <p class="m3-crediti">Mappa delle regioni: <a href="https://mapsvg.com/maps/italy" target="_blank" rel="noopener">MapSVG</a>, <a href="https://creativecommons.org/licenses/by/4.0/" target="_blank" rel="noopener">CC BY 4.0</a></p>
       </div>
 
       <aside class="m3-pannello" aria-live="polite">
-        <div class="m3-info m3-vuoto" data-info="">
+        <div class="m3-info" data-info="">
           <svg class="m3-mano" viewBox="0 0 70 48" aria-hidden="true"><path d="M64 8 C 50 40, 26 44, 8 30"/><path d="M18 24 L7 29 L14 40"/></svg>
           <T as="h2" k="mp.scegli" />
-          <T as="p" k="mp.scegli.d" />
-          <div class="m3-rapidi">
-            {PUNTI_MAPPA.map((p) => <button type="button" data-punto={p.id}><span data-i18n={NOMI_KEY[p.id]}>{nome(p.id)}</span></button>)}
-          </div>
+          <T as="p" class="m3-sotto" k="mp.scegli.d" />
+          <div class="m3-rapidi">{REGIONI_TOUR.map((r) => <button type="button" data-reg={r.id}><T k={r.k} /> <span>{r.citta.length}</span></button>)}</div>
         </div>
-        {PUNTI_MAPPA.map((p) => (
-          <div class="m3-info" data-info={p.id} hidden>
-            <p class="m3-tipo"><T k={p.casa ? 'mp.base' : regioneK[p.regione]} /></p>
-            <h2 data-i18n={NOMI_KEY[p.id]}>{nome(p.id)}</h2>
-            {p.casa && <T as="p" class="m3-casa" k="mp.casa" />}
+        {REGIONI_TOUR.map((r) => (
+          <div class="m3-info" data-info={`r:${r.id}`} hidden>
+            <p class="m3-tipo"><button type="button" class="m3-su" data-su=""><span aria-hidden="true">←</span> <T k="mp.tutta" /></button></p>
+            <h2><T k={r.k} />{r.recente && <T class="m3-badge" k="mp.recente" />}</h2>
+            <T as="p" class="m3-sotto" k="mp.citta" />
+            <div class="m3-rapidi">{r.citta.map((c) => <button type="button" data-citta={c.id} data-reg={r.id}><span data-i18n={c.nomeK}>{nome(c)}</span></button>)}</div>
+          </div>
+        ))}
+        {REGIONI_TOUR.map((r) => r.citta.map((c) => (
+          <div class="m3-info" data-info={`c:${c.id}`} hidden>
+            <p class="m3-tipo"><button type="button" class="m3-su" data-su={r.id}><span aria-hidden="true">←</span> {c.casa ? <T k="mp.base" /> : <T k={r.k} />}</button></p>
+            <h2 data-i18n={c.nomeK}>{nome(c)}</h2>
+            {c.casa && <T as="p" class="m3-casa-t" k="mp.casa" />}
             <ul>
-              {p.tour.map((t) => (
+              {c.esp.map((e) => (
                 <li>
-                  <T as="h3" k={t.t} />
-                  {t.anni && <p class="m3-meta">{t.anni} · {t.con}</p>}
-                  <T as="p" k={t.d} />
-                  {t.daCompletare && <span class="sf-provv" lang="it">dettagli da completare con Stefano</span>}
+                  <T as="h3" k={e.t} />
+                  {e.con && <p class="m3-meta">{e.con}</p>}
+                  <T as="p" k={e.d} />
+                  {e.daCompletare && <span class="sf-provv" lang="it">dettagli da completare con Stefano</span>}
                 </li>
               ))}
             </ul>
-            {p.casa && <a class="btn btn-wa js-wa m3-chiedi" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener" data-wa-testo="mp.chiedi.wa"><Icona nome="wa" /><T k="mp.chiedi" /></a>}
+            {c.casa && <a class="btn btn-wa js-wa m3-chiedi" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener" data-wa-testo="mp.chiedi.wa"><Icona nome="wa" /><T k="mp.chiedi" /></a>}
           </div>
-        ))}
+        )))}
       </aside>
     </div>
   </div>
 </SitoLayout>
 <style is:global>
 .m3{display:grid;grid-template-columns:1.45fr .85fr;gap:clamp(20px,3vw,40px);align-items:start}
-.m3-palco{perspective:1300px;perspective-origin:50% 0%;padding:8px 0 24px}
-.m3-inclina{position:relative;aspect-ratio:600/400;border-radius:24px;transform-style:preserve-3d;transform:rotateX(var(--rx,24deg)) rotateY(var(--ry,0deg)) rotateZ(-1.5deg);transform-origin:50% 60%;transition:transform .9s cubic-bezier(.2,.8,.2,1);box-shadow:0 2px 0 #0B4A2B,0 4px 0 #0B4A2B,0 6px 0 #0B4A2B,0 8px 0 #0B4A2B,0 40px 50px -10px rgba(0,40,20,.35);animation:m3Arriva 1.4s cubic-bezier(.2,.8,.2,1) backwards}
+.m3-palco{perspective:1300px;perspective-origin:50% 0%;padding:8px 0 0;min-width:0}
+.m3-inclina{position:relative;aspect-ratio:3/2;border-radius:24px;overflow:hidden;transform-style:preserve-3d;transform:rotateX(var(--rx,24deg)) rotateY(var(--ry,0deg)) rotateZ(-1.5deg);transform-origin:50% 60%;transition:transform .9s cubic-bezier(.2,.8,.2,1);box-shadow:0 2px 0 #0B4A2B,0 4px 0 #0B4A2B,0 6px 0 #0B4A2B,0 8px 0 #0B4A2B,0 40px 50px -10px rgba(0,40,20,.35);animation:m3Arriva 1.4s cubic-bezier(.2,.8,.2,1) backwards}
 @keyframes m3Arriva{from{transform:rotateX(60deg) rotateZ(-8deg) translateY(40px);opacity:0}}
-.m3-svg{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:24px;overflow:hidden}
+.m3-svg,.m3-fili{position:absolute;inset:0;width:100%;height:100%;display:block;border-radius:24px;overflow:hidden}
+.m3-svg{--k:1}
+.m3-fili{pointer-events:none;overflow:visible}
+.m3-fili line{stroke:var(--verde);stroke-width:1.2;stroke-dasharray:3 3;vector-effect:non-scaling-stroke;opacity:.7}
+.m3-fili line.on{stroke:var(--terracotta);stroke-width:2;stroke-dasharray:none;opacity:1}
 .m3-mare{fill:#DCE8DE}
-.m3-mar{font:italic 400 13px var(--f-display);fill:#7FA08A;letter-spacing:.12em}
-.m3-spessore{fill:#2C5A40;opacity:0;animation:m3Riempi .8s 1.3s ease forwards}
-.m3-terra{fill:#FBF3E4;stroke:var(--verde);stroke-width:.9;stroke-linejoin:round;stroke-dasharray:1;stroke-dashoffset:1;fill-opacity:0;animation:m3Disegna 2s .2s cubic-bezier(.6,0,.3,1) forwards,m3Riempi .8s 1.3s ease forwards}
+.m3-mar{font:italic 400 calc(13px * var(--k)) var(--f-display);fill:#7FA08A;letter-spacing:.12em;text-anchor:middle}
+.m3-spessore{fill:#2C5A40;opacity:0;animation:m3Riempi .8s 1.2s ease forwards}
+.m3-reg{fill:#FBF3E4;stroke:#7FA08A;stroke-width:calc(.6px * var(--k));stroke-linejoin:round;fill-opacity:0;stroke-dasharray:1;stroke-dashoffset:1;animation:m3Disegna 1.8s .2s cubic-bezier(.6,0,.3,1) forwards,m3Riempi .8s 1.2s ease forwards;transition:fill .3s}
+.m3-reg.attiva{fill:#F1DFB9;stroke:var(--verde);cursor:pointer}
+.m3-reg.attiva:hover{fill:#E9CD8E}
+.m3-reg.attiva.on{fill:#E3B458}
+.m3-svg.zoom .m3-reg:not(.on){fill:#F6EEDF}
+.m3-svg.zoom .m3-reg.attiva:not(.on):hover{fill:#EEDDB8}
 @keyframes m3Disegna{to{stroke-dashoffset:0}}
 @keyframes m3Riempi{to{fill-opacity:1;opacity:1}}
-.m3-filo{stroke:var(--verde);stroke-width:1;stroke-dasharray:2 3;opacity:0;animation:m3Riempi .6s 2s forwards}
-.m3-filo.on{stroke:var(--terracotta);stroke-width:1.6;stroke-dasharray:none}
-.m3-pin{cursor:pointer;opacity:0;animation:m3Riempi .4s var(--d) forwards}
-.m3-c{fill:var(--verde);stroke:#fff;stroke-width:2}
-.m3-r-puglia .m3-c{fill:#E3B458;stroke:var(--verde)}
-.m3-base .m3-c{fill:var(--terracotta)}
+.m3-pin{cursor:pointer;opacity:0;animation:m3Riempi .4s var(--d) forwards;transition:opacity .3s}
+.m3-pin-s{transform:scale(var(--k))}
+.m3-c{fill:var(--verde);stroke:#fff;stroke-width:1.8}
+.m3-recente .m3-c{fill:#E3B458;stroke:var(--verde)}
+.m3-casa .m3-c{fill:var(--terracotta)}
 .m3-tocco{fill:transparent}
 .m3-luce{opacity:0;transition:opacity .3s}
 .m3-pin.on .m3-luce{opacity:1}
 .m3-onda{fill:none;stroke:#E3B458;stroke-width:1.5;transform-box:fill-box;transform-origin:center;opacity:0}
-.m3-r-puglia .m3-onda,.m3-pin.on .m3-onda{animation:m3Onda 2.2s calc(var(--d) + .5s) infinite}
+.m3-pin.on .m3-onda,.m3-recente .m3-onda{animation:m3Onda 2.2s 2s infinite}
 @keyframes m3Onda{0%{opacity:.9;transform:scale(.8)}100%{opacity:0;transform:scale(3)}}
-.m3-gruppo{position:absolute;transform:translate(-50%,-50%);margin:0;white-space:nowrap;font:700 12px/1 var(--f-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--verde);display:flex;gap:6px;align-items:center}
-.m3-badge{background:var(--terracotta);color:var(--crema);padding:4px 7px;border-radius:999px;font-size:10px}
-.m3-et{position:absolute;transform:translate(-50%,-50%) translateZ(0);appearance:none;display:inline-flex;align-items:center;gap:6px;min-height:36px;padding:0 14px;border-radius:999px;border:2px solid var(--verde);background:#fff;color:var(--verde);font:700 15px/1 var(--f-sans);white-space:nowrap;cursor:pointer;box-shadow:0 3px 0 rgba(0,59,31,.25),0 8px 16px rgba(0,40,20,.12);opacity:0;animation:m3Et .5s var(--d) cubic-bezier(.3,1.5,.5,1) forwards;transition:background-color .2s,color .2s,box-shadow .2s}
-@keyframes m3Et{from{opacity:0;transform:translate(-50%,-30%) scale(.7)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}
-.m3-et svg{width:16px;height:16px;fill:currentColor}
-.m3-et-puglia{border-color:#C98E2B}
-.m3-et-base{border-color:var(--terracotta);color:var(--terracotta)}
-.m3-et:hover,.m3-et:focus-visible{background:#FFF7E6;box-shadow:0 4px 0 rgba(0,59,31,.3),0 12px 20px rgba(0,40,20,.18)}
+.m3-svg.zoom .m3-pin.fuori{opacity:.25}
+.m3-rp,.m3-et,.m3-tutta{position:absolute;left:0;top:0;appearance:none;display:inline-flex;align-items:center;gap:6px;white-space:nowrap;cursor:pointer;font:700 15px/1 var(--f-sans);border-radius:999px;transition:opacity .35s,transform .35s,background-color .2s,color .2s}
+.m3-rp{min-height:34px;padding:0 6px 0 14px;border:2px solid var(--verde);background:var(--verde);color:var(--crema);box-shadow:0 3px 0 rgba(0,30,15,.35),0 8px 16px rgba(0,40,20,.18)}
+.m3-rp:hover,.m3-rp:focus-visible{background:#0B4A2B}
+.m3-rp-n{display:grid;place-items:center;min-width:24px;height:24px;border-radius:999px;background:#E3B458;color:var(--verde);font-size:13px}
+.m3-rp-recente{background:var(--terracotta);border-color:var(--terracotta)}
+.m3-et{min-height:34px;padding:0 13px;border:2px solid var(--verde);background:#fff;color:var(--verde);box-shadow:0 3px 0 rgba(0,59,31,.25),0 8px 16px rgba(0,40,20,.12)}
+.m3-et svg{width:15px;height:15px;fill:currentColor}
+.m3-et-casa{border-color:var(--terracotta);color:var(--terracotta)}
+.m3-et:hover,.m3-et:focus-visible{background:#FFF7E6}
 .m3-et[aria-pressed="true"]{background:var(--verde);color:var(--crema);border-color:var(--verde)}
-.m3-et-base[aria-pressed="true"]{background:var(--terracotta);border-color:var(--terracotta)}
-.m3-stef{position:absolute;width:0;height:0;pointer-events:none;transition:left .9s cubic-bezier(.45,0,.3,1),top .9s cubic-bezier(.45,0,.3,1);z-index:2}
+.m3-et-casa[aria-pressed="true"]{background:var(--terracotta);border-color:var(--terracotta)}
+.m3-tutta{left:14px;top:14px;min-height:38px;padding:0 14px;border:0;background:#fff;color:var(--verde);box-shadow:0 6px 16px rgba(0,40,20,.18)}
+.m3-et[hidden],.m3-tutta[hidden]{display:none}
+.m3-rp,.m3-et,.m3-tutta{z-index:4}
+.m3-nasc{opacity:0;pointer-events:none;transform:scale(.85)}
+.m3-stef{position:absolute;left:0;top:0;width:0;height:0;pointer-events:none;z-index:3;transition:opacity .3s}
+.m3-svg:not(.zoom)~.m3-stef{opacity:.9}
 .m3-stef-salto{position:absolute;left:-23px;bottom:10px;width:46px;height:46px;border-radius:50%;background:var(--crema);border:3px solid var(--verde);transform-origin:50% 130%;box-shadow:0 6px 10px rgba(0,30,15,.3)}
 .m3-stef-salto::after{content:"";position:absolute;left:50%;bottom:-11px;margin-left:-7px;width:14px;height:10px;background:var(--verde);clip-path:polygon(0 0,100% 0,50% 100%)}
 .m3-stef img{display:block;width:100%;height:100%;object-fit:cover;object-position:50% 4%;border-radius:50%}
 .m3-ombra{position:absolute;left:-12px;top:-3px;width:24px;height:6px;border-radius:50%;background:rgba(0,30,15,.3)}
 .m3-stef.hop .m3-stef-salto{animation:m3Salto .9s cubic-bezier(.45,0,.3,1)}
 .m3-stef.hop .m3-ombra{animation:m3Ombra .9s cubic-bezier(.45,0,.3,1)}
-@keyframes m3Salto{0%{transform:translateY(0) scale(1,1)}10%{transform:translateY(0) scale(1.1,.85)}50%{transform:translateY(-70px) scale(.95,1.05)}90%{transform:translateY(0) scale(1.1,.88)}100%{transform:translateY(0) scale(1,1)}}
+@keyframes m3Salto{0%{transform:translateY(0) scale(1,1)}10%{transform:translateY(0) scale(1.1,.85)}50%{transform:translateY(-60px) scale(.95,1.05)}90%{transform:translateY(0) scale(1.1,.88)}100%{transform:translateY(0) scale(1,1)}}
 @keyframes m3Ombra{50%{transform:scale(.5);opacity:.4}}
+.m3-crediti{margin:18px 0 0;font-size:12px;color:var(--muted)}
+.m3-crediti a{color:inherit}
 .m3-pannello{scroll-margin-top:84px;background:#fff;border:1px solid rgba(0,59,31,.14);border-radius:22px;padding:clamp(20px,2.4vw,28px);box-shadow:0 14px 34px rgba(0,40,20,.08);position:sticky;top:96px}
 .m3-info:not([hidden]){animation:m3Info .45s cubic-bezier(.2,.8,.2,1)}
 @keyframes m3Info{from{opacity:0;transform:translateY(12px)}}
 .m3-mano{width:64px;height:44px;stroke:var(--terracotta);fill:none;stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
-.m3-vuoto h2{font-size:clamp(28px,3vw,36px);margin:4px 0 8px}
-.m3-vuoto p{margin:0 0 16px;color:var(--muted)}
+.m3-info h2{font-size:clamp(30px,3.2vw,40px);margin:2px 0 10px;display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.m3-badge{font:700 11px/1 var(--f-sans);letter-spacing:.1em;text-transform:uppercase;background:var(--terracotta);color:var(--crema);padding:6px 9px;border-radius:999px}
+.m3-sotto{margin:0 0 16px;color:var(--muted)}
 .m3-rapidi{display:flex;flex-wrap:wrap;gap:8px}
-.m3-rapidi button{appearance:none;border:1.5px solid rgba(0,59,31,.3);background:transparent;color:var(--verde);border-radius:999px;padding:9px 14px;font:600 15px/1 var(--f-sans);cursor:pointer}
+.m3-rapidi button{appearance:none;border:1.5px solid rgba(0,59,31,.3);background:transparent;color:var(--verde);border-radius:999px;padding:10px 14px;font:600 15px/1 var(--f-sans);cursor:pointer;display:inline-flex;gap:8px;align-items:center}
+.m3-rapidi button span:last-child:not(:first-child){font-size:12px;opacity:.6}
 .m3-rapidi button:hover{background:var(--carta)}
-.m3-tipo{margin:0;font-size:13px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--terracotta)}
-.m3-info h2{font-size:clamp(32px,3.4vw,42px);margin:2px 0 12px}
-.m3-casa{margin:0 0 14px;font:400 21px/1.35 var(--f-display);color:var(--verde);background:var(--carta);border-radius:14px;padding:14px 16px}
+.m3-tipo{margin:0}
+.m3-su{appearance:none;border:0;background:none;padding:6px 0;cursor:pointer;font:700 13px/1 var(--f-sans);letter-spacing:.12em;text-transform:uppercase;color:var(--terracotta)}
+.m3-su:hover{text-decoration:underline}
+.m3-casa-t{margin:0 0 14px;font:400 21px/1.35 var(--f-display);color:var(--verde);background:var(--carta);border-radius:14px;padding:14px 16px}
 .m3-info ul{list-style:none;margin:0;padding:0;display:grid;gap:16px}
 .m3-info li{border-top:1px solid rgba(0,59,31,.14);padding-top:12px}
 .m3-info h3{font-size:22px}
 .m3-meta{margin:2px 0 4px;font-size:15px;font-weight:700;color:var(--muted)}
 .m3-info li p:not(.m3-meta){margin:0;font-size:16px}
-.m3-cv{display:inline-block;margin-top:16px;font-weight:700}
 .m3-chiedi{margin-top:18px;width:100%;justify-content:center}
 @media (max-width:980px){
   .m3{grid-template-columns:1fr}
+  .m3-inclina{aspect-ratio:1/1}
   .m3-pannello{position:static}
-  .m3-palco{padding-bottom:8px}
-  .m3-et{min-height:32px;padding:0 10px;font-size:13px}
-  .m3-gruppo{font-size:10px}
-  .m3-mar{font-size:11px}
 }
-@media (max-width:520px){.m3-et{min-height:28px;padding:0 8px;font-size:12px;gap:4px;border-width:1.5px}.m3-et svg{width:13px;height:13px}.m3-stef-salto{width:34px;height:34px;left:-17px;border-width:2px}.m3-gruppo .m3-badge{display:none}}
+@media (max-width:520px){.m3-et,.m3-rp{min-height:28px;font-size:12px;padding:0 9px;border-width:1.5px}.m3-rp{padding-right:4px}.m3-rp-n{min-width:20px;height:20px;font-size:11px}.m3-et svg{width:12px;height:12px}.m3-stef-salto{width:34px;height:34px;left:-17px;border-width:2px}.m3-tutta{left:10px;top:10px;min-height:32px;font-size:13px}}
 @media (prefers-reduced-motion:reduce){
-  .m3-inclina,.m3-terra,.m3-spessore,.m3-pin,.m3-et,.m3-filo{animation:none;opacity:1;fill-opacity:1;stroke-dashoffset:0}
+  .m3-inclina,.m3-reg,.m3-spessore,.m3-pin{animation:none;opacity:1;fill-opacity:1;stroke-dashoffset:0}
   .m3-inclina{transition:none}
-  .m3-stef{transition:none}
   .m3-stef.hop .m3-stef-salto,.m3-stef.hop .m3-ombra{animation:none}
 }
 </style>
 <script>
+  type Box = [number, number, number, number];
   const inc = document.getElementById('m3Inclina');
   if (inc) {
-    const Q = JSON.parse(inc.dataset.q!);
+    const D = JSON.parse(inc.dataset.mappa!) as { box: Record<string, Box>; regioni: { id: string; citta: { id: string; xy: [number, number]; lato: 'l' | 'r' }[] }[]; casa: [number, number] };
+    const svg = document.getElementById('m3Svg') as unknown as SVGSVGElement;
+    const fili = document.getElementById('m3Fili') as unknown as SVGSVGElement;
+    const spessore = document.getElementById('m3Spessore')!;
     const stef = document.getElementById('m3Stef')!;
-    const pins = [...inc.querySelectorAll<SVGGElement>('.m3-pin')];
-    const etichette = [...inc.querySelectorAll<HTMLButtonElement>('.m3-et')];
-    const fili = [...inc.querySelectorAll<SVGLineElement>('.m3-filo')];
+    const tutta = document.getElementById('m3Tutta') as HTMLButtonElement;
+    const rp = [...inc.querySelectorAll<HTMLButtonElement>('.m3-rp')];
+    const et = [...inc.querySelectorAll<HTMLButtonElement>('.m3-et')];
+    const pins = [...svg.querySelectorAll<SVGGElement>('.m3-pin')];
+    const regs = [...svg.querySelectorAll<SVGPathElement>('.m3-reg')];
     const infos = [...document.querySelectorAll<HTMLElement>('.m3-info')];
     const pannello = document.querySelector<HTMLElement>('.m3-pannello')!;
     const ridotto = matchMedia('(prefers-reduced-motion: reduce)').matches;
-    const base = () => (innerWidth <= 980 ? 16 : 24);
-    const pos = (id: string) => { const t = pins.find((p) => p.dataset.punto === id)!.transform.baseVal[0].matrix; return [(t.e - Q.x) / Q.w, (t.f - Q.y) / Q.h]; };
-    let attuale = '';
-    const scegli = (id: string, daMappa = true) => {
-      if (id === attuale) return;
-      attuale = id;
-      pins.forEach((p) => p.classList.toggle('on', p.dataset.punto === id));
-      fili.forEach((f) => f.classList.toggle('on', f.dataset.filo === id));
-      etichette.forEach((e) => e.setAttribute('aria-pressed', String(e.dataset.punto === id)));
-      infos.forEach((i) => (i.hidden = i.dataset.info !== id));
-      // Stefano salta sulla città scelta e la mappa si gira un po' verso di lei
-      const [x, y] = pos(id);
-      stef.style.left = (x * 100).toFixed(2) + '%'; stef.style.top = (y * 100).toFixed(2) + '%';
-      stef.classList.remove('hop'); void stef.offsetWidth; stef.classList.add('hop');
-      if (!ridotto) { inc.style.setProperty('--ry', ((0.5 - x) * 14).toFixed(1) + 'deg'); inc.style.setProperty('--rx', (base() + (y - 0.5) * 8).toFixed(1) + 'deg'); }
-      if (innerWidth <= 980 && daMappa) setTimeout(() => pannello.scrollIntoView({ behavior: ridotto ? 'auto' : 'smooth', block: 'start' }), 650);
+    const xyCitta: Record<string, [number, number]> = {}; const latoCitta: Record<string, 'l' | 'r'> = {}; const regDi: Record<string, string> = {};
+    D.regioni.forEach((r) => r.citta.forEach((c) => { xyCitta[c.id] = c.xy; latoCitta[c.id] = c.lato; regDi[c.id] = r.id; }));
+    const W = () => inc.offsetWidth, H = () => inc.offsetHeight;
+
+    // inquadrature
+    const adatta = (b: Box, padX: number, padY: number, minW: number): Box => {
+      let w = Math.max((b[2] - b[0]) * padX, minW), h = Math.max((b[3] - b[1]) * padY, minW * 0.6);
+      const cx = (b[0] + b[2]) / 2, cy = (b[1] + b[3]) / 2, a = W() / H();
+      if (w / h < a) w = h * a; else h = w / a;
+      return [cx - w / 2, cy - h / 2, w, h];
     };
-    etichette.forEach((e) => e.addEventListener('click', () => scegli(e.dataset.punto!)));
-    document.querySelectorAll<HTMLButtonElement>('.m3-rapidi button').forEach((b) => b.addEventListener('click', () => scegli(b.dataset.punto!, false)));
-    // un tocco vicino a un punto della mappa sceglie la città più vicina (comodo per le città della Puglia)
-    inc.addEventListener('click', (e) => {
-      if ((e.target as Element).closest('.m3-et')) return;
-      let meglio = '', d = 44;
-      pins.forEach((p) => { const r = p.querySelector('.m3-c')!.getBoundingClientRect(); const dd = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)); if (dd < d) { d = dd; meglio = p.dataset.punto!; } });
-      if (meglio) scegli(meglio);
+    const unione = (bs: Box[]): Box => [Math.min(...bs.map((b) => b[0])), Math.min(...bs.map((b) => b[1])), Math.max(...bs.map((b) => b[2])), Math.max(...bs.map((b) => b[3]))];
+    const vistaItalia = () => adatta(unione(D.regioni.map((r) => D.box[r.id])), 1.06, 1.06, 100);
+    const vistaRegione = (id: string) => {
+      const r = D.regioni.find((x) => x.id === id)!;
+      if (r.citta.length < 3) return adatta(D.box[id], 1.25, 1.25, 90);
+      const ps = r.citta.map((c) => c.xy);
+      const b: Box = [Math.min(...ps.map((p) => p[0])), Math.min(...ps.map((p) => p[1])), Math.max(...ps.map((p) => p[0])), Math.max(...ps.map((p) => p[1]))];
+      return adatta(b, 2.6, 1.7, 70);
+    };
+    let vb: Box = [0, 0, 610, 793];
+    const px = (x: number, y: number): [number, number] => [((x - vb[0]) / vb[2]) * W(), ((y - vb[1]) / vb[3]) * H()];
+    const imposta = (v: Box) => {
+      vb = v; svg.setAttribute('viewBox', v.map((n) => n.toFixed(2)).join(' '));
+      const k = vb[2] / 610; svg.style.setProperty('--k', k.toFixed(4));
+      spessore.setAttribute('transform', `translate(${(1.2 * k).toFixed(2)} ${(3 * k).toFixed(2)})`);
+      seguiStef(); posizionaEtichette();
+    };
+    let anim = 0;
+    const vola = (dest: Box, durata = 1100) => new Promise<void>((ok) => {
+      cancelAnimationFrame(anim);
+      if (ridotto) { imposta(dest); ok(); return; }
+      const da = [...vb] as Box, t0 = performance.now();
+      const passo = (t: number) => {
+        const x = Math.min(1, (t - t0) / durata), e = x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
+        imposta(da.map((a, i) => a + (dest[i] - a) * e) as Box);
+        if (x < 1) anim = requestAnimationFrame(passo); else ok();
+      };
+      anim = requestAnimationFrame(passo);
     });
-    // leggera inclinazione che segue il mouse
+
+    // etichette: accanto al punto, spinte in giù se si sovrappongono
+    let regioneAttiva = '', cittaAttiva = '', posStef: [number, number] = D.casa;
+    const sistema = (items: { el: HTMLElement; a: [number, number]; lato: 'l' | 'r' | 'c' }[]) => {
+      const gap = 6, w = W(), h = H(), out: { el: HTMLElement; x: number; y: number; a: [number, number]; lato: string }[] = [];
+      items.forEach((it) => {
+        const ew = it.el.offsetWidth, eh = it.el.offsetHeight;
+        let lato = it.lato, x = lato === 'c' ? it.a[0] - ew / 2 : lato === 'r' ? it.a[0] + 16 : it.a[0] - 16 - ew;
+        if (lato === 'r' && x + ew > w - 8) { lato = 'l'; x = it.a[0] - 16 - ew; }
+        if (lato === 'l' && x < 8) { lato = 'r'; x = it.a[0] + 16; }
+        x = Math.min(Math.max(8, x), w - ew - 8);
+        out.push({ el: it.el, x, y: it.a[1] - eh / 2, a: it.a, lato });
+      });
+      out.sort((p, q) => p.y - q.y);
+      for (let i = 0; i < out.length; i++) for (let j = 0; j < i; j++) {
+        const p = out[j], q = out[i];
+        const sx = q.x < p.x + p.el.offsetWidth + gap && p.x < q.x + q.el.offsetWidth + gap;
+        if (sx && q.y < p.y + p.el.offsetHeight + gap) q.y = p.y + p.el.offsetHeight + gap;
+      }
+      const basso = Math.max(...out.map((o) => o.y + o.el.offsetHeight));
+      if (basso > h - 8) { const d = basso - (h - 8); out.forEach((o) => (o.y = Math.max(8, o.y - d))); }
+      out.forEach((o) => { o.el.style.left = o.x.toFixed(1) + 'px'; o.el.style.top = o.y.toFixed(1) + 'px'; });
+      return out;
+    };
+    const posizionaEtichette = () => {
+      if (!regioneAttiva) {
+        sistema(rp.map((el) => { const b = D.box[el.dataset.reg!]; return { el, a: px((b[0] + b[2]) / 2, (b[1] + b[3]) / 2), lato: 'c' as const }; }));
+        fili.innerHTML = ''; return;
+      }
+      const vis = et.filter((el) => el.dataset.reg === regioneAttiva);
+      const out = sistema(vis.map((el) => ({ el, a: px(...xyCitta[el.dataset.citta!]), lato: latoCitta[el.dataset.citta!] })));
+      fili.innerHTML = out.map((o) => {
+        const ew = o.el.offsetWidth, eh = o.el.offsetHeight;
+        const ex = o.x + ew / 2 < o.a[0] ? o.x + ew : o.x, ey = o.y + eh / 2;
+        return `<line class="${o.el.dataset.citta === cittaAttiva ? 'on' : ''}" x1="${(o.a[0] / W() * 100).toFixed(2)}" y1="${(o.a[1] / H() * 100).toFixed(2)}" x2="${(ex / W() * 100).toFixed(2)}" y2="${(ey / H() * 100).toFixed(2)}"/>`;
+      }).join('');
+    };
+    const seguiStef = () => { const [x, y] = px(...posStef); stef.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px)`; };
+    const salta = () => { stef.classList.remove('hop'); void stef.offsetWidth; stef.classList.add('hop'); };
+    const base = () => (innerWidth <= 980 ? 14 : 24);
+    const inclina = (x = 0.5, y = 0.5) => { if (ridotto) return; inc.style.setProperty('--ry', ((0.5 - x) * 12).toFixed(1) + 'deg'); inc.style.setProperty('--rx', (base() + (y - 0.5) * 8).toFixed(1) + 'deg'); };
+    const mostra = (chiave: string) => infos.forEach((i) => (i.hidden = i.dataset.info !== chiave));
+    const vaiPannello = () => { if (innerWidth <= 980) setTimeout(() => pannello.scrollIntoView({ behavior: ridotto ? 'auto' : 'smooth', block: 'start' }), 500); };
+
+    async function italia() {
+      regioneAttiva = ''; cittaAttiva = '';
+      svg.classList.remove('zoom'); regs.forEach((r) => r.classList.remove('on')); pins.forEach((p) => p.classList.remove('on', 'fuori'));
+      et.forEach((e) => { e.hidden = true; e.setAttribute('aria-pressed', 'false'); }); tutta.hidden = true;
+      mostra(''); inclina();
+      rp.forEach((e) => e.classList.add('m3-nasc'));
+      await vola(vistaItalia());
+      rp.forEach((e) => e.classList.remove('m3-nasc')); posizionaEtichette();
+    }
+    async function regione(id: string, scorri = true) {
+      if (regioneAttiva === id && !cittaAttiva) return;
+      const cambia = regioneAttiva !== id;
+      regioneAttiva = id; cittaAttiva = '';
+      svg.classList.add('zoom'); regs.forEach((r) => r.classList.toggle('on', r.dataset.reg === id));
+      pins.forEach((p) => { p.classList.remove('on'); p.classList.toggle('fuori', p.dataset.reg !== id); });
+      et.forEach((e) => e.setAttribute('aria-pressed', 'false'));
+      rp.forEach((e) => e.classList.add('m3-nasc')); tutta.hidden = false;
+      mostra('r:' + id); inclina();
+      if (cambia) {
+        et.forEach((e) => { e.hidden = e.dataset.reg !== id; e.classList.add('m3-nasc'); });
+        await vola(vistaRegione(id));
+        et.forEach((e) => e.classList.remove('m3-nasc'));
+      }
+      posizionaEtichette();
+      if (scorri) vaiPannello();
+    }
+    async function citta(id: string, scorri = true) {
+      const r = regDi[id];
+      if (regioneAttiva !== r) await regione(r, false);
+      cittaAttiva = id;
+      pins.forEach((p) => p.classList.toggle('on', p.dataset.citta === id));
+      et.forEach((e) => e.setAttribute('aria-pressed', String(e.dataset.citta === id)));
+      mostra('c:' + id); posizionaEtichette();
+      posStef = xyCitta[id]; seguiStef(); salta();
+      const [x, y] = px(...posStef); inclina(x / W(), y / H());
+      if (scorri) vaiPannello();
+    }
+
+    // clic
+    rp.forEach((b) => b.addEventListener('click', () => regione(b.dataset.reg!)));
+    et.forEach((b) => b.addEventListener('click', () => citta(b.dataset.citta!)));
+    tutta.addEventListener('click', italia);
+    document.querySelectorAll<HTMLButtonElement>('.m3-pannello [data-reg]').forEach((b) => b.addEventListener('click', () => (b.dataset.citta ? citta(b.dataset.citta, false) : regione(b.dataset.reg!, false))));
+    document.querySelectorAll<HTMLButtonElement>('.m3-su').forEach((b) => b.addEventListener('click', () => (b.dataset.su ? regione(b.dataset.su, false) : italia())));
+    svg.addEventListener('click', (e) => {
+      const t = e.target as Element;
+      // in una regione: il punto più vicino al tocco; altrimenti la regione toccata
+      if (regioneAttiva) {
+        let meglio = '', d = 36;
+        pins.filter((p) => p.dataset.reg === regioneAttiva).forEach((p) => { const r = p.querySelector('.m3-c')!.getBoundingClientRect(); const dd = Math.hypot(e.clientX - (r.left + r.width / 2), e.clientY - (r.top + r.height / 2)); if (dd < d) { d = dd; meglio = p.dataset.citta!; } });
+        if (meglio) { citta(meglio); return; }
+      }
+      const reg = t.closest('[data-reg]') as HTMLElement | null;
+      if (reg?.dataset.reg && reg.dataset.reg !== regioneAttiva) regione(reg.dataset.reg);
+    });
+    // inclinazione che segue il mouse
     if (!ridotto && matchMedia('(hover: hover)').matches) {
       const palco = document.querySelector<HTMLElement>('.m3-palco')!;
       palco.addEventListener('pointermove', (e) => {
-        if (attuale) return;
+        if (cittaAttiva) return;
         const r = palco.getBoundingClientRect();
         inc.style.setProperty('--ry', (((e.clientX - r.left) / r.width - 0.5) * 10).toFixed(1) + 'deg');
         inc.style.setProperty('--rx', (base() - ((e.clientY - r.top) / r.height - 0.5) * 10).toFixed(1) + 'deg');
       });
-      palco.addEventListener('pointerleave', () => { if (!attuale) { inc.style.setProperty('--ry', '0deg'); inc.style.setProperty('--rx', base() + 'deg'); } });
+      palco.addEventListener('pointerleave', () => { if (!cittaAttiva) inclina(); });
     }
+    addEventListener('resize', () => imposta(regioneAttiva ? vistaRegione(regioneAttiva) : vistaItalia()));
+    document.addEventListener('sii:lingua', () => posizionaEtichette());
+    imposta(vistaItalia()); inclina();
+    document.fonts?.ready.then(() => posizionaEtichette());
   }
 </script>

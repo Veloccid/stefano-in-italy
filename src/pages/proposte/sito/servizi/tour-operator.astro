@@ -1,0 +1,30 @@
+---
+// Proposta F · Servizi A: per agenzie, tour operator e DMC.
+import SitoLayout from '../../../../sito/SitoLayout.astro';
+import ServiziSchede from '../../../../sito/ServiziSchede.astro';
+import { SITO } from '../../../../config';
+import { pagina } from '../../../../sito/menu';
+import Icona from '../../../../components/Icona.astro';
+import T from '../../../../components/T.astro';
+---
+<SitoLayout attiva="servizi">
+  <div class="wrap sf-pagina">
+    <ServiziSchede attiva="to" />
+    <T as="h1" class="sv-domanda" k="sv.to.q" />
+    <T as="p" class="sv-sotto" k="s.1.p" />
+    <T as="h2" class="sv-h3" k="s.1.cosa" />
+    <dl class="fs-cosa">
+      {['a', 'b', 'c', 'd'].map((x) => (
+        <div><dt><Icona nome="spunta" /><T k={`s.1.${x}.h`} /></dt><T as="dd" k={`s.1.${x}.p`} /></div>
+      ))}
+    </dl>
+    <p class="sv-azioni">
+      <a class="btn btn-wa js-wa" href={`https://wa.me/${SITO.whatsapp}`} target="_blank" rel="noopener"><Icona nome="wa" /><T k="wa.btn" /></a>
+      <a class="btn btn-linea" href={pagina('curriculum')}><T k="h.scopri" /><Icona nome="cv" /></a>
+    </p>
+  </div>
+</SitoLayout>
+<style is:global>
+.sv-azioni{display:flex;flex-wrap:wrap;gap:12px;margin-top:8px}
+.sv-azioni svg{width:20px;height:20px}
+</style>
